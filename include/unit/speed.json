@@ -1,0 +1,47 @@
+{	
+	"default":"mm/second",
+	"unit":{
+		"km/h":
+		{
+			"label" : "kilometer per jam",
+			"unit"	: "km/jam",
+			"value"	: 277.78
+		},
+		"hm/h":
+		{
+			"label" : "hektometer per jam",
+			"unit"	: "hm/jam",
+			"value"	: 27.78
+		},
+		"dam/h":
+		{
+			"label" : "dekameter per jam",
+			"unit"	: "dam/jam",
+			"value"	: 2.78
+		},
+		"m/m":
+		{
+			"label" : "meter per menit",
+			"unit"	: "m/menit",
+			"value"	: 16.67
+		},
+		"dm/m":
+		{
+			"label" : "desimeter per menit",
+			"unit"	: "dm/menit",
+			"value"	: 1.67
+		},
+		"cm/s":
+		{
+			"label" : "centimeter per detik",
+			"unit"	: "cm/detik",
+			"value"	: 10
+		},
+		"mm/s":
+		{
+			"label" : "milimeter per detik",
+			"unit"	: "mm/detik",
+			"value"	: 1
+		}
+	}
+}

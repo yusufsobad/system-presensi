@@ -1,0 +1,13 @@
+{
+	"conversi" : {
+		"250":{
+			"default":"pcs",
+			"value":1,
+			"unit":{
+				"renceng":10,
+				"pack":120
+			},
+			"stock":{}
+		}
+	}
+}

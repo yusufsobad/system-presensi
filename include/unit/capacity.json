@@ -1,0 +1,71 @@
+{	
+	"default":"ml",
+	"unit":{
+		"kl":
+		{
+			"label" : "kiloliter",
+			"unit"	: "kl",
+			"value"	: 1000000
+		},
+		"hl":
+		{
+			"label" : "hektoliter",
+			"unit"	: "hl",
+			"value"	: 100000
+		},
+		"dal":
+		{
+			"label" : "dekaliter",
+			"unit"	: "dal",
+			"value"	: 10000
+		},
+		"l":
+		{
+			"label" : "liter",
+			"unit"	: "l",
+			"value"	: 1000
+		},
+		"dl":
+		{
+			"label" : "desiliter",
+			"unit"	: "dl",
+			"value"	: 100
+		},
+		"cl":
+		{
+			"label" : "centiliter",
+			"unit"	: "cl",
+			"value"	: 10
+		},
+		"ml":
+		{
+			"label" : "mililiter",
+			"unit"	: "ml",
+			"value"	: 1
+		},
+		"bbl":
+		{
+			"label" : "barrel",
+			"unit"	: "bbl",
+			"value"	: 158987
+		},
+		"dry":
+		{
+			"label" : "dry barrel",
+			"unit"	: "bbl",
+			"value"	: 115627
+		},
+		"gallon US":
+		{
+			"label" : "gallon US",
+			"unit"	: "gallon",
+			"value"	: 3785.41
+		},
+		"gallon UK":
+		{
+			"label" : "gallon UK",
+			"unit"	: "gallon",
+			"value"	: 4546.09
+		}
+	}
+}

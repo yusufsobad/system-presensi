@@ -1,0 +1,47 @@
+{	
+	"default":"mm2",
+	"unit":{
+		"km2":
+		{
+			"label" : "kilometer persegi",
+			"unit"	: "km^2",
+			"value"	: 1000000000000
+		},
+		"hm2":
+		{
+			"label" : "hektometer persegi",
+			"unit"	: "hm^2",
+			"value"	: 10000000000
+		},
+		"dal2":
+		{
+			"label" : "dekameter persegi",
+			"unit"	: "dam^2",
+			"value"	: 100000000
+		},
+		"m2":
+		{
+			"label" : "meter persegi",
+			"unit"	: "m^2",
+			"value"	: 1000000
+		},
+		"dm2":
+		{
+			"label" : "desimeter persegi",
+			"unit"	: "dm^2",
+			"value"	: 10000
+		},
+		"cm2":
+		{
+			"label" : "centimeter persegi",
+			"unit"	: "cm^2",
+			"value"	: 100
+		},
+		"mm2":
+		{
+			"label" : "milimeter persegi",
+			"unit"	: "mm^2",
+			"value"	: 1
+		}
+	}
+}

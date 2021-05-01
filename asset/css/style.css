@@ -1,0 +1,100 @@
+.page-header.navbar .page-logo .logo-default {
+    margin: 10px 0 0 0;
+}
+
+/* here you can put your own css to customize and override the theme */
+.search-form-default {
+    margin-left:2px;
+    margin-right:2px;
+}
+
+.load_content {
+    text-align: center;
+    top: 100px;
+    position: relative;
+}
+
+/* Frozen Table Head */
+
+.tableFixHead          { overflow-y: auto; height: 400px; }
+.tableFixHead thead th { position: sticky; top: 0;background: #fff !important; }
+
+
+.table-striped>tbody>tr.red {
+    background-color: #E02222;
+    color: #fff;
+}
+
+.table-striped>tbody>tr.green {
+    background-color: #64DD17;
+    color: #333;
+}
+
+.pagination>.disabled>span, .pagination>.disabled>a, .pagination>.disabled>a:hover, .pagination>.disabled>a:focus {
+    color: #999;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+.table-scrollable{
+    padding-top:1px;
+}
+
+.table_flexible {
+    overflow: auto;
+}
+
+#here_modal .tab-content label {
+    text-align: left;
+}
+
+.modal-full-custom.modal-dialog {
+    width: 80%;
+}
+
+ul.dropdown-menu li a.btn_data_malika {
+    text-align: left;
+    font-size: 11pt;
+}
+
+.popover.clockpicker-popover {
+    z-index: 99999;
+}
+
+.bootstrap-tagsinput {
+    width: 100%;
+}
+
+.checkbox-list {
+    margin-left: 20px;
+}
+
+/* Dashboard */
+.dashboard-stat.grey-intense .more {
+    color: #fff;
+    background-color: #666;
+}
+
+.dashboard-stat.grey-intense .visual > i {
+    color: #FFFFFF;
+    opacity: 0.1;
+    filter: alpha(opacity=10);
+}
+
+.dashboard-stat.grey-intense {
+    color:#fff;
+    background-color: #888;
+}
+
+span.twitter-typeahead {
+    width: 100%;
+}
+
+.radio-list {
+    padding-left: 20px;
+}
+
+.radio-list>.option_box input[type=radio] {
+    top: 5px;
+}

@@ -1,0 +1,65 @@
+{	
+	"default":"mg",
+	"unit":{
+		"kg":
+		{
+			"label" : "kilogram",
+			"unit"	: "kg",
+			"value"	: 1000000
+		},
+		"hg":
+		{
+			"label" : "hektogram",
+			"unit"	: "hg",
+			"value"	: 100000
+		},
+		"dag":
+		{
+			"label" : "dekagram",
+			"unit"	: "dag",
+			"value"	: 10000
+		},
+		"g":
+		{
+			"label" : "gram",
+			"unit"	: "g",
+			"value"	: 1000
+		},
+		"dg":
+		{
+			"label" : "desigram",
+			"unit"	: "dg",
+			"value"	: 100
+		},
+		"cg":
+		{
+			"label" : "centigram",
+			"unit"	: "cg",
+			"value"	: 10
+		},
+		"mg":
+		{
+			"label" : "miligram",
+			"unit"	: "mg",
+			"value"	: 1
+		},
+		"ons":
+		{
+			"label" : "ons",
+			"unit"	: "ons",
+			"value"	: 100000
+		},
+		"kuintal":
+		{
+			"label" : "kuintal",
+			"unit"	: "kuintal",
+			"value"	: 100000000
+		},
+		"ton":
+		{
+		"label" : "ton",
+			"unit"	: "ton",
+			"value"	: 1000000000
+		}
+	}
+}

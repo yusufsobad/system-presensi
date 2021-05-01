@@ -1,0 +1,71 @@
+{	
+	"default":"mm",
+	"unit":{
+		"km":
+		{
+			"label" : "kilometer",
+			"unit"	: "km",
+			"value"	: 1000000
+		},
+		"hm":
+		{
+			"label" : "hektometer",
+			"unit"	: "hm",
+			"value"	: 100000
+		},
+		"dam":
+		{
+			"label" : "dekameter",
+			"unit"	: "dam",
+			"value"	: 10000
+		},
+		"m":
+		{
+			"label" : "meter",
+			"unit"	: "m",
+			"value"	: 1000
+		},
+		"dm":
+		{
+			"label" : "desimeter",
+			"unit"	: "dm",
+			"value"	: 100
+		},
+		"cm":
+		{
+			"label" : "centimeter",
+			"unit"	: "cm",
+			"value"	: 10
+		},
+		"mm":
+		{
+			"label" : "milimeter",
+			"unit"	: "mm",
+			"value"	: 1
+		},
+		"inc":
+		{
+			"label" : "inchi",
+			"unit"	: "inc",
+			"value"	: 25.4
+		},
+		"ft":
+		{
+			"label" : "feet",
+			"unit"	: "ft",
+			"value"	: 304.8
+		},
+		"yard":
+		{
+			"label" : "yard",
+			"unit"	: "yard",
+			"value"	: 914.4
+		},
+		"mil":
+		{
+			"label" : "mile",
+			"unit"	: "mil",
+			"value"	: 1609300
+		}
+	}
+}

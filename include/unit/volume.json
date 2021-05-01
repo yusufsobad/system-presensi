@@ -1,0 +1,47 @@
+{	
+	"default":"mm3",
+	"unit":{
+		"km3":
+		{
+			"label" : "kilometer kubik",
+			"unit"	: "km^3",
+			"value"	: 1000000000000000000
+		},
+		"hm3":
+		{
+			"label" : "hektometer kubik",
+			"unit"	: "hm^3",
+			"value"	: 1000000000000000
+		},
+		"dal2":
+		{
+			"label" : "dekameter kubik",
+			"unit"	: "dam^3",
+			"value"	: 1000000000000
+		},
+		"m3":
+		{
+			"label" : "meter kubik",
+			"unit"	: "m^3",
+			"value"	: 1000000000
+		},
+		"dm3":
+		{
+			"label" : "desimeter kubik",
+			"unit"	: "dm^3",
+			"value"	: 1000000
+		},
+		"cm3":
+		{
+			"label" : "centimeter kubik",
+			"unit"	: "cm3",
+			"value"	: 1000
+		},
+		"mm3":
+		{
+			"label" : "milimeter kubik",
+			"unit"	: "mm^3",
+			"value"	: 1
+		}
+	}
+}
