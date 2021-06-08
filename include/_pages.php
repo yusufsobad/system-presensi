@@ -36,7 +36,7 @@ abstract class _page{
 		return ob_get_clean();
 	}
 
-	protected function like_search($args=array(),$whr=''){
+	protected static function like_search($args=array(),$whr=''){
 		$kata = '';$where = '';
 		$cari = self::$data;
 		$search = isset($cari['search'])?$cari['search']:'';
@@ -50,6 +50,7 @@ abstract class _page{
 			}
 
 			$object = static::$table;
+			$tbl_meta = $object::$tbl_meta;
 			$meta = $object::list_meta($post);
 
 			$blueprint = $object::blueprint($post);
@@ -73,9 +74,16 @@ abstract class _page{
 				
 				foreach($args as $key => $val){
 					if(in_array($val, $meta)){
-						$src[] = "(meta_key='$val' AND meta_value LIKE '%$kata%') ".$whr;
+						$src[] = "(`$tbl_meta`.meta_key='$val' AND `$tbl_meta`.meta_value LIKE '%$kata%') ".$whr;
 					}else{
-						$src[] = "$val LIKE '%$kata%' ".$whr;
+						$_src = "$val LIKE '%$kata%'";
+
+						if(is_callable(array(new static(), '_filter_search'))){
+							$_xsrc = static::_filter_search($val,$kata);
+							$_src = empty($_xsrc)?$_src:$_xsrc;
+						}
+
+						$src[] = $_src." ".$whr;
 					}
 				}
 				
@@ -85,16 +93,24 @@ abstract class _page{
 				$search = $args[$search];
 				$kata = $cari['words'];
 				if(in_array($search, $meta)){
-					$where = "AND (meta_key='$search' AND meta_value LIKE '%$kata%') ".$whr;
+					$where = "AND (`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%') ".$whr;
 				}else{
-					$where = "AND $search LIKE '%$kata%' ".$whr;
+					$_src = "$search LIKE '%$kata%'";
+
+					if(is_callable(array(new static(), '_filter_search'))){
+						$_xsrc = static::_filter_search($search,$kata);
+						$_src = empty($_xsrc)?$_src:$_xsrc;
+					}
+
+					$where = "AND ".$_src." ".$whr;
 				}
 			}
 		}else{
 			$where = $whr;
 		}
-		
-		return array($where,$kata);
+
+		$_search = isset($cari['search'])?$cari['search']:'';
+		return array($where,$kata,$_search);
 	}
 
 	protected function action(){

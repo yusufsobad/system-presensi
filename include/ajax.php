@@ -1,4 +1,4 @@
-<?php
+<?php 
 //	ini_set('display_errors', 1);
 //	ini_set('display_startup_errors', 1);
 //	error_reporting(E_ALL);
@@ -20,7 +20,7 @@ if(!isset($_POST['ajax'])){
 	require 'config/hostname.php';
 
 	// Include File Component
-	require dirname(__FILE__).'/config/session.php';
+	require dirname(__FILE__).'/config/defined.php';
 	require dirname(__FILE__).'/config/option.php';
 	require dirname(__FILE__).'/../function.php';
 
@@ -63,6 +63,9 @@ if(!isset($_POST['ajax'])){
 
 class sobad_ajax{
 	public static function _get($args=array()){
+		$develop = true;
+		$start = self::_get_microtime();
+
 		$check = array_filter($args);
 		if(empty($check)){
 			$ajax = array(
@@ -91,8 +94,7 @@ class sobad_ajax{
 		}
 		
 		try{
-			$object = new $_class();
-			$msg = $object->{$_func}($data);
+			$msg = $_class::{$_func}($data);
 		}catch(Exception $e){
 			return _error::_alert_db($e->getMessage());
 		}
@@ -108,14 +110,33 @@ class sobad_ajax{
 			return print_r($ajax);
 		}
 		
+		$finish = self::_set_microtime($start);
+
 		$ajax = array(
 			'status' => "success",
 			'msg'    => "success",
 			'data'	 => $msg,
 			'func'	 => 'sobad_'.$_func
 		);
+
+		if($develop) $ajax['time'] = $finish;
 		
 		$ajax = json_encode($ajax);		
 		return print_r($ajax);
+	}
+
+	public static function _get_microtime(){
+		$time = microtime();
+		$time = explode(' ', $time);
+		$time = $time[1] + $time[0];
+
+		return $time;
+	}
+
+	public static function _set_microtime($start=0){
+		$finish = self::_get_microtime();
+		$time = round(($finish - $start), 4);
+
+		return $time;
 	}
 }

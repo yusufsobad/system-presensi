@@ -388,7 +388,7 @@ function sobad_clockpicker(){
 
 function conv_array_submit(arr){
 	for(var ky in arr){
-		arr[ky]['value'] = arr[ky]['value'].replace(/\+/g,'-plus-');
+		arr[ky]['value'] = ascii_to_hexa(arr[ky]['value'].replace(/\+/g,'-plus-'));
 	}
 
 	return JSON.stringify(arr);
@@ -421,14 +421,6 @@ function mask_quantity(val){
 
 function number_format(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-function conv_array_submit(arr){
-	for(var ky in arr){
-		arr[ky]['value'] = arr[ky]['value'].replace(/\+/g,'-plus-');
-	}
-
-	return JSON.stringify(arr);
 }
 
 function prefix_format(num, digits) {

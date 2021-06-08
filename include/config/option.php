@@ -4,13 +4,7 @@
 class option_library{
 	protected function get_libs(){
 		//pendaftaran Library
-		$args = array(
-			'dompdf'			=> 'autoload.php',
-			'phpmailer'			=> 'class.phpmailer.php',
-			'richtexteditor'	=> 'include_rte.php',
-			'sharedGettext'		=> 'autoload.php',
-			'createpdf'			=> 'html2pdf/html2pdf.class.php'
-		);
+		$args = _library;
 		
 		return $args;
 	}

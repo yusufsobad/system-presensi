@@ -5,7 +5,7 @@ Version 1.1.2
 (!defined('DEFPATH'))?exit:'';
 
 class sobad_asset{
-	public static function _name_file($dir){
+	private static function _name_file($dir){
 		if(is_dir($dir)){
 			if($handle = opendir($dir)){
 				$i = 0;
@@ -106,6 +106,23 @@ class sobad_asset{
 		}
 	}
 
+	public static function hexa_to_ascii($str=''){
+		if(empty($str)){
+			return '';
+		}
+		
+		$html = '';
+		$jml = strlen($str);
+		for($i=0;$i<$jml;$i+=2){
+			$hex = substr($str,$i,2);
+			$html .= chr(hexdec($hex));
+		}
+		
+		$html = urldecode($html);
+		$html = str_replace('-plus-','+',$html);
+		return $html;
+	}
+
 	public static function ajax_conv_json($args){
 		$args = json_decode($args,true);
 		$data = array();
@@ -119,7 +136,7 @@ class sobad_asset{
 		if (is_array($args) || is_object($args)){	
 			foreach($args as $key => $val){
 				$name = stripcslashes($val['name']);
-				$data[$name] = stripcslashes($val['value']);
+				$data[$name] = self::hexa_to_ascii(stripcslashes($val['value']));
 
 				if($filter){
 					if(isset($_filter[$name])){
@@ -127,7 +144,7 @@ class sobad_asset{
 					}
 				}
 			}
-		
+
 			return $data;
 		}
 		
@@ -147,6 +164,8 @@ class sobad_asset{
 		if (is_array($args) || is_object($args)){	
 			foreach($args as $key => $val){
 				$name = stripcslashes($val['name']);
+				$val['value'] = self::hexa_to_ascii($val['value']);
+
 				if(!array_key_exists($name,$data)){
 					$data[$name] = array();
 				}

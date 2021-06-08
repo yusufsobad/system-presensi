@@ -1,0 +1,8 @@
+/include/config/defined.php
+/include/unit/custom.json
+/asset/img/user/*.png
+/asset/img/user/*.jpg
+/asset/img/upload/*.*
+/pages/
+/theme/
+/.htaccess
