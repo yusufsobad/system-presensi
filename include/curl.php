@@ -12,6 +12,8 @@ $json = json_decode(file_get_contents('php://input'), true);
 	require 'config/hostname.php';
 	require 'class_db.php';
 
+	sobad_asset::_page("../pages/");
+
 // End Setting
 
 $json = sobad_curl($json);
