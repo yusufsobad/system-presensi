@@ -4,7 +4,7 @@
 $args = array();
 $args['login'] = array(
 	'page'	=> 'login_system',
-	'home'	=> true
+	'home'	=> false
 );
 reg_hook('reg_page',$args);
 
