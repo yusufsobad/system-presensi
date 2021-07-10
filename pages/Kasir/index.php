@@ -15,10 +15,10 @@ class view_POS{
 	public function _reg(){
 		$GLOBALS['body'] = 'page-header-fixed page-quick-sidebar-over-content page-full-width';
 
-		if(!isset($_SESSION['sochick_dept'])){
-			$err = new error();
-			$err->_page404();
-		}
+		//if(!isset($_SESSION['sochick_dept'])){ 
+		//	$err = new error(); 
+		//	$err->_page404(); 
+		//} 
 		
 		self::_script();
 		reg_hook('reg_language',array());
