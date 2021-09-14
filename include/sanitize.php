@@ -52,7 +52,7 @@ class formatting extends _error{
 	}
 
 	private static function _textarea($string=''){
-		$string = self::wp_sanitize_text_field($string);
+		$string = self::wp_sanitize_textarea_field($string);
 		return self::php_sanitize_string($string);
 	}
 

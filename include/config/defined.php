@@ -18,7 +18,7 @@ define('USERNAME',"root");
 define('PASSWORD','');
 
 // set Database
-define('DB_NAME','sochick2019');
+define('DB_NAME','cordova');
 $GLOBALS['DB_NAME'] = DB_NAME;
 
 // set rule database
@@ -39,7 +39,7 @@ define('SITE','http');
 define('HOSTNAME',$_SERVER['SERVER_NAME']);
 
 // set name url
-define('URL','system-sochick');
+define('URL','cordova-v3');
 
 // set check table
 define('ABOUT','');
@@ -47,7 +47,7 @@ define('ABOUT','');
 // Setting -------------------------------------------
 
 // prefix SESSION
-define('_prefix','sochick_');
+define('_prefix','cordova_');
 		
 // authentic include
 define('AUTH_KEY','qJB0rGtInG03efyCpWs');
@@ -59,10 +59,10 @@ define('DEFPATH',dirname(__FILE__));
 define('language',true);
 
 // set nama Perusahaan
-define('company','Solo Chicken');
+define('company','Cordova');
 
 // set judul Website
-define('title','System Sochick');
+define('title','Cordova');
 
 // Library ------------------------------------------
 

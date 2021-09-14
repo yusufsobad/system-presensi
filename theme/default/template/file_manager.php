@@ -73,10 +73,11 @@ class create_file_manager{
 							$url_img = self::_filter_image_file($val['type'],$val['url']);
 							$index = isset($val['id'])?$val['id']:$val['name'];
 							$click = isset($val['func'])?$val['func']:'select_file_list(this,false)';
+							$load = isset($val['load'])?$val['load']:'';
 
 							?>
 								<div class="col-md-2 box_file_list">
-									<a href="javascript:" onclick="<?php print($click) ;?>" data-image="<?php print($index) ;?>" data-name="<?php print($val['name']) ;?>" data-src="<?php print($url_img) ;?>" data-type="<?php print($val['type']) ;?>">
+									<a href="javascript:" onclick="<?php print($click) ;?>" data-image="<?php print($index) ;?>" data-name="<?php print($val['name']) ;?>" data-src="<?php print($url_img) ;?>" data-type="<?php print($val['type']) ;?>" data-load="<?php print($load) ;?>">
 										<div class="content_file_list">
 											<div class="img-list">
 												<img src="<?php print($url_img) ;?>">
@@ -250,8 +251,9 @@ class create_file_manager{
 				function select_file_list(val,status){
 					var idx_file = $(val).attr('data-image');
 					var name_file = $(val).attr('data-name');
-					var url_file = $(val).attr('data-src');;
+					var url_file = $(val).attr('data-src');
 					var type_file = $(val).attr('data-type');
+					var load_file = $(val).attr('data-load');
 
 					if(status){
 						// Multiple Select
@@ -261,7 +263,7 @@ class create_file_manager{
 
 						$(".imgList .row .box_file_list.selected").removeClass("selected");
 						$(val).parent().addClass("selected");
-						_select_file_list[0] = {"id":idx_file,"name":name_file,"url":url_file,"type":type_file};
+						_select_file_list[0] = {"id":idx_file,"name":name_file,"url":url_file,"type":type_file,"load":load_file};
 					}
 				}
 
