@@ -5,6 +5,8 @@ class create_form{
 
 	private static $_types = array();
 
+	private static $_require = array();
+
 	public static $col_label = 4;
 
 	public static $col_input = 7;
@@ -79,8 +81,14 @@ class create_form{
 							$_SESSION[_prefix.'input_form'] = array();
 						}
 
+						if(!isset($_SESSION[_prefix.'require_form'])){
+							$_SESSION[_prefix.'require_form'] = array();
+						}
+
 						$_SESSION[_prefix.'input_form'] = array_merge($_SESSION[_prefix.'input_form'],self::$_types);
+						$_SESSION[_prefix.'require_form'] = array_merge($_SESSION[_prefix.'require_form'],self::$_require);
 					;?>
+					<button type="submit" class="btn" style="display: none;"></button>
 				</form>
 			</div>
 			<script>
@@ -164,6 +172,11 @@ class create_form{
 		}
 
 		// Insert type data --->
+		self::$_require[$val['key']] = array(
+			'name'		=> $val['label'],
+			'status'	=> $req
+		);
+
 		self::$_types[$val['key']] = $val['type'];
 
 		switch ($val['type']) {
@@ -208,6 +221,11 @@ class create_form{
 			$req = $val['required'];
 			$required = 'required';
 		}
+
+		self::$_require[$val['key']] = array(
+			'name'		=> $val['label'],
+			'status'	=> $req
+		);
 
 		$inp = '';
 		if(isset($val['label'])){
@@ -283,6 +301,11 @@ class create_form{
 			$required = 'required';
 		}
 
+		self::$_require[$val['key']] = array(
+			'name'		=> $val['label'],
+			'status'	=> $req
+		);
+
 		$inp = '';
 		if(isset($val['label'])){
 			$inp .= self::opt_label($val['label'],$req);
@@ -334,6 +357,11 @@ class create_form{
 		}
 
 		// Insert type data --->
+		self::$_require[$val['key']] = array(
+			'name'		=> $val['label'],
+			'status'	=> $req
+		);
+
 		self::$_types[$val['key']] = 'textarea';
 		
 		$inp .= '<div class="col-md-'. self::$col_input .'">';
@@ -412,6 +440,11 @@ class create_form{
 		}
 
 		// Insert type data --->
+		self::$_require[$val['key']] = array(
+			'name'		=> $val['label'],
+			'status'	=> $req
+		);
+
 		self::$_types[$val['key']] = "select";
 		
 		$inp .= '<div class="col-md-'. $cols .'">';
@@ -556,6 +589,11 @@ class create_form{
 		}
 
 		// Insert type data --->
+		self::$_require[$val['key']] = array(
+			'name'		=> $val['label'],
+			'status'	=> $req
+		);
+
 		self::$_types[$val['key']] = 'select';
 		
 		$inp .= '<div class="col-md-'. $cols .'">';
@@ -613,6 +651,11 @@ class create_form{
 		}
 
 		// Insert type data --->
+		self::$_require[$val['key']] = array(
+			'name'		=> $val['label'],
+			'status'	=> $req
+		);
+
 		self::$_types[$val['key']] = 'date';
 
 		$val['value'] = date($val['value']);
@@ -632,6 +675,11 @@ class create_form{
 			$inp .= '<input type="text" class="form-control" value="'.$val['data'].'" name="'.$val['to'].'" '.$status2.' '.$required.'>';
 
 			// Insert type data --->
+			self::$_require[$val['to']] = array(
+				'name'		=> $val['label'],
+				'status'	=> $req
+			);
+
 			self::$_types[$val['to']] = 'date';
 		}
 

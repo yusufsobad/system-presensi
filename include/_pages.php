@@ -414,7 +414,7 @@ abstract class _page{
 			$q = self::_update_meta_db($id,$args,$schema);
 		}
 
-		return array('index' => $id, 'data' => $q,'search' => $src);
+		return array('index' => $id, 'data' => $q,'search' => $src,'value' => $args);
 	}	
 
 	public static function _update_db($_args=array(),$menu='default',$obj=''){

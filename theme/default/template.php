@@ -151,6 +151,10 @@ abstract class metronic_template{
 		if(empty($check)){
 			return '';
 		}
+
+		$idx = date('dmY H:i:s');
+		$idx = strtotime($date);
+		$idx = sobad_asset::ascii_to_hexa($idx);
 		
 		$status = '';
 		if(isset($args['status'])){
@@ -173,15 +177,22 @@ abstract class metronic_template{
 		}
 		
 		?>
-		<button data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-index="<?php print($index) ;?>" data-modal="<?php print($modal) ;?>" onclick="sobad_submitLoad(this)" <?php print($status) ;?>>Save</button>
+		<button id="<?php print($idx) ;?>" data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-index="<?php print($index) ;?>" data-modal="<?php print($modal) ;?>" onclick="metronic_submit()" <?php print($status) ;?>>Save</button>
 		<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
 
 		<script type="text/javascript">
-			 $("form<?php print($index) ;?>").validate({
+			$("form<?php print($index) ;?>").validate({
+			 	success: function (label, element) {
+			 		sobad_submitLoad('#<?php print($idx) ;?>');
+                },
 			  	submitHandler: function(form) {
 			    	form.submit();
 			  	}
 			 });
+
+			function metronic_submit(){
+				$("form<?php print($index) ;?>").trigger("click");
+			}
 		</script>
 		<?php
 	}

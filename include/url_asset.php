@@ -138,6 +138,16 @@ class sobad_asset{
 		return $html;
 	}
 
+	public static function _check_required($key='',$value=''){
+		if(isset($_SESSION[_prefix.'require_form'])){
+			$_filter = $_SESSION[_prefix.'require_form'];
+			
+			if($_filter[$key]['status']==true && empty($value)){
+				die(_error::_alert_db("This field ".$filter[$key]['name']." is Required !!!"));
+			}
+		}
+	}
+
 	public static function ajax_conv_json($args){
 		$args = json_decode($args,true);
 		$data = array();
@@ -155,6 +165,7 @@ class sobad_asset{
 
 				if($filter){
 					if(isset($_filter[$name])){
+						self::_check_required($name,$data[$name]);
 						$data[$name] = formatting::sanitize($data[$name],$_filter[$name]);
 					}
 				}
