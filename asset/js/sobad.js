@@ -204,7 +204,7 @@ var index_toggle = '';
 			data = data.concat(sobad_get_fileInput());
 		}
 
-		if(mdl=='true'){
+		if(mdl==1){
 			modal_toggle = true;
 			index_toggle = val;
 		}
@@ -507,7 +507,7 @@ function sobad_callback(id,response,func,msg){
 			}
 
 			if(modal_toggle){
-				$(index_toggle).parent().parent().parent().parent().toggle();
+				$(index_toggle).parent().parent().parent().parent().hide();
 				var mdl = $(index_toggle).parent().parent().parent().attr('id');
 				$('#'+mdl).html('');
 
