@@ -155,7 +155,7 @@ abstract class metronic_template{
 		$idx = date('dmY H:i:s');
 		$idx = strtotime($idx);
 
-		$idx = (string)$idx;
+		$idx = strval($idx);
 		$idx = sobad_asset::ascii_to_hexa($idx);
 		
 		$status = '';
@@ -193,7 +193,7 @@ abstract class metronic_template{
 			 });
 
 			function metronic_submit(){
-				$("form<?php print($index) ;?>").trigger("click");
+				$("form<?php print($index) ;?>>button[type=submit]").trigger("click");
 			}
 		</script>
 		<?php
