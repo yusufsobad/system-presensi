@@ -118,7 +118,7 @@ class create_form{
 		<?php
 	}
 	
-	private static function opt_label($val='',$required=false){
+	private static function opt_label($val='',$req=false){
 		// label
 		$req = $req?'<span class="required" aria-required="true"> * </span>':'';
 		return '<label class="col-md-'. self::$col_label .' control-label">'.$val.$req.'</label>';
