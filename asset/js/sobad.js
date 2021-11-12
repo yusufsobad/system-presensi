@@ -507,7 +507,7 @@ function sobad_callback(id,response,func,msg){
 			}
 
 			if(modal_toggle){
-				$(index_toggle).parent().parent().parent().parent().hide();
+				$(index_toggle).parent().parent().parent().parent().modal('hide');
 				var mdl = $(index_toggle).parent().parent().parent().attr('id');
 				$('#'+mdl).html('');
 

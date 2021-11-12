@@ -118,9 +118,10 @@ class create_form{
 		<?php
 	}
 	
-	private static function opt_label($val){
+	private static function opt_label($val='',$required=false){
 		// label
-		return '<label class="col-md-'. self::$col_label .' control-label">'.$val.'</label>';
+		$req = $req?'<span class="required" aria-required="true"> * </span>':'';
+		return '<label class="col-md-'. self::$col_label .' control-label">'.$val.$req.'</label>';
 	}
 	
 	private static function opt_hidden($val=array()){
@@ -137,9 +138,15 @@ class create_form{
 		// id, type , class , key , value , *data
 		// *data = placeholder , status , max , min , dll
 		// label (optional)
+		$req = false;$required = '';
+		if(isset($val['required'])){
+			$req = $val['required'];
+			$required = 'required';
+		}
+
 		$inp = '';
 		if(isset($val['label'])){
-			$inp .= self::opt_label($val['label']);
+			$inp .= self::opt_label($val['label'],$req);
 		}else{
 			$inp .= '<div class="col-md-'. self::$col_label .'"></div>';
 		}
@@ -186,7 +193,7 @@ class create_form{
 		}
 		
 		$inp .= '<div class="col-md-'. $cols .'">';
-		$inp .= '<input '.$id.' type="'.$val['type'].'" class="form-control '.$val['class'].'" name="'.$val['key'].'" value="'.$val['value'].'" '.$val['data'].'>';
+		$inp .= '<input '.$id.' type="'.$val['type'].'" class="form-control '.$val['class'].'" name="'.$val['key'].'" value="'.$val['value'].'" '.$val['data'].' '.$required.'>';
 		
 		$inp .= '</div>';
 		return $inp.$btn;
@@ -196,9 +203,15 @@ class create_form{
 		// id, type , class , key , value , *data
 		// *data = placeholder , status , max , min , dll
 		// label (optional)
+		$req = false;$required = '';
+		if(isset($val['required'])){
+			$req = $val['required'];
+			$required = 'required';
+		}
+
 		$inp = '';
 		if(isset($val['label'])){
-			$inp .= self::opt_label($val['label']);
+			$inp .= self::opt_label($val['label'],$req);
 		}else{
 			$inp .= '<div class="col-md-'. self::$col_label .'"></div>';
 		}
@@ -249,7 +262,7 @@ class create_form{
 			$inp .= '
 				<label class="option_box '.$class.'" for="box_opt'.$val['key'].$ky.'">
 					<div class="control-box">
-						<input type="'.$val['type'].'" id="box_opt'.$val['key'].$ky.'" name="'.$val['key'].'" value="'.$vl['value'].'" '.$check.'>
+						<input type="'.$val['type'].'" id="box_opt'.$val['key'].$ky.'" name="'.$val['key'].'" value="'.$vl['value'].'" '.$check.' '.$required.'>
 						'.$vl['title'].' 
 					</div>
 				</label>
@@ -264,9 +277,15 @@ class create_form{
 		// id , class , key , value , *data
 		// *data = placeholder , status , max , min , dll
 		// label (optional)
+		$req = false;$required = '';
+		if(isset($val['required'])){
+			$req = $val['required'];
+			$required = 'required';
+		}
+
 		$inp = '';
 		if(isset($val['label'])){
-			$inp .= self::opt_label($val['label']);
+			$inp .= self::opt_label($val['label'],$req);
 		}else{
 			$inp .= '<div class="col-md-'. self::$col_label .'"></div>';
 		}
@@ -284,7 +303,7 @@ class create_form{
 		$cols = self::$col_input;
 		
 		$inp .= '<div class="col-md-'. ($cols - 2) .'">';
-		$inp .= '<input '.$id.' type="file" class="form-control" name="'.$val['key'].'" accept="'.$val['accept'].'" '.$val['data'].'>';
+		$inp .= '<input '.$id.' type="file" class="form-control" name="'.$val['key'].'" accept="'.$val['accept'].'" '.$val['data'].' '.$required.'>';
 		$inp .= '</div>';
 		
 		$inp .= '<div class="col-md-2">';
@@ -300,10 +319,16 @@ class create_form{
 		if(isset($val['id'])){
 			$id = 'id="'.$val['id'].'"';
 		}
+
+		$req = false;$required = '';
+		if(isset($val['required'])){
+			$req = $val['required'];
+			$required = 'required';
+		}
 		
 		$inp = '';
 		if(isset($val['label'])){
-			$inp .= self::opt_label($val['label']);
+			$inp .= self::opt_label($val['label'],$req);
 		}else{
 			$inp .= '<div class="col-md-'. self::$col_label .'"></div>';
 		}
@@ -312,7 +337,7 @@ class create_form{
 		self::$_types[$val['key']] = 'textarea';
 		
 		$inp .= '<div class="col-md-'. self::$col_input .'">';
-		$inp .= '<textarea '.$id.' name="'.$val['key'].'" class="form-control '.$val['class'].'" rows="'.$val['rows'].'">'.$val['value'].'</textarea>';
+		$inp .= '<textarea '.$id.' name="'.$val['key'].'" class="form-control '.$val['class'].'" rows="'.$val['rows'].'" '.$required.'>'.$val['value'].'</textarea>';
 		$inp .= '</div>';
 		return $inp;
 	}
@@ -359,9 +384,15 @@ class create_form{
 	private static function opt_select_tags($val=array()){
 		// id , class , key , data, select
 		// label (optional)
+		$req = false;$required = '';
+		if(isset($val['required'])){
+			$req = $val['required'];
+			$required = 'required';
+		}
+
 		$inp = '';
 		if(isset($val['label'])){
-			$inp .= self::opt_label($val['label']);
+			$inp .= self::opt_label($val['label'],$req);
 		}else{
 			$inp .= '<div class="col-md-'. self::$col_label .'"></div>';
 		}
@@ -384,7 +415,7 @@ class create_form{
 		self::$_types[$val['key']] = "select";
 		
 		$inp .= '<div class="col-md-'. $cols .'">';
-		$inp .= '<input id="'.$id.'" type="text" class="form-control '.$val['class'].'" name="'.$val['key'].'" >';
+		$inp .= '<input id="'.$id.'" type="text" class="form-control '.$val['class'].'" name="'.$val['key'].'" '.$required.'>';
 		
 		$inp .= '</div>';
 
@@ -491,10 +522,16 @@ class create_form{
 		if(isset($val['id'])){
 			$id = 'id="'.$val['id'].'"';
 		}
+
+		$req = false;$required = '';
+		if(isset($val['required'])){
+			$req = $val['required'];
+			$required = 'required';
+		}
 		
 		$inp = '';
 		if(isset($val['label'])){
-			$inp .= self::opt_label($val['label']);
+			$inp .= self::opt_label($val['label'],$req);
 		}else{
 			$inp .= '<div class="col-md-'. self::$col_label .'"></div>';
 		}
@@ -522,7 +559,7 @@ class create_form{
 		self::$_types[$val['key']] = 'select';
 		
 		$inp .= '<div class="col-md-'. $cols .'">';
-		$inp .= '<select '.$id.' name="'.$val['key'].'" class="form-control '.$val['class'].'" '.$status.' onchange="sobad_options(this)">'.$func.'</select>';
+		$inp .= '<select '.$id.' name="'.$val['key'].'" class="form-control '.$val['class'].'" '.$status.' onchange="sobad_options(this)" '.$required.'>'.$func.'</select>';
 		$inp .= '</div>';
 		
 		return $inp.$btn;
@@ -536,10 +573,16 @@ class create_form{
 	private static function opt_datepicker($val=array()){
 		// key , class , value , date
 		// id, to, data, label (optional)
+
+		$req = false;$required = '';
+		if(isset($val['required'])){
+			$req = $val['required'];
+			$required = 'required';
+		}
 		
 		$inp = '';
 		if(isset($val['label'])){
-			$inp .= self::opt_label($val['label']);
+			$inp .= self::opt_label($val['label'],$req);
 		}else{
 			$inp .= '<div class="col-md-'. self::$col_label .'"></div>';
 		}
@@ -578,7 +621,7 @@ class create_form{
 
 		$inp .= '<div class="col-md-'. self::$col_input .'">';
 		$inp .= '<div '.$id.' class="'.$class.' input-daterange date-picker '.$val['class'].'" data-date="'.$date.'" data-date-format="dd-mm-yyyy">';
-		$inp .= '<input type="text" class="form-control" value="'.$val['value'].'" name="'.$val['key'].'" '.$status.'>';
+		$inp .= '<input type="text" class="form-control" value="'.$val['value'].'" name="'.$val['key'].'" '.$status.' '.$required.'>';
 		
 		if(isset($val['to'])){
 			$val['data'] = date($val['data']);
@@ -586,7 +629,7 @@ class create_form{
 			$val['data'] = date('d-m-Y',$val['data']);
 
 			$inp .= '<span class="input-group-addon"> to </span>';
-			$inp .= '<input type="text" class="form-control" value="'.$val['data'].'" name="'.$val['to'].'" '.$status2.'>';
+			$inp .= '<input type="text" class="form-control" value="'.$val['data'].'" name="'.$val['to'].'" '.$status2.' '.$required.'>';
 
 			// Insert type data --->
 			self::$_types[$val['to']] = 'date';

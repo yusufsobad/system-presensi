@@ -175,6 +175,14 @@ abstract class metronic_template{
 		?>
 		<button data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-index="<?php print($index) ;?>" data-modal="<?php print($modal) ;?>" onclick="sobad_submitLoad(this)" <?php print($status) ;?>>Save</button>
 		<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+
+		<script type="text/javascript">
+			 $("form<?php print($index) ;?>").validate({
+			  	submitHandler: function(form) {
+			    	form.submit();
+			  	}
+			 });
+		</script>
 		<?php
 	}
 
