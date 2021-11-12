@@ -154,6 +154,8 @@ abstract class metronic_template{
 
 		$idx = date('dmY H:i:s');
 		$idx = strtotime($idx);
+
+		$idx = (string)$idx;
 		$idx = sobad_asset::ascii_to_hexa($idx);
 		
 		$status = '';
