@@ -7,6 +7,9 @@ var url_sending = "include/sending.php";
 var filter = '';
 var uploads = '';
 
+var modal_toggle = false;
+var index_toggle = '';
+
 	var d = new Date();
 	d.setTime(d.getTime() + (10*60*60*1000)); // 10 jam
 
@@ -182,7 +185,10 @@ var uploads = '';
 		var ajx = $(val).attr("data-sobad");
 		var id = $(val).attr("data-load");
 		var tp = $(val).attr('data-type');
-		var data = $("form").serializeArray();
+		var index = $(val).attr('data-index');
+		var mdl = $(val).attr('data-modal');
+
+		var data = $("form"+index).serializeArray();
 
 		if($('#summernote_1').length>0){
 			data[4]['value'] = '';
@@ -196,6 +202,11 @@ var uploads = '';
 
 		if($('input[type=file]').length>0){
 			data = data.concat(sobad_get_fileInput());
+		}
+
+		if(mdl=='true'){
+			modal_toggle = true;
+			index_toggle = val;
 		}
 
 		// loading	
@@ -493,6 +504,15 @@ function sobad_callback(id,response,func,msg){
 		case 'success':
 			if(msg){
 				toastr.success(result['msg']);
+			}
+
+			if(modal_toggle){
+				$(index_toggle).parent().parent().parent().parent().toggle();
+				var mdl = $(index_toggle).parent().parent().parent().attr('id');
+				$('#'+mdl).html('');
+
+				modal_toggle = false;
+				index_toggle = '';
 			}
 
 			if(typeof func == 'function'){

@@ -161,9 +161,19 @@ abstract class metronic_template{
 		if(isset($args['type'])){
 			$type = $args['type'];
 		}
+
+		$index = '';
+		if(isset($args['index'])){
+			$index = $args['index'];
+		}
+
+		$modal = true;
+		if(isset($args['modal'])){
+			$modal = $args['modal'];
+		}
 		
 		?>
-		<button data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-dismiss="modal" onclick="sobad_submit(this)" <?php print($status) ;?>>Save</button>
+		<button data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-index="<?php print($index) ;?>" data-modal="<?php print($modal) ;?>" onclick="sobad_submitLoad(this)" <?php print($status) ;?>>Save</button>
 		<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
 		<?php
 	}
