@@ -188,20 +188,27 @@ var index_toggle = '';
 		var index = $(val).attr('data-index');
 		var mdl = $(val).attr('data-modal');
 
+		var srcData = $("form.sobad_form").serializeArray();
 		var data = $("form"+index).serializeArray();
 
+		data = data.concat(srcData);
 		if($('#summernote_1').length>0){
+			var note = sobad_get_summernote();
+
 			data[4]['value'] = '';
-			data = data.concat(sobad_get_summernote());
+			data = data.concat(note);
 		}
 		
 		if($('#cke_editor_text').length>0){
+			var editor = sobad_get_ckeditor();
+
 			data[4]['value'] = '';
-			data = data.concat(sobad_get_ckeditor());
+			data = data.concat(editor);
 		}
 
 		if($('input[type=file]').length>0){
-			data = data.concat(sobad_get_fileInput());
+			var fileInput = sobad_get_fileInput();
+			data = data.concat(fileInput);
 		}
 
 		if(mdl==1){
