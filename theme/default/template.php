@@ -179,11 +179,11 @@ abstract class metronic_template{
 		}
 		
 		?>
-		<button id="btn_<?php print($idx) ;?>" data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-index="<?php print($index) ;?>" data-modal="<?php print($modal) ;?>" onclick="metronic_submit()" <?php print($status) ;?>>Save</button>
+		<button id="btn_<?php print($idx) ;?>" data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-index="<?php print($index) ;?>" data-modal="<?php print($modal) ;?>" onclick="metronicSubmit_<?php print($idx) ;?>()" <?php print($status) ;?>>Save</button>
 		<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
 
 		<script type="text/javascript">
-			function metronic_submit(){
+			function metronicSubmit_<?php print($idx) ;?>(){
 				$("form<?php print($index) ;?>").validate({
 					errorElement: 'span', //default input error message container
 	                errorClass: 'help-block help-block-error', // default input error message class
@@ -200,7 +200,7 @@ abstract class metronic_template{
 				    	sobad_submitLoad('#btn_<?php print($idx) ;?>');
 				  	}
 				 });
-				
+
 				$("form<?php print($index) ;?>>button[type=submit]").trigger("click");
 			}
 		</script>
