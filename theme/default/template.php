@@ -189,12 +189,11 @@ abstract class metronic_template{
                 focusInvalid: false, // do not focus the last invalid input
                 highlight: function (element) { // hightlight error inputs
                     $(element)
-                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group   
                 },
                 success: function (label, element) {
-                    var icon = $(element).parent('.input-icon').children('i');
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                    icon.removeClass("fa-warning").addClass("fa-check");
+                    $(element)
+                    	.closest('.form-group').removeClass('has-error'); // set success class 
                 },
 			  	submitHandler: function(form) {
 			    	sobad_submitLoad('#<?php print($idx) ;?>');
