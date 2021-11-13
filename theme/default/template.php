@@ -184,11 +184,11 @@ abstract class metronic_template{
 
 		<script type="text/javascript">
 			$("form<?php print($index) ;?>").validate({
-			 	success: function (label, element) {
-			 		sobad_submitLoad('#<?php print($idx) ;?>');
-                },
+				errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
 			  	submitHandler: function(form) {
-			    	form.submit();
+			    	sobad_submitLoad('#<?php print($idx) ;?>');
 			  	}
 			 });
 
