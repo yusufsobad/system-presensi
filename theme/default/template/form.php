@@ -25,7 +25,7 @@ class create_form{
 				
 				if(isset($val['type'])){
 					if($val['type']!='hidden'){
-						$inp = '<div class="form-group">'.$inp.'</div>';
+						$inp = '<div class="form-group has-error">'.$inp.'</div>';
 					}
 				}else{
 					$inp = '<div class="form-group">'.$inp.'</div>';
