@@ -234,7 +234,7 @@ abstract class _page{
 		return self::_get_table(1,$args);
 	}
 
-	public static function _trash($id=0){
+	public static function _trash($id=0, $role=true){
 		$id = str_replace('trash_','',$id);
 		intval($id);
 
@@ -243,13 +243,13 @@ abstract class _page{
 
 		$q = sobad_db::_update_single($id,$table,array('ID' => $id, 'trash' => 1));
 
-		if($q===1){
+		if($q===1 && $role==true){
 			$pg = isset($_POST['page'])?$_POST['page']:1;
 			return self::_get_table($pg);
 		}
 	}
 
-	public static function _recovery($id=0){
+	public static function _recovery($id=0, $role=true){
 		$id = str_replace('recovery_','',$id);
 		intval($id);
 
@@ -258,13 +258,13 @@ abstract class _page{
 
 		$q = sobad_db::_update_single($id,$table,array('ID' => $id, 'trash' => 0));
 
-		if($q===1){
+		if($q===1 && $role==true){
 			$pg = isset($_POST['page'])?$_POST['page']:1;
 			return self::_get_table($pg);
 		}
 	}
 
-	public static function _delete($id=0){
+	public static function _delete($id=0,$role=true){
 		$id = str_replace('del_','',$id);
 		intval($id);
 
@@ -289,7 +289,7 @@ abstract class _page{
 
 		$q = sobad_db::_delete_single($id,$table);
 
-		if($q===1){
+		if($q===1 && $role==true){
 			$pg = isset($_POST['page'])?$_POST['page']:1;
 			return self::_get_table($pg);
 		}
