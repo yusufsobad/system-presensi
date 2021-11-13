@@ -152,11 +152,11 @@ abstract class metronic_template{
 			return '';
 		}
 
-		$idx = date('dmY H:i:s');
+		$idx = date('d-m-Y H:i:s');
 		$idx = strtotime($idx);
 
 		$idx = strval($idx);
-		$idx = sobad_asset::ascii_to_hexa($idx);
+		//$idx = sobad_asset::ascii_to_hexa($idx);
 		
 		$status = '';
 		if(isset($args['status'])){
@@ -179,7 +179,7 @@ abstract class metronic_template{
 		}
 		
 		?>
-		<button id="<?php print($idx) ;?>" data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-index="<?php print($index) ;?>" data-modal="<?php print($modal) ;?>" onclick="metronic_submit()" <?php print($status) ;?>>Save</button>
+		<button id="btn_<?php print($idx) ;?>" data-sobad="<?php print($args['link']) ;?>" data-load="<?php print($args['load']) ;?>" data-type="<?php print($type) ;?>" type="button" class="btn blue" data-index="<?php print($index) ;?>" data-modal="<?php print($modal) ;?>" onclick="metronic_submit()" <?php print($status) ;?>>Save</button>
 		<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
 
 		<script type="text/javascript">
@@ -196,7 +196,7 @@ abstract class metronic_template{
                     	.closest('.form-group').removeClass('has-error'); // set success class 
                 },
 			  	submitHandler: function(form) {
-			    	sobad_submitLoad('#<?php print($idx) ;?>');
+			    	sobad_submitLoad('#btn_<?php print($idx) ;?>');
 			  	}
 			 });
 
