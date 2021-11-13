@@ -183,24 +183,24 @@ abstract class metronic_template{
 		<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
 
 		<script type="text/javascript">
-			$("form<?php print($index) ;?>").validate({
-				errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                highlight: function (element) { // hightlight error inputs
-                    $(element)
-                        .closest('.form-group').addClass('has-error'); // set error class to the control group   
-                },
-                success: function (label, element) {
-                    $(element)
-                    	.closest('.form-group').removeClass('has-error'); // set success class 
-                },
-			  	submitHandler: function(form) {
-			    	sobad_submitLoad('#btn_<?php print($idx) ;?>');
-			  	}
-			 });
-
 			function metronic_submit(){
+				$("form<?php print($index) ;?>").validate({
+					errorElement: 'span', //default input error message container
+	                errorClass: 'help-block help-block-error', // default input error message class
+	                focusInvalid: false, // do not focus the last invalid input
+	                highlight: function (element) { // hightlight error inputs
+	                    $(element)
+	                        .closest('.form-group').addClass('has-error'); // set error class to the control group   
+	                },
+	                success: function (label, element) {
+	                    $(element)
+	                    	.closest('.form-group').removeClass('has-error'); // set success class 
+	                },
+				  	submitHandler: function(form) {
+				    	sobad_submitLoad('#btn_<?php print($idx) ;?>');
+				  	}
+				 });
+				
 				$("form<?php print($index) ;?>>button[type=submit]").trigger("click");
 			}
 		</script>
