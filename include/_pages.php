@@ -295,7 +295,7 @@ abstract class _page{
 		}
 	}
 
-	public static function _edit($id=0){
+	public static function _edit($id=0,$role=true){
 		$id = str_replace('edit_','',$id);
 		intval($id);
 		
@@ -312,6 +312,10 @@ abstract class _page{
 		
 		if($q===0){
 			return '';
+		}
+
+		if($role==false){
+			return $q[0];
 		}
 		
 		return static::edit_form($q[0]);
