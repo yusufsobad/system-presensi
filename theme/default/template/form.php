@@ -88,6 +88,7 @@ class create_form{
 						$_SESSION[_prefix.'input_form'] = array_merge($_SESSION[_prefix.'input_form'],self::$_types);
 						$_SESSION[_prefix.'require_form'] = array_merge($_SESSION[_prefix.'require_form'],self::$_require);
 					;?>
+					<button id="metronic-submit" type="submit" class="btn" style="display: none;"></button>
 				</form>
 			</div>
 			<script>
