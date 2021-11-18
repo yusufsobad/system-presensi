@@ -124,7 +124,7 @@ abstract class metronic_template{
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 					<h4 class="modal-title"><?php print($args['title']) ;?></h4>
 				</div>
-				<form role="form" id="frm_<?php print($idx) ;?>" class="form-horizontal">
+				<div id="frm_<?php print($idx) ;?>">
 					<?php foreach($args['func'] as $key => $func){ ?>
 						<div class="modal-body">
 							<div <?php print($id) ;?> class="row">
@@ -146,7 +146,7 @@ abstract class metronic_template{
 							}
 						?>
 					</div>
-				</form>
+				</div>
 			</div>
 		<?php
 	}
