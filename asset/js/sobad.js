@@ -211,7 +211,7 @@ var index_toggle = '';
 			data = data.concat(fileInput);
 		}
 
-		if(mdl==1){
+		if(mdl=="1"){
 			modal_toggle = true;
 			index_toggle = val;
 		}
