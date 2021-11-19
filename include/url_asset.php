@@ -106,6 +106,26 @@ class sobad_asset{
 		}
 	}
 
+	public static function _reg_session($key='type',$var=''){
+		if(empty($key)){
+			die(_error::_alert_db('Key Session Kososng!!!'));
+		}
+
+		if(!isset($_SESSION[_prefix.$key])){
+			return '';
+		}
+
+		$_SESSION[_prefix.$key] = $var;
+	}
+
+	public static function _get_post($type=''){
+		if(!isset($_POST[$type])){
+			return '';
+		}
+
+		return $_POST[$type];
+	}
+
 	public static function ascii_to_hexa($ascii=''){
 		$ascii = strval($ascii);
 		if(empty($ascii)){

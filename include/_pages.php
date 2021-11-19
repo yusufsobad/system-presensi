@@ -292,6 +292,8 @@ abstract class _page{
 		if($q===1 && $role==true){
 			$pg = isset($_POST['page'])?$_POST['page']:1;
 			return self::_get_table($pg);
+		}else{
+			return $id;
 		}
 	}
 
