@@ -74,7 +74,7 @@ class create_form{
 	
 		?>
 			<div class="col-lg-12">
-				<form id="<?php print($id) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data">
+				<!--<form id="<?php print($id) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data"> -->
 					<?php 
 						self::option_form($args);
 						if(!isset($_SESSION[_prefix.'input_form'])){
@@ -88,8 +88,8 @@ class create_form{
 						$_SESSION[_prefix.'input_form'] = array_merge($_SESSION[_prefix.'input_form'],self::$_types);
 						$_SESSION[_prefix.'require_form'] = array_merge($_SESSION[_prefix.'require_form'],self::$_require);
 					;?>
-					<button id="metronic-submit" type="submit" class="btn" style="display: none;"></button>
-				</form>
+					<!--<button id="metronic-submit" type="submit" class="btn" style="display: none;"></button>
+				</form>-->
 			</div>
 			<script>
 				$('.money').on('keydown',function(){
