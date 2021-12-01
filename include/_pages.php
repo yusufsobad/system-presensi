@@ -428,6 +428,7 @@ abstract class _page{
 		$q = $args['data'];
 		$src = $args['search'];
 
+		$obj = empty($obj)?static::$object:$obj;
 		if(is_callable(array(new static(), '_updateDetail'))){
 			static::_updateDetail($args,$_args);
 		}
@@ -489,6 +490,7 @@ abstract class _page{
 		$q = $args['data'];
 		$src = $args['search'];
 
+		$obj = empty($obj)?static::$object:$obj;
 		if(is_callable(array(new static(), '_addDetail'))){
 			static::_addDetail($args,$_args);
 		}
