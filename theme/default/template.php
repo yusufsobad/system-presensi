@@ -124,6 +124,7 @@ abstract class metronic_template{
 					<h4 class="modal-title"><?php print($args['title']) ;?></h4>
 				</div>
 				<form id="<?php print($idx) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data">
+					<button id="metronic-submit" type="submit" class="btn" style="display: none;"></button>
 					<?php foreach($args['func'] as $key => $func): ?>
 						<div class="modal-body">
 							<div <?php print($id) ;?> class="row">
@@ -137,7 +138,6 @@ abstract class metronic_template{
 							</div>
 						</div>
 					<?php endforeach; ?>
-						<button id="metronic-submit" type="submit" class="btn" style="display: none;"></button>
 				</form>
 
 				<div class="modal-footer">
