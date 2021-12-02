@@ -109,9 +109,6 @@ abstract class metronic_template{
 		if(empty($check)){
 			return '';
 		}
-
-		$id = isset($args['id'])?'id="'.$args['id'].'"':'';
-		$obj = _object;
 		
 		$idx = date('d-m-Y H:i:s');
 		$idx = strtotime($idx);
@@ -124,29 +121,37 @@ abstract class metronic_template{
 					<h4 class="modal-title"><?php print($args['title']) ;?></h4>
 				</div>
 				<form id="<?php print($idx) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data">
-					<?php foreach($args['func'] as $key => $func){ ?>
-						<div class="modal-body">
-							<div <?php print($id) ;?> class="row">
-								<?php
-									if(method_exists('metronic_template', $func)){
-										self::{$func}($args['data'][$key]);
-									}else if(method_exists($obj, $func)){
-										$obj::{$func}($args['data'][$key]);
-									}
-								?>
-							</div>
-						</div>
-					<?php } ?>
-					
-					<div class="modal-footer">
-						<?php
-							$button = $args['button'];
-							if(method_exists('metronic_template', $button)){
-								self::{$button}($args['status'],$idx);
-							}
-						?>
-					</div>
+					<?php self::_modal_content_foot($args,$idx) ;?>
 				</form>
+			</div>
+		<?php
+	}
+
+	private static function _modal_content_foot($args=array(),$idx=''){
+		$id = isset($args['id'])?'id="'.$args['id'].'"':'';
+		$obj = _object;
+
+		foreach($args['func'] as $key => $func){ ?>
+			<div class="modal-body">
+				<div <?php print($id) ;?> class="row">
+					<?php
+						if(method_exists('metronic_template', $func)){
+							self::{$func}($args['data'][$key]);
+						}else if(method_exists($obj, $func)){
+							$obj::{$func}($args['data'][$key]);
+						}
+					?>
+				</div>
+			</div>
+		<?php } ?>
+		
+			<div class="modal-footer">
+				<?php
+					$button = $args['button'];
+					if(method_exists('metronic_template', $button)){
+						self::{$button}($args['status'],$idx);
+					}
+				?>
 			</div>
 		<?php
 	}
