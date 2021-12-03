@@ -22,13 +22,14 @@ define('DB_NAME','cordova');
 $GLOBALS['DB_NAME'] = DB_NAME;
 
 // set rule database
-define('SCHEMA',array(
-		0 => array(
-			'db' 	=> DB_NAME, // nama database
-			'where'	=> '' // TABLE_NAME= . . .
-		)
+$database_sc = array(
+	0 => array(
+		'db' 	=> DB_NAME, // nama database
+		'where'	=> '' // TABLE_NAME= . . .
 	)
 );
+
+define('SCHEMA',serialize($database_sc));
 
 // URL web --------------------------------------------
 
@@ -65,8 +66,9 @@ define('company','Cordova');
 define('title','Cordova');
 
 // Library ------------------------------------------
+$library_sc = array(
+	// name folder 		=> lokasi file,
+	'createpdf'			=> 'html2pdf/html2pdf.class.php'
+);
 
-define('_library',array(
-			// name folder 		=> lokasi file,
-			'createpdf'			=> 'html2pdf/html2pdf.class.php'
-		));
+define('_library',$library_sc);
