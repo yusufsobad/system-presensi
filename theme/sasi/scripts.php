@@ -56,11 +56,9 @@ class theme_script{
 	private function _css_theme($idx=array()){
 		$loc = $this->lokasi();
 		$css = array(
-			'themes-component'		=> $loc.'css/global/components.css',
-			'themes-plugin'			=> $loc.'css/global/plugins.css',
-			'themes-layout'			=> $loc.'css/layout/css/layout.css',
-			'themes-themes'			=> $loc.'css/layout/css/themes/darkblue.css',
-			'themes-custom'			=> $loc.'css/layout/css/custom.css',
+			'themes-bootstrap'		=> $loc.'css/sasi/bootstrap-sasi.css',
+			'themes-primary'		=> $loc.'css/sasi/sasi.css',
+			'themes-font'			=> $loc.'css/sasi/sasi-icon.css',
 		);
 		
 		$check = array_filter($idx);
@@ -77,20 +75,9 @@ class theme_script{
 	private function _js_page_level($idx=array()){
 		$loc = $this->lokasi();
 		$js = array( 
-			'themes-metronic'		=> $loc.'js/global/metronic.js',
-			'themes-layout'			=> $loc.'js/layout/layout.js',
-			'themes-quick-sidebar'	=> $loc.'js/layout/quick-sidebar.js',
-			'themes-demo'			=> $loc.'js/layout/demo.js',
-			'themes-index'			=> $loc.'js/pages/index.js',
-			'themes-task'			=> $loc.'js/pages/tasks.js',
+			'themes-sasi'		=> $loc.'js/sasi/sasi.js',
 			'themes-login-soft'		=> $loc.'js/pages/login-soft.js',
 			'themes-ui-toastr'		=> $loc.'js/pages/ui-toastr.js',
-			'themes-modal'			=> $loc.'js/pages/ui-extended-modals.js',
-			'themes-editable'		=> $loc.'js/pages/form-editable.js',
-//			'themes-picker'			=> $loc.'js/pages/components-pickers.js',
-			'themes-dropdown'		=> $loc.'js/pages/components-dropdowns.js',
-			'themes-editor'			=> $loc.'js/pages/components-editors.js',
-			'themes-contextmenu'	=> $loc.'js/pages/contextmenu.js',
 		);
 		
 		$check = array_filter($idx);
