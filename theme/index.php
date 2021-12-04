@@ -37,7 +37,7 @@ function theme_layout($func='',$data=''){
 
 	$theme = _theme_name;
 
-	if(!is_callable(array($theme,$_func))){
+	if(!is_callable(array($theme,$func))){
 		die(_error::_alert_db("Not Function Layout!!!"));
 	}
 
