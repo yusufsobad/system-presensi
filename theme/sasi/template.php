@@ -15,7 +15,7 @@ abstract class sasi_template{
 	// ---------------------------------------------
 	// Create Panel --------------------------------
 	// ---------------------------------------------
-	protected static function _panel($args=array()){
+	public static function _panel($args=array()){
 		$check = array_filter($args);
 		if(empty($check)){
 			return '';

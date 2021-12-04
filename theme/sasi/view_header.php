@@ -3,7 +3,7 @@
 class sasi_header{
 	protected static $menu = array();
 
-	public static function _create($args=array(),$menu=''){
+	public static function _create(){
 		global $reg_sidebar;
 		?>
 			<!-- BEGIN HEADER INNER -->

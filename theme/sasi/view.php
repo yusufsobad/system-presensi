@@ -33,7 +33,7 @@ class sasi_layout extends sasi_template{
 			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	            <div class="container-fluid">
 					<?php
-						$menu = sasi_header::_create($args,$menu);
+						$menu = sasi_header::_create();
 
 					?>
 				</div>
