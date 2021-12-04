@@ -71,4 +71,4 @@ $library_sc = array(
 	'createpdf'			=> 'html2pdf/html2pdf.class.php'
 );
 
-define('_library',$library_sc);
+define('_library',serialize($library_sc));
