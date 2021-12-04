@@ -2,7 +2,7 @@
 
 (!defined('THEMEPATH'))?exit:'';
 
-defined('_theme_name','metronic_layout');
+define('_theme_name','metronic_layout');
 
 require dirname(__FILE__).'/scripts.php';
 require dirname(__FILE__).'/view_header.php';

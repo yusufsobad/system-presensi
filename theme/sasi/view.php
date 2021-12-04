@@ -2,7 +2,7 @@
 
 (!defined('THEMEPATH'))?exit:'';
 
-defined('_theme_name','sasi_layout');
+define('_theme_name','sasi_layout');
 
 require dirname(__FILE__).'/scripts.php';
 require dirname(__FILE__).'/view_header.php';
