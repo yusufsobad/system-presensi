@@ -4,71 +4,38 @@
 
 require dirname(__FILE__).'/scripts.php';
 require dirname(__FILE__).'/view_header.php';
-require dirname(__FILE__).'/quick_sidebar.php';
 
-class metronic_layout extends metronic_template{
+class sasi_layout extends sasi_template{
 	private static $page = array();
+
+	private static $menu = array();
 
 	private static $sidemenu = array();
 
-	private static function _search(){
+	public static function load_here(){
 		?>
-		<form class="sidebar-search " action="javascript:;" method="POST">
-			<a href="javascript:;" class="remove">
-				<i class="icon-close"></i>
-			</a>
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search...">
-				<span class="input-group-btn">
-					<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
-				</span>
+			<div class="wrapper d-flex flex-column min-vh-100">
+				<?php
+					self::_header();
+					self::_clearfix();
+					self::_container();
+					self::_footer();
+				?>
 			</div>
-		</form>
 		<?php
 	}
 
-	public static function load_here($menu='sidemenu_horizontal'){
-		self::_header($menu);
-		self::_clearfix();
-		self::_container();
-		self::_footer();
-	}
-
 	private static function _header($menu=''){
-		$lang = array();
-		if(constant('language')){
-			global $reg_language;
-			$lang = $reg_language;
-		}
-
-		$args = array(
-			0	=> array(
-				'menu'	=> 'menu_notif',
-				'data'	=> array()
-			),
-			1	=> array(
-				'menu'	=> 'menu_language',
-				'data'	=> $lang
-			),
-			2	=> array(
-				'menu'	=> 'menu_user',
-				'data'	=> ''
-			),
-			3	=> array(
-				'menu'	=> 'side_toggle',
-				'data'	=> ''
-			),
-		);
-
-		unset($args[1]);
-		
 		?>
 			<!-- BEGIN HEADER -->
-			<div class="page-header -i navbar navbar-fixed-top">
-				<?php
-					metronic_header::_create($args,$menu);
-				?>
-			</div>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	            <div class="container-fluid">
+					<?php
+						$menu = sasi_header::_create($args,$menu);
+
+					?>
+				</div>
+			</nav>
 			<!-- END HEADER -->
 		<?php
 	}
@@ -105,23 +72,27 @@ class metronic_layout extends metronic_template{
 			
 				</div>
 			</div>
-			<?php	
-				self::_quick_side();
-			?>
 		</div>	
 		<?php
 	}
 
 	private static function _footer(){
 		?>
-		<div class="page-footer">
-			<div class="page-footer-inner">
-				<?php echo date('Y').' @ '.constant('company') ;?>
-			</div>
-			<div class="scroll-to-top" style="display: none;">
-				<i class="icon-arrow-up"></i>
-			</div>
-		</div>
+		<footer class="footer sasi-footer mt-auto p-5">
+            <div class="container">
+                <div class="col-lg">
+                    <div class="row justify-content-md-center">
+                        <div class="d-flex align-items-center col-lg-6">
+                            <h6>© SOLO ABADI SYSTEM INFORMATION, <?php echo date('Y') ;?>.</h6>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <h6> Your company: </h6>
+                            <img src="asset/img/logo-big-sobad.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
 		<?php
 	}
 
@@ -257,7 +228,6 @@ class metronic_layout extends metronic_template{
 		$qty = isset($args['modal'])?$args['modal']:2;
 
 		parent::_modal_form($qty);
-		parent::_theme_option();
 		?>
 			<h3 class="page-title">
 				<?php print($args['title']) ;?>
@@ -267,7 +237,7 @@ class metronic_layout extends metronic_template{
 	}
 
 	public static function _content($func,$args = array()){
-		if(method_exists('metronic_template',$func)){	
+		if(method_exists('sasi_template',$func)){	
 			// get content
 			parent::{$func}($args);
 			

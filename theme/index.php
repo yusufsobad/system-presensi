@@ -29,3 +29,12 @@ function sobad_themes(){
 		require THEMEPATH.'/'.$reg_theme.'/view.php';
 	}
 }
+
+function theme_layout($func='',$data=''){
+	if(empty($func)){
+		die(_error::_alert_db("Not Load Layout!!!"));
+	}
+
+	$theme = _theme_name;
+	$theme::{$func}($data);
+}

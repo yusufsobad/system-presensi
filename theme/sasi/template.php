@@ -10,7 +10,7 @@ require dirname(__FILE__).'/template/form.php';
 require dirname(__FILE__).'/template/login.php';
 require dirname(__FILE__).'/template/table.php';
 
-abstract class metronic_template{
+abstract class sasi_template{
 
 	// ---------------------------------------------
 	// Create Panel --------------------------------
@@ -24,7 +24,7 @@ abstract class metronic_template{
 		foreach($args as $key => $val){
 			$func = $val['func'];
 
-			$object = 'metronic_template';
+			$object = 'sasi_template';
 			if(isset($val['object'])){
 				if(class_exists($val['object'])){
 					$object = $val['object'];
@@ -129,7 +129,7 @@ abstract class metronic_template{
 						<div class="modal-body">
 							<div <?php print($id) ;?> class="row">
 								<?php
-									if(method_exists('metronic_template', $func)){
+									if(method_exists('sasi_template', $func)){
 										self::{$func}($args['data'][$key]);
 									}else if(method_exists($obj, $func)){
 										$obj::{$func}($args['data'][$key]);
@@ -143,7 +143,7 @@ abstract class metronic_template{
 				<div class="modal-footer">
 					<?php
 						$button = $args['button'];
-						if(method_exists('metronic_template', $button)){
+						if(method_exists('sasi_template', $button)){
 							self::{$button}($args['status'],$idx);
 						}
 					?>
@@ -253,10 +253,6 @@ abstract class metronic_template{
 		<?php
 	}
 
-	protected static function _theme_option(){
-		include 'theme_option.php';
-	}
-
 	protected static function _head_pagebar($link=array(),$date=false){	
 		$check = array_filter($link);
 		?>
@@ -321,7 +317,7 @@ abstract class metronic_template{
 				return '';
 			}
 		}else{
-			$object = 'metronic_template';
+			$object = 'sasi_template';
 		}
 		
 		?>
@@ -371,7 +367,7 @@ abstract class metronic_template{
 				return '';
 			}
 		}else{
-			$object = 'metronic_template';
+			$object = 'sasi_template';
 		}
 
 		?>
@@ -481,7 +477,7 @@ abstract class metronic_template{
 								}
 							}
 
-							$object = isset($val['object'])?$val['object']:'metronic_template';
+							$object = isset($val['object'])?$val['object']:'sasi_template';
 							$func = $val['func'];
 							if(method_exists($object, $func)){
 								echo '<div id="inline_malika'.$key.'" class="tab-pane '.$active.'">';
