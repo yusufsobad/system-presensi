@@ -27,8 +27,6 @@ function tabs_admin($opt = array(),$args=array()){
 	if(empty($check)){
 		return '';
 	}
-
-	$theme = new theme_layout();
 	
 	$title = isset($opt['title'])?$opt['title']:'';
 	$data = array();
@@ -52,8 +50,6 @@ function modal_admin($args = array()){
 		return '';
 	}
 
-	$theme = new theme_layout();
-
 	ob_start();
 	theme_layout('_modal_content',$args);
 	return ob_get_clean();
@@ -67,8 +63,6 @@ function table_admin($args=array()){
 			'table'	=> array()
 		);
 	}
-
-	$theme = new theme_layout();
 
 	ob_start();
 	theme_layout('sobad_table',$args);

@@ -89,7 +89,7 @@ abstract class _file_manager extends _page{
 		);
 
 		ob_start();
-		metronic_layout::sobad_file_manager($data);
+		theme_layout('sobad_file_manager',$data);
 		return ob_get_clean();
 	}
 
@@ -110,7 +110,7 @@ abstract class _file_manager extends _page{
 		);
 
 		ob_start();
-		metronic_layout::sobad_file_manager($data);
+		theme_layout('sobad_file_manager',$data);
 		return ob_get_clean();
 	}
 
@@ -141,7 +141,7 @@ abstract class _file_manager extends _page{
 		);
 
 		ob_start();
-		metronic_layout::sobad_file_manager($data);
+		theme_layout('sobad_file_manager',$data);
 		return ob_get_clean();
 	}
 
@@ -224,7 +224,7 @@ abstract class _file_manager extends _page{
 		);
 
 		ob_start();
-		metronic_layout::sobad_file_manager($data);
+		theme_layout('sobad_file_manager',$data);
 		return ob_get_clean();
 	}
 }

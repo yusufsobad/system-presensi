@@ -25,12 +25,11 @@ abstract class _page{
 	public static function _tabs($type){
 		self::$type = $type;
 		$data = static::get_box();
-		$metronic = new metronic_layout();
 		
 		ob_start();
 		?>
 			<div class="row">
-				<?php $metronic->_content('_portlet',$data); ?>
+				<?php theme_layout('_portlet',$data); ?>
 			</div>
 		<?php
 		return ob_get_clean();
