@@ -13,7 +13,7 @@ class theme_script{
 	}
 	
 	private function lokasi(){
-		return 'theme/default/asset/';
+		return 'theme/sasi/asset/';
 	}
 // BEGIN PAGE LEVEL STYLES ---->
 	
@@ -75,7 +75,7 @@ class theme_script{
 	private function _js_page_level($idx=array()){
 		$loc = $this->lokasi();
 		$js = array( 
-			'themes-sasi'		=> $loc.'js/sasi/sasi.js',
+			'themes-sasi'			=> $loc.'js/sasi/sasi.js',
 			'themes-login-soft'		=> $loc.'js/pages/login-soft.js',
 			'themes-ui-toastr'		=> $loc.'js/pages/ui-toastr.js',
 		);
