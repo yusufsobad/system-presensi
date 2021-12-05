@@ -105,7 +105,7 @@ var index_toggle = '';
 
 	function sobad_option_search(data,id){
 		$(id).html(data);
-		$('.bs-select').selectpicker('refresh');
+		$(id + '.bs-select').selectpicker('refresh');
 	}
 	
 	// function button
