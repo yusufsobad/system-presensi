@@ -50,7 +50,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		 Actually, the page you are looking for does not exist.
 	</p>
 	<p>
-		<a href="index.html">
+		<a href="{{URL}}">
 		Return home </a>
 		<br>
 	</p>
