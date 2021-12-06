@@ -123,8 +123,8 @@ abstract class metronic_template{
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 					<h4 class="modal-title"><?php print($args['title']) ;?></h4>
 				</div>
-				<form id="<?php print($idx) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data">
-					<button id="metronic-submit" type="submit" class="btn" style="display: none;"></button>
+				<form id="frm_<?php print($idx) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data">
+					<button type="submit" class="btn metronic-submit" style="display: none;"></button>
 					<?php foreach($args['func'] as $key => $func): ?>
 						<div class="modal-body">
 							<div <?php print($id) ;?> class="row">
@@ -186,7 +186,7 @@ abstract class metronic_template{
 
 		<script type="text/javascript">
 			function metronicSubmit_<?php print($idx) ;?>(){
-				$("form#<?php print($idx) ;?>").validate({
+				$("form#frm_<?php print($idx) ;?>").validate({
 					errorElement: 'span', //default input error message container
 	                errorClass: 'help-block help-block-error', // default input error message class
 	                focusInvalid: false, // do not focus the last invalid input
@@ -203,7 +203,7 @@ abstract class metronic_template{
 				  	}
 				 });
 
-				$("form#<?php print($idx) ;?>>#metronic-submit").trigger("click");
+				$("form#frm_<?php print($idx) ;?>>.metronic-submit").trigger("click");
 			}
 		</script>
 		<?php
