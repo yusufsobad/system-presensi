@@ -202,6 +202,8 @@ abstract class metronic_template{
 				    	sobad_submitLoad('#btn_<?php print($idx) ;?>');
 				  	}
 				 });
+				
+				$("form#frm_<?php print($idx) ;?>>button.metronic-submit").trigger("click");
 
 				setTimeout(function(){
 					$("form#frm_<?php print($idx) ;?>>button.metronic-submit").removeAttr("type").attr("type", "submit");
@@ -524,8 +526,12 @@ abstract class metronic_template{
 	// ---------------------------------------------
 	// Create Form ---------------------------------
 	// ---------------------------------------------
+	public static function report_form($args = array()){
+		$form = create_form::get_form($args,true);
+	}
+
 	public static function sobad_form($args = array()){
-		$form = create_form::get_form($args);
+		$form = create_form::get_form($args,false);
 	}
 
 	// ---------------------------------------------
