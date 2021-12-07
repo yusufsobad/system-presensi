@@ -203,7 +203,7 @@ abstract class metronic_template{
 				  	}
 				 });
 
-				$("form#frm_<?php print($idx) ;?>>.metronic-submit").trigger("click");
+				$("form#frm_<?php print($idx) ;?>>button.metronic-submit").trigger("click");
 			}
 		</script>
 		<?php
