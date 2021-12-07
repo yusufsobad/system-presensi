@@ -110,7 +110,7 @@ abstract class metronic_template{
 			return '';
 		}
 
-		$args['form'] = isset($args['form'])?$args['form']:true;
+		$form = isset($args['form'])?$args['form']:true;
 
 		$id = isset($args['id'])?'id="'.$args['id'].'"':'';
 		$obj = _object;
