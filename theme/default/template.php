@@ -123,7 +123,7 @@ abstract class metronic_template{
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
 					<h4 class="modal-title"><?php print($args['title']) ;?></h4>
 				</div>
-				<form id="frm_<?php print($idx) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data">
+				<form id="frm_<?php print($idx) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data" novalidate="novalidate">
 					<button type="submit" class="btn metronic-submit" style="display: none;"></button>
 					<?php foreach($args['func'] as $key => $func): ?>
 						<div class="modal-body">
