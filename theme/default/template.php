@@ -124,7 +124,7 @@ abstract class metronic_template{
 					<h4 class="modal-title"><?php print($args['title']) ;?></h4>
 				</div>
 				<form id="frm_<?php print($idx) ;?>" role="form" method="post" class="form-horizontal" enctype="multipart/form-data" novalidate="novalidate">
-					<button type="submit" class="btn metronic-submit" style="display: none;"></button>
+					<button type="button" class="btn metronic-submit" style="display: none;"></button>
 					<?php foreach($args['func'] as $key => $func): ?>
 						<div class="modal-body">
 							<div <?php print($id) ;?> class="row">
@@ -203,7 +203,10 @@ abstract class metronic_template{
 				  	}
 				 });
 
-				$("form#frm_<?php print($idx) ;?>>button.metronic-submit").trigger("click");
+				setTimeout(function(){
+					$("form#frm_<?php print($idx) ;?>>button.metronic-submit").removeAttr("type").attr("type", "submit");
+					$("form#frm_<?php print($idx) ;?>>button.metronic-submit").trigger("click");
+				}, 500);
 			}
 		</script>
 		<?php
