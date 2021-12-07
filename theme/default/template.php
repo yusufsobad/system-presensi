@@ -208,7 +208,7 @@ abstract class metronic_template{
 				setTimeout(function(){
 					$("form#frm_<?php print($idx) ;?>>button.metronic-submit").removeAttr("type").attr("type", "submit");
 					$("form#frm_<?php print($idx) ;?>>button.metronic-submit").trigger("click");
-				}, 500);
+				}, 200);
 			}
 		</script>
 		<?php
