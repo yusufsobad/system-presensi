@@ -202,6 +202,7 @@ abstract class _file_manager extends _page{
 
 		$args['func'] = array('_inline_menu');
 		$args['data'] = array($data);
+		$args['form'] = false;
 		
 		return modal_admin($args);
 	}

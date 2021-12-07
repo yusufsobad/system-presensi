@@ -21,14 +21,14 @@ class create_file_manager{
 					<span class="label label-danger">NOTE: </span>
 					max upload file 2MB
 				</p>
-				<div class="dropzone dz-clickable" id="<?php print($args['id']) ;?>">
+				<form class="dropzone dz-clickable" id="<?php print($args['id']) ;?>">
 					<input type="hidden" name="ajax" value="<?php print($args['func']) ;?>">
 					<input type="hidden" name="object" value="<?php print($args['object']) ;?>">
 					<input type="hidden" name="data" value="upload_file">
 					<div class="dz-default dz-message">
 						<span>Drop files here to upload</span>
 					</div>
-				</div>
+				</form>
 			</div>
 		<?php
 
