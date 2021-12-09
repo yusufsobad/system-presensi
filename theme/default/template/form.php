@@ -107,8 +107,8 @@ class create_form{
 					mask_decimal('.decimal');
 				});
 
-				$('.number').on('keydown',function(){
-					mask_quantity('.number');
+				$('.quantity').on('keydown',function(){
+					mask_quantity('.quantity');
 				});
 
 				sobad_picker();
@@ -200,7 +200,7 @@ class create_form{
 
 			case 'number':
 				$val['type'] = 'text';
-				$val['class'] .= ' number';
+				$val['class'] .= ' quantity';
 				break;
 
 			case 'clock':
