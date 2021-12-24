@@ -163,7 +163,7 @@ class sobad_asset{
 			$_filter = $_SESSION[_prefix.'require_form'];
 			
 			if($_filter[$key]['status']==true && empty($value)){
-				die(_error::_alert_db("This field ".$filter[$key]['name']." is Required !!!"));
+				die(_error::_alert_db("This field ".$_filter[$key]['name']." is Required !!!"));
 			}
 		}
 	}
