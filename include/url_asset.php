@@ -181,7 +181,7 @@ class sobad_asset{
 		$_cdir -= 1;
 
 		$nm_file = $_dirs[$_cdir];
-		$file = empty($type)?$nm_file:$nm_file'.'.$type;
+		$file = empty($type)?$nm_file:$nm_file.'.'.$type;
 		$file .= '.php';
 
 		unset($_dirs[$_cdir]);
