@@ -55,8 +55,10 @@ class sobad_page extends _error{
 		$_pages = $reg_page;
 		$page = self::$page;
 
+		$call_page = $page;
 		foreach($_pages as $key => $val){
 			if($val['home']==true){
+				$call_page = $key;
 				$_pages['Home'] = array(
 					'page'	=> $val['page'],
 					'theme'	=> isset($val['theme'])?$val['theme']:'default',
@@ -75,6 +77,7 @@ class sobad_page extends _error{
 		sobad_asset::_loadPage($_pages[$page]);
 		if(class_exists($func) && is_callable(array($func,'_reg'))){			
 			self::$page = $func;
+			$_SESSION[_prefix.'page'] = $call_page;
 
 			$GLOBALS['reg_page'] = $_pages;
 			sobad_themes();
