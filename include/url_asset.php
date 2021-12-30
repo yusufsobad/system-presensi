@@ -136,7 +136,9 @@ class sobad_asset{
 	}
 
 	public static function _loadFile($file='index',$dir = "pages"){
-		$loc = "pages/";
+		global $reg_locFile;
+
+		$loc = $reg_locFile;
 		$dir = str_replace('.', '/', $dir);
 		$file = $file.'.php';
 

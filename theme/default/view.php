@@ -96,6 +96,10 @@ class metronic_layout extends metronic_template{
 				if(!empty($check)){
 					$func = $request['func'];
 					$data = $request['label'];
+
+					if(isset($request['loc'])){
+						sobad_asset::_loadFile($child['func'],$child['loc']);
+					}
 			
 					if(class_exists($func)){
 						if(is_callable(array($func,'_sidemenu'))){	

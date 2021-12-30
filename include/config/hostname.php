@@ -56,19 +56,26 @@ function get_home_func($key=''){
 
 	global $reg_sidebar;
 
-	return get_side_active($reg_sidebar,$key);
+	$child = get_side_active($reg_sidebar,$key);
+	if($child!=false){
+		if(isset($child['loc'])){
+			sobad_asset::_loadFile($child['func'],$child['loc']);
+		}
+	}
+
+	return $child['func'];
 }
 
 function get_side_active($args=array(),$func=''){	
 	foreach ($args as $key => $val) {
 		if(empty($func)){
 			if($val['status']=='active'){
-				return $val['func'];
+				return $val;
 				break;
 			}
 		}else{	
 			if($key==$func){
-				return $val['func'];
+				return $val;
 				break;
 			}
 		}
