@@ -59,7 +59,7 @@ function get_home_func($key=''){
 	$child = get_side_active($reg_sidebar,$key);
 	if($child!=false){
 		if(isset($child['loc'])){
-			sobad_asset::_loadFile($child['func'],$child['loc']);
+			sobad_asset::_loadFile($child['loc'].'.'.$child['func']);
 		}
 	}
 
