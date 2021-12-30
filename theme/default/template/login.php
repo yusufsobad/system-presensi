@@ -1,34 +1,9 @@
 <?php
 (!defined('THEMEPATH'))?exit:'';
 
-class user_login extends create_form{
+class user_login{
 	public static function login($func,$args=array()){
-		$check = array_filter($args);
-		if(empty($check)){
-			$data = 'placeholder="username" autofocus required';
-			$args[0] = array(
-				'option' 	=> 'input',
-				'data'		=> array(
-					'type'		=> 'text',
-					'key'		=> 'user',
-					'class'		=> '',
-					'value'		=> '',
-					'data'		=> $data
-				)
-			);
-
-			$data = 'placeholder="password" required';
-			$args[1] = array(
-				'option' 	=> 'input',
-				'data'		=> array(
-					'type'		=> 'password',
-					'key'		=> 'pass',
-					'class'		=> '',
-					'value'		=> '',
-					'data'		=> $data
-				)
-			);
-		}
+		
 	?>
 
 	<!-- BEGIN LOGIN FORM -->
