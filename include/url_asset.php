@@ -150,6 +150,7 @@ class sobad_asset{
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
 			if(file_exists($dir."/".$file)){
+				extract($data);
 				require_once $dir."/".$file;
 			}
 		}else{
