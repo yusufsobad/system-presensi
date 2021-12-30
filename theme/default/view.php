@@ -214,11 +214,9 @@ class metronic_layout extends metronic_template{
 
 				if(array_key_exists($key, self::$sidemenu)){
 					if(self::$sidemenu[$key]){
-						$req['func'] = $val['func'];
-						$req['label'] = $val['label'];
 						$status = 'start open active';
 
-						self::$page = $req;
+						self::$page = $val;
 					}
 				}else{
 					$status = '';
