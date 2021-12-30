@@ -63,8 +63,7 @@ class sobad_page extends _error{
 					'page'	=> $val['page'],
 					'theme'	=> isset($val['theme'])?$val['theme']:'default',
 					'home'	=> true,
-					'folder'=> isset($val['folder'])?$val['folder']:'folder',
-					'index'	=> isset($val['index'])?$val['index']:'file'
+					'view'	=> isset($val['view'])?$val['view']:'folder.file'
 				);
 			}
 		}
@@ -77,7 +76,7 @@ class sobad_page extends _error{
 		sobad_asset::_loadPage($_pages[$page]);
 		if(class_exists($func) && is_callable(array($func,'_reg'))){			
 			self::$page = $func;
-			
+
 			if(!isset($_SESSION[_prefix.'page'])){
 				$_SESSION[_prefix.'page'] = $call_page;
 			}

@@ -122,11 +122,23 @@ class sobad_asset{
 	public static function _loadPage($reg = array()){
 		global $reg_locFile;
 
-		$dir = $reg_locFile;
-		$folder = isset($reg['folder'])?$reg['folder']:'new folder';
-		$file = isset($reg['index'])?$reg['index'].'.php':'new file.php';
+		$loc = $reg_locFile;
+		$dir = isset($reg['view'])?$reg['view']:'folder.file';
 
-		if(is_dir($dir.$folder)){
+		$loc = $reg_locFile;
+		$dir = str_replace('.', '/', $dir);
+
+		$_dirs = explode('/', $dir);
+		$_cdir = count($_dirs);
+		$_cdir -= 1;
+
+		$file = $_dirs[$_cdir].'.php';
+
+		unset($_dirs[$_cdir]);
+		$dir = implode('/', $_dirs);
+
+		$dir = $loc.$dir;
+		if(is_dir($dir)){
 			if(file_exists($dir.$folder."/".$file)){
 				require_once $dir.$folder."/".$file;
 			}
@@ -140,7 +152,15 @@ class sobad_asset{
 
 		$loc = $reg_locFile;
 		$dir = str_replace('.', '/', $dir);
-		$file = '.php';
+		
+		$_dirs = explode('/', $dir);
+		$_cdir = count($_dirs);
+		$_cdir -= 1;
+
+		$file = $_dirs[$_cdir].'.php';
+
+		unset($_dirs[$_cdir]);
+		$dir = implode('/', $_dirs);
 
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
@@ -156,8 +176,16 @@ class sobad_asset{
 		$loc = is_dir("page_views/")?"page_views/":"../page_views/";
 		$dir = str_replace('.', '/', $dir);
 
-		$file = empty($type)?'':'.'.$type;
+		$_dirs = explode('/', $dir);
+		$_cdir = count($_dirs);
+		$_cdir -= 1;
+
+		$nm_file = $_dirs[$_cdir];
+		$file = empty($type)?$nm_file:$nm_file'.'.$type;
 		$file .= '.php';
+
+		unset($_dirs[$_cdir]);
+		$dir = implode('/', $_dirs);
 
 		$dir = $loc.$dir;
 		if(is_dir($dir)){

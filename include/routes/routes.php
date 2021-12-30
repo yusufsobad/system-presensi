@@ -6,8 +6,7 @@
 $args = array();
 $args['login'] = array(
 	'home'	=> true,
-	'folder'=> 'Login',
-	'index'	=> 'login',
+	'view'	=> 'Login.login',
 	'page'	=> 'login_system'
 );
 
