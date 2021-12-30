@@ -18,6 +18,20 @@ abstract class _page{
 	// ----------------------------------------------------------
 	// Layout Pages  --------------------------------------------
 	// ----------------------------------------------------------
+	protected static function _loadView($dir='',$data=array(),$type=''){
+		$loc = $dir;
+		if(property_exists(new static, 'loc_view')){
+			$loc = static::$loc_view;
+			$loc .= '.'.$dir;
+		}
+
+		if(in_array($type, array('html','config','table','modal','tabs','portlet'))){
+			return sobad_asset::_loadView($loc,$data,$type);
+		}
+
+		sobad_asset::_loadView($loc,$data,$type);
+	}
+
 	public static function _sidemenu(){
 		return static::layout();
 	}

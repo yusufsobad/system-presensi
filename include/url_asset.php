@@ -175,6 +175,10 @@ class sobad_asset{
 				if($type=='config'){
 					return $config;
 				}
+
+				if($type=='table'){
+					return table_admin($config);
+				}
 			}
 		}else{
 			die($file.'::File not Exist!!!');
