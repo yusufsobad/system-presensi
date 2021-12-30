@@ -77,7 +77,10 @@ class sobad_page extends _error{
 		sobad_asset::_loadPage($_pages[$page]);
 		if(class_exists($func) && is_callable(array($func,'_reg'))){			
 			self::$page = $func;
-			$_SESSION[_prefix.'page'] = $call_page;
+			
+			if(!isset($_SESSION[_prefix.'page'])){
+				$_SESSION[_prefix.'page'] = $call_page;
+			}
 
 			$GLOBALS['reg_page'] = $_pages;
 			sobad_themes();
