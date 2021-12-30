@@ -131,7 +131,7 @@ class sobad_asset{
 				require_once $dir.$folder."/".$file;
 			}
 		}else{
-			die($file.'::Halaman gagal dimuat!!!');
+			//die($file.'::Halaman gagal dimuat!!!');
 		}
 	}
 
