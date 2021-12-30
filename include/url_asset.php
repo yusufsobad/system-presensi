@@ -139,8 +139,8 @@ class sobad_asset{
 
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
-			if(file_exists($dir.$folder."/".$file)){
-				require_once $dir.$folder."/".$file;
+			if(file_exists($dir."/".$file)){
+				require_once $dir."/".$file;
 			}
 		}else{
 			//die($file.'::Halaman gagal dimuat!!!');
@@ -172,7 +172,7 @@ class sobad_asset{
 		}
 	}
 
-	public static function _loadView($dir = "page_views", $data=array(),$type=''){
+	public static function _loadView($dir = "page_views", $data='',$type=''){
 		$loc = is_dir("page_views/")?"page_views/":"../page_views/";
 		$dir = str_replace('.', '/', $dir);
 
@@ -190,7 +190,12 @@ class sobad_asset{
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
 			if(file_exists($dir."/".$file)){
-				extract($data);
+				if(gettype($data)=='array'){
+					$check = array_filter($data);
+					if(!empty($check)){
+						extract($data);
+					}
+				}
 				
 				if($type=='html'){
 					ob_start();

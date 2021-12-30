@@ -77,7 +77,7 @@ class login_system{
 	}
 
 	public function _page(){
-		sobad_asset::_loadView('login','Login');
+		sobad_asset::_loadView('Login.login');
 	}
 
 	public function check_login($args=array()){
