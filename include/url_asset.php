@@ -95,10 +95,18 @@ class sobad_asset{
 		$GLOBALS['reg_locFile'] = $dir;
 		require_once 'routes/routes.php';
 
-		self::_allPages($dir);
+		self::_indexPages($dir);
 	}
 
-	protected static function _allPages($dir=''){
+	public static function _allPages($dir=''){
+		global $reg_page;
+
+		foreach ($reg_page as $key => $val) {
+			self::_loadPage($reg);
+		}
+	}
+
+	protected static function _indexPages($dir=''){
 		$pages = self::_name_file($dir);
 		if(count($pages)>0){
 			for($i=0;$i<count($pages);$i++){

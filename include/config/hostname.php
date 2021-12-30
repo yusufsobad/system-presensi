@@ -31,6 +31,14 @@ function get_page_url(){
 	return $url;
 }
 
+function load_first_page($key=''){
+	global $reg_page;
+
+	// include pages
+	$page = $_SESSION[_prefix.'page'];
+	sobad_asset::_loadPage($reg_page[$page]);
+}
+
 function get_home_func($key=''){
 
 	if(class_exists($key)){
@@ -41,8 +49,6 @@ function get_home_func($key=''){
 
 	$prefix = constant("_prefix");
 	$page = $_SESSION[$prefix.'page'];
-
-	sobad_asset::_loadPage($reg_page[$page]);
 
 	$func = $reg_page[$page]['page'];
 	$object = new $func();
