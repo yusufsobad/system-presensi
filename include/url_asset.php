@@ -92,6 +92,13 @@ class sobad_asset{
 	}
 
 	public static function _pages($dir = "pages/"){
+		$GLOBALS['reg_locFile'] = $dir;
+		require_once 'routes/routes.php';
+
+		self::_allPages($dir);
+	}
+
+	protected static function _allPages($dir=''){
 		$pages = self::_name_file($dir);
 		if(count($pages)>0){
 			for($i=0;$i<count($pages);$i++){
@@ -101,8 +108,52 @@ class sobad_asset{
 					}
 				}
 			}
+		}
+	}
+
+	public static function _loadPage($reg = array()){
+		global $reg_locFile;
+
+		$dir = $reg_locFile;
+		$folder = $reg['folder'];
+		$file = $reg['index'].'.php';
+
+		if(is_dir($dir.$folder)){
+			if(file_exists($dir.$folder."/".$file)){
+				require_once $dir.$folder."/".$file;
+			}
 		}else{
-			die("halaman gagal dimuat!!!");
+			//die('Halaman gagal dimuat!!!');
+		}
+	}
+
+	public static function _loadFile($file='index',$dir = "pages"){
+		$loc = "pages/";
+		$dir = str_replace('.', '/', $dir);
+		$file = $file.'.php';
+
+		$dir = $loc.$dir;
+		if(is_dir($dir)){
+			if(file_exists($dir."/".$file)){
+				require_once $dir."/".$file;
+			}
+		}else{
+			die($file.'::File not Exist!!!');
+		}
+	}
+
+	public static function _loadView($file='index',$dir = "page_views", $data=array()){
+		$loc = "page_views/";
+		$dir = str_replace('.', '/', $dir);
+		$file = $file.'.php';
+
+		$dir = $loc.$dir;
+		if(is_dir($dir)){
+			if(file_exists($dir."/".$file)){
+				require_once $dir."/".$file;
+			}
+		}else{
+			die($file.'::File not Exist!!!');
 		}
 	}
 
@@ -286,6 +337,23 @@ class sobad_asset{
 			'name'		=> $_basename,
 			'target'	=> $target_file
 		);
-	}
+	}	
+}
 
+class logout_system{
+	// ----------------------------------------------
+	// Function Logout Admin ------------------------
+	// ----------------------------------------------
+
+	public function _get(){
+
+		unset($_SESSION[_prefix.'page']);
+		unset($_SESSION[_prefix.'user']);
+		unset($_SESSION[_prefix.'name']);
+
+		setcookie('id','');
+		setcookie('name','');		
+
+		return '/'.URL;
+	}	
 }

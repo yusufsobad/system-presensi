@@ -1,13 +1,6 @@
 <?php
 (!defined('DEFPATH'))?exit:'';
 
-$args = array();
-$args['login'] = array(
-	'page'	=> 'login_system',
-	'home'	=> true
-);
-reg_hook('reg_page',$args);
-
 class login_system{
 
 	public function _reg(){
@@ -84,25 +77,7 @@ class login_system{
 	}
 
 	public function _page(){
-		?>
-		<!-- BEGIN LOGO -->
-		<div class="logo">
-			<img src="asset/img/logo-big.png" alt=""> 
-		</div>
-		<!-- END LOGO -->
-		<!-- BEGIN LOGIN -->
-		<div class="content">
-		<?php
-			print(user_login::login('login_system'));
-		?>
-		</div>
-		<!-- END LOGIN -->
-		<!-- BEGIN COPYRIGHT -->
-		<div class="copyright">
-			<?php print(date('Y')) ;?> © System <?php print(constant('company')) ;?>
-		</div>
-		<!-- END COPYRIGHT -->
-		<?php
+		sobad_asset::_loadView('login','Login');
 	}
 
 	public function check_login($args=array()){
@@ -158,22 +133,4 @@ class login_system{
 			_error::_user_login();
 		}
 	}
-
-	// ----------------------------------------------
-	// Function Logout Admin ------------------------
-	// ----------------------------------------------
-
-	public function logout(){
-		$prefix = constant('_prefix');
-
-		unset($_SESSION[$prefix.'page']);
-		unset($_SESSION[$prefix.'user']);
-		unset($_SESSION[$prefix.'name']);
-
-		setcookie('id','');
-		setcookie('name','');		
-
-		return '/'.URL;
-	}	
-
 }
