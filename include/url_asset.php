@@ -172,7 +172,7 @@ class sobad_asset{
 		}
 	}
 
-	public static function _loadView($dir = "page_views", $data='',$type=''){
+	public static function _loadView($dir = "page_views", $data='',$lvtype=''){
 		$loc = is_dir("page_views/")?"page_views/":"../page_views/";
 		$dir = str_replace('.', '/', $dir);
 
@@ -181,7 +181,7 @@ class sobad_asset{
 		$_cdir -= 1;
 
 		$nm_file = $_dirs[$_cdir];
-		$file = empty($type)?$nm_file:$nm_file.'.'.$type;
+		$file = empty($lvtype)?$nm_file:$nm_file.'.'.$lvtype;
 		$file .= '.php';
 
 		unset($_dirs[$_cdir]);
@@ -197,7 +197,7 @@ class sobad_asset{
 					}
 				}
 				
-				if($type=='html'){
+				if($lvtype=='html'){
 					ob_start();
 					require_once $dir."/".$file;
 					return ob_get_clean();
@@ -205,11 +205,11 @@ class sobad_asset{
 
 				require_once $dir."/".$file;
 
-				if($type=='config'){
+				if($lvtype=='config'){
 					return $config;
 				}
 
-				if($type=='table'){
+				if($lvtype=='table'){
 					return table_admin($config);
 				}
 			}
