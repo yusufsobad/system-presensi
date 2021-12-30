@@ -212,6 +212,18 @@ class sobad_asset{
 				if($lvtype=='table'){
 					return table_admin($config);
 				}
+
+				if($lvtype=='modal'){
+					return modal_admin($config);
+				}
+
+				if($lvtype=='portlet'){
+					return portlet_admin($config, $box);
+				}
+
+				if($lvtype=='tabs'){
+					return tabs_admin($config, $box);
+				}
 			}
 		}else{
 			die($file.'::File not Exist!!!');
