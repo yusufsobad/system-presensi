@@ -157,11 +157,24 @@ class sobad_asset{
 		$dir = str_replace('.', '/', $dir);
 		$file = $file.'.php';
 
+		$_files = explode('.', $file);
+
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
 			if(file_exists($dir."/".$file)){
 				extract($data);
+				
+				if($_files[1]=='html'){
+					ob_start();
+					require_once $dir."/".$file;
+					return ob_get_clean();
+				}
+
 				require_once $dir."/".$file;
+
+				if($_files[1]=='config'){
+					return $config;
+				}
 			}
 		}else{
 			die($file.'::File not Exist!!!');
