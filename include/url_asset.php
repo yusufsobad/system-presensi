@@ -123,8 +123,8 @@ class sobad_asset{
 		global $reg_locFile;
 
 		$dir = $reg_locFile;
-		$folder = $reg['folder'];
-		$file = $reg['index'].'.php';
+		$folder = isset($reg['folder'])?$reg['folder']:'new folder';
+		$file = isset($reg['index']):$reg['index'].'.php':'new file.php';
 
 		if(is_dir($dir.$folder)){
 			if(file_exists($dir.$folder."/".$file)){
