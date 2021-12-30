@@ -153,7 +153,7 @@ class sobad_asset{
 	}
 
 	public static function _loadView($file='index',$dir = "page_views", $data=array()){
-		$loc = "page_views/";
+		$loc = is_dir("page_views/")?"page_views/":"../page_views/";
 		$dir = str_replace('.', '/', $dir);
 		$file = $file.'.php';
 
