@@ -98,7 +98,8 @@ class metronic_layout extends metronic_template{
 					$data = $request['label'];
 
 					if(isset($request['loc'])){
-						sobad_asset::_loadFile($func,$request['loc']);
+						$loc = empty($request['loc'])?$func:$request['loc']'.'.$func;
+						sobad_asset::_loadFile($loc);
 					}
 			
 					if(class_exists($func)){

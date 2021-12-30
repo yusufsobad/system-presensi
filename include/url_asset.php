@@ -135,12 +135,12 @@ class sobad_asset{
 		}
 	}
 
-	public static function _loadFile($file='index',$dir = "pages"){
+	public static function _loadFile($dir = "pages"){
 		global $reg_locFile;
 
 		$loc = $reg_locFile;
 		$dir = str_replace('.', '/', $dir);
-		$file = $file.'.php';
+		$file = '.php';
 
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
@@ -152,19 +152,19 @@ class sobad_asset{
 		}
 	}
 
-	public static function _loadView($file='index',$dir = "page_views", $data=array()){
+	public static function _loadView($dir = "page_views", $data=array(),$type=''){
 		$loc = is_dir("page_views/")?"page_views/":"../page_views/";
 		$dir = str_replace('.', '/', $dir);
-		$file = $file.'.php';
 
-		$_files = explode('.', $file);
+		$file = empty($type)?'':'.'.$type;
+		$file .= '.php';
 
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
 			if(file_exists($dir."/".$file)){
 				extract($data);
 				
-				if($_files[1]=='html'){
+				if($type=='html'){
 					ob_start();
 					require_once $dir."/".$file;
 					return ob_get_clean();
@@ -172,7 +172,7 @@ class sobad_asset{
 
 				require_once $dir."/".$file;
 
-				if($_files[1]=='config'){
+				if($type=='config'){
 					return $config;
 				}
 			}
