@@ -190,7 +190,7 @@ class sobad_asset{
 
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
-			$_lvtype = '';
+			$_lvtype = '';$lvtype = '';
 			foreach ($lvtypes as $ky => $vl) {
 				if(file_exists($dir."/".$nm_file.'.'.$vl.$ext)){
 					$_lvtype = '.'.$vl;
