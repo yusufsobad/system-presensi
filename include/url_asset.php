@@ -172,23 +172,34 @@ class sobad_asset{
 		}
 	}
 
-	public static function _loadView($dir = "page_views", $data='',$lvtype=''){
+	public static function _loadView($dir = "page_views", $data='', $ext=''){
 		$loc = is_dir("page_views/")?"page_views/":"../page_views/";
 		$dir = str_replace('.', '/', $dir);
+
+		$lvtypes = array('html','config','table','modal','portlet','tabs');
 
 		$_dirs = explode('/', $dir);
 		$_cdir = count($_dirs);
 		$_cdir -= 1;
 
 		$nm_file = $_dirs[$_cdir];
-		$file = empty($lvtype)?$nm_file:$nm_file.'.'.$lvtype;
-		$file .= '.php';
+		$ext = empty($ext)?'.php':'.'.$ext;
 
 		unset($_dirs[$_cdir]);
 		$dir = implode('/', $_dirs);
 
 		$dir = $loc.$dir;
 		if(is_dir($dir)){
+			$_lvtype = '';
+			foreach ($lvtypes as $ky => $vl) {
+				if(file_exists($nm_file.'.'.$vl.$ext;)){
+					$_lvtype = '.'.$vl;
+					$lvtype = $vl;
+					break;
+				}
+			}
+
+			$file = $nm_file.$_lvtype.$ext;
 			if(file_exists($dir."/".$file)){
 				if(gettype($data)=='array'){
 					$check = array_filter($data);
@@ -224,9 +235,11 @@ class sobad_asset{
 				if($lvtype=='tabs'){
 					return tabs_admin($config, $box);
 				}
+			}else{
+				die($file.'::File not Exist!!!');
 			}
 		}else{
-			die($file.'::File not Exist!!!');
+			die($file.'::Folder not Exist!!!');
 		}
 	}
 

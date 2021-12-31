@@ -18,7 +18,7 @@ abstract class _page{
 	// ----------------------------------------------------------
 	// Layout Pages  --------------------------------------------
 	// ----------------------------------------------------------
-	protected static function _loadView($dir='',$data=array(),$type=''){
+	protected static function _loadView($dir='',$data=array(),$ext=''){
 		$loc = $dir;
 		if(property_exists(new static, 'loc_view')){
 			$loc = static::$loc_view;
@@ -26,10 +26,10 @@ abstract class _page{
 		}
 
 		if(in_array($type, array('html','config','table','modal','tabs','portlet'))){
-			return sobad_asset::_loadView($loc,$data,$type);
+			return sobad_asset::_loadView($loc,$data,$ext);
 		}
 
-		sobad_asset::_loadView($loc,$data,$type);
+		sobad_asset::_loadView($loc,$data,$ext);
 	}
 
 	public static function _sidemenu(){
