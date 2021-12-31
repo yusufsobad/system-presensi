@@ -26,7 +26,7 @@ if(!isset($_POST['ajax'])){
 	new _component();
 
 	// load route
-	$asset = sobad_asset::_pages("../pages/");
+	$asset = sobad_asset::_pages("../coding/_pages/");
 
 	// include pages
 	load_first_page($key);

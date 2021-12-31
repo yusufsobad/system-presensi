@@ -91,11 +91,22 @@ class sobad_asset{
 		}
 	}
 
-	public static function _pages($dir = "pages/"){
+	public static function _pages($dir = "coding/_pages/"){
 		$GLOBALS['reg_locFile'] = $dir;
-		require_once 'routes/routes.php';
+		require_once 'coding/_routes/routes.php';
 
-		self::_indexPages($dir);
+		if(include_pages){
+			self::_indexPages($dir);
+		}
+	}
+
+	public static function _sidemenu($dir = ""){
+		$loc = is_dir("coding/_sidemenu/")?"coding/_sidemenu/":"../coding/_sidemenu/";
+		$dir = str_replace('.', '/', $dir);
+
+		require_once $loc.$dir.'.php';
+
+		reg_hook('reg_sidebar',$config);
 	}
 
 	public static function _allPages($dir=''){
@@ -147,7 +158,7 @@ class sobad_asset{
 		}
 	}
 
-	public static function _loadFile($dir = "pages"){
+	public static function _loadFile($dir = "_pages"){
 		global $reg_locFile;
 
 		$loc = $reg_locFile;
@@ -172,8 +183,8 @@ class sobad_asset{
 		}
 	}
 
-	public static function _loadView($dir = "page_views", $data='', $ext=''){
-		$loc = is_dir("page_views/")?"page_views/":"../page_views/";
+	public static function _loadView($dir = "_views", $data='', $ext=''){
+		$loc = is_dir("coding/_views/")?"coding/_views/":"../coding/_views/";
 		$dir = str_replace('.', '/', $dir);
 
 		$lvtypes = array('html','config','table','modal','portlet','tabs');
@@ -239,7 +250,7 @@ class sobad_asset{
 				die($file.'::File not Exist!!!');
 			}
 		}else{
-			die($file.'::Folder not Exist!!!');
+			die($dir.'::Folder not Exist!!!');
 		}
 	}
 

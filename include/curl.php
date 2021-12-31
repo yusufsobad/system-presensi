@@ -19,8 +19,8 @@ $json = json_decode(file_get_contents('php://input'), true);
 	new _component();
 
 	// load route
-	sobad_asset::_pages("../pages/");
-	sobad_asset::_allPages("../pages/");
+	sobad_asset::_pages("../coding/_pages/");
+	sobad_asset::_allPages("../coding/_pages/");
 
 // End Setting
 

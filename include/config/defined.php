@@ -65,6 +65,9 @@ define('company','Cordova');
 // set judul Website
 define('title','Cordova');
 
+// set Auto Include Page
+define('include_pages', true);
+
 // Library ------------------------------------------
 $library_sc = array(
 	// name folder 		=> lokasi file,
