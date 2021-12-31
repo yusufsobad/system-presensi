@@ -25,11 +25,7 @@ abstract class _page{
 			$loc .= '.'.$dir;
 		}
 
-		if(in_array($type, array('html','config','table','modal','tabs','portlet'))){
-			return sobad_asset::_loadView($loc,$data,$ext);
-		}
-
-		sobad_asset::_loadView($loc,$data,$ext);
+		return sobad_asset::_loadView($loc,$data,$ext);
 	}
 
 	public static function _sidemenu(){
