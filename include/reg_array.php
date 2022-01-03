@@ -46,6 +46,10 @@ class sobad_page extends _error{
 			parent::_page404();
 		}
 
+		if(!isset($_SESSION[_prefix.'user'])){
+			$page = isset(load_menu) && !empty(load_menu)?load_menu:$page;
+		}
+
 		self::$page = $page;
 	}
 
@@ -75,14 +79,6 @@ class sobad_page extends _error{
 		sobad_asset::_loadPage($_pages[$page]);
 		if(class_exists($func) && is_callable(array($func,'_reg'))){			
 			self::$page = $func;
-
-			if(!isset($_SESSION[_prefix.'page'])){
-				$_SESSION[_prefix.'page'] = $call_page;
-			}
-
-			if(!isset($_SESSION[_prefix.'user'])){
-				$_SESSION[_prefix.'page'] = $page;
-			}
 
 			$GLOBALS['reg_page'] = $_pages;
 			sobad_themes();
