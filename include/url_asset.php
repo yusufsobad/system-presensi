@@ -116,6 +116,10 @@ class sobad_asset{
 
 		include $loc.$dir.'.php';
 
+		if(!isset($config)){
+			die($dir.' :: Variable config undefined!!!');
+		}
+
 		return $config;
 	}
 

@@ -76,7 +76,10 @@ class sobad_page extends _error{
 			reg_hook('reg_theme',$_pages[$page]['theme']);
 		}
 
-		sobad_asset::_loadPage($_pages[$page]);
+		if(isset($_pages[$page])){
+			sobad_asset::_loadPage($_pages[$page]);
+		}
+
 		if(class_exists($func) && is_callable(array($func,'_reg'))){			
 			self::$page = $func;
 
