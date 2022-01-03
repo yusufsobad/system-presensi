@@ -13,9 +13,7 @@ session_start();
 // ----- Set Menu
 $menu = isset($_GET['direct'])?$_GET['direct']:'';
 $menu = get_uri($menu);
-if(!empty($menu)){
-	define('load_menu',$menu);
-}
+define('load_menu',$menu);
 
 // Check Hostname yang mengakses
 new hostname();

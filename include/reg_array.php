@@ -47,7 +47,7 @@ class sobad_page extends _error{
 		}
 
 		if(!isset($_SESSION[_prefix.'user'])){
-			$page = isset(load_menu) && !empty(load_menu)?load_menu:$page;
+			$page = load_menu!==null && !empty(load_menu)?load_menu:$page;
 		}
 
 		self::$page = $page;
