@@ -72,7 +72,7 @@ class sobad_page extends _error{
 		}
 
 		$func = isset($_pages[$page])?$_pages[$page]['page']:'';
-		if(isset($reg_page[$page]['theme'])){
+		if(isset($_pages[$page]['theme'])){
 			reg_hook('reg_theme',$_pages[$page]['theme']);
 		}
 
