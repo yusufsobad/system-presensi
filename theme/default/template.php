@@ -510,7 +510,9 @@ abstract class metronic_template{
 	// Create option dashboard ---------------------
 	// ---------------------------------------------
 	public static function sobad_dashboard($args = array()){
-		require dirname(__FILE__).'/template/dashboard.php';
+		if(!class_exists('admin_dashboard')){
+			require dirname(__FILE__).'/template/dashboard.php';
+		}
 
 		$dash = admin_dashboard::_dashboard($args);
 	}
@@ -519,8 +521,10 @@ abstract class metronic_template{
 	// Create Table --------------------------------
 	// ---------------------------------------------
 	public static function sobad_table($args = array()){
-		require dirname(__FILE__).'/template/table.php';
-		
+		if(!class_exists('create_table')){
+			require dirname(__FILE__).'/template/table.php';
+		}
+			
 		$table = create_table::_table($args);
 	}
 
@@ -528,7 +532,9 @@ abstract class metronic_template{
 	// Create option File manager ------------------
 	// ---------------------------------------------
 	public static function sobad_file_manager($args = array()){
-		require dirname(__FILE__).'/template/file_manager.php';
+		if(!class_exists('create_file_manager')){
+			require dirname(__FILE__).'/template/file_manager.php';
+		}
 
 		$manager = create_file_manager::_layout($args);
 	}
@@ -537,13 +543,17 @@ abstract class metronic_template{
 	// Create Form ---------------------------------
 	// ---------------------------------------------
 	public static function report_form($args = array()){
-		require dirname(__FILE__).'/template/form.php';
+		if(!class_exists('create_form')){
+			require dirname(__FILE__).'/template/form.php';
+		}
 
 		$form = create_form::get_form($args,true);
 	}
 
 	public static function sobad_form($args = array()){
-		require dirname(__FILE__).'/template/form.php';
+		if(!class_exists('create_form')){
+			require dirname(__FILE__).'/template/form.php';
+		}
 
 		$form = create_form::get_form($args,false);
 	}
@@ -552,7 +562,9 @@ abstract class metronic_template{
 	// Create Chart ---------------------------------
 	// ---------------------------------------------
 	public static function sobad_chart($args = array()){
-		require dirname(__FILE__).'/template/chart.php';
+		if(!class_exists('create_chart')){
+			require dirname(__FILE__).'/template/chart.php';
+		}
 
 		$chart = create_chart::_layout($args);
 	}
