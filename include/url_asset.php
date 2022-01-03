@@ -106,12 +106,17 @@ class sobad_asset{
 	}
 
 	public static function _sidemenu($dir = ""){
+		$config = self::_getSidemenu($dir);
+		reg_hook('reg_sidebar',$config);
+	}
+
+	public static function _getSidemenu($dir = ""){
 		$loc = is_dir("coding/_sidemenu/")?"coding/_sidemenu/":"../coding/_sidemenu/";
 		$dir = str_replace('.', '/', $dir);
 
-		require_once $loc.$dir.'.php';
+		include $loc.$dir.'.php';
 
-		reg_hook('reg_sidebar',$config);
+		return $config;
 	}
 
 	public static function _allPages($dir=''){
