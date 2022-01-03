@@ -58,7 +58,6 @@ class sobad_page extends _error{
 		$call_page = $page;
 		foreach($_pages as $key => $val){
 			if($val['home']==true){
-				$call_page = $key;
 				$_pages['Home'] = array(
 					'page'	=> $val['page'],
 					'theme'	=> isset($val['theme'])?$val['theme']:'default',
@@ -79,6 +78,10 @@ class sobad_page extends _error{
 
 			if(!isset($_SESSION[_prefix.'page'])){
 				$_SESSION[_prefix.'page'] = $call_page;
+			}
+
+			if(!isset($_SESSION[_prefix.'user'])){
+				$_SESSION[_prefix.'page'] = $page;
 			}
 
 			$GLOBALS['reg_page'] = $_pages;
