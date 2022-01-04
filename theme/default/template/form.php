@@ -10,6 +10,8 @@ class create_form{
 	public static $col_label = 4;
 
 	public static $col_input = 7;
+
+	public static $date_picker = false;
 	
 	private static function option_form($args=array()){
 		$inp = '';
@@ -111,7 +113,12 @@ class create_form{
 					mask_quantity('.quantity');
 				});
 
-				sobad_picker();
+				<?php 
+					if(self::$date_picker){
+						echo 'sobad_picker();';
+					}
+				?>
+
 				sobad_clockpicker();
 				ComponentsDropdowns.init();
 				ComponentsEditors.init();
@@ -624,6 +631,8 @@ class create_form{
 	private static function opt_datepicker($val=array()){
 		// key , class , value , date
 		// id, to, data, label (optional)
+
+		self::$date_picker = true;
 
 		$req = false;$required = '';
 		if(isset($val['required'])){
