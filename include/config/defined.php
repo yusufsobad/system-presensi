@@ -68,6 +68,9 @@ define('title','Cordova');
 // set Auto Include Page
 define('include_pages', true);
 
+// set Callback URL after Logout
+define('url_logout', '');
+
 // Library ------------------------------------------
 $library_sc = array(
 	// name folder 		=> lokasi file,

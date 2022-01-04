@@ -465,6 +465,7 @@ class logout_system{
 		setcookie('id','');
 		setcookie('name','');		
 
-		return '/'.URL;
+		$logout = empty(url_logout)?'':'/'.url_logout;
+		return '/'. URL . $logout;
 	}	
 }
