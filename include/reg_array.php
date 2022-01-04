@@ -93,7 +93,10 @@ class sobad_page extends _error{
 			$object = new $func();
 			$object->_reg();
 		}else{
-			session_destroy();
+			unset($_SESSION[_prefix.'page']);
+			unset($_SESSION[_prefix.'user']);
+			unset($_SESSION[_prefix.'name']);
+			
 			parent::_page404();
 		}
 	}
