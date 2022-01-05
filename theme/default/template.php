@@ -5,6 +5,8 @@
 require dirname(__FILE__).'/template/coming_soon.php';
 require dirname(__FILE__).'/template/login.php';
 
+require dirname(__FILE__).'/template/form.php';
+
 abstract class metronic_template{
 
 	// ---------------------------------------------
@@ -543,18 +545,10 @@ abstract class metronic_template{
 	// Create Form ---------------------------------
 	// ---------------------------------------------
 	public static function report_form($args = array()){
-		if(!class_exists('create_form')){
-			require dirname(__FILE__).'/template/form.php';
-		}
-
 		$form = create_form::get_form($args,true);
 	}
 
 	public static function sobad_form($args = array()){
-		if(!class_exists('create_form')){
-			require dirname(__FILE__).'/template/form.php';
-		}
-
 		$form = create_form::get_form($args,false);
 	}
 
