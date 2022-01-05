@@ -131,6 +131,10 @@ function editable_value($args=array()){
 		return '';
 	}
 
+	if(!class_exists('create_form')){
+		require dirname(__FILE__).'/template/form.php';
+	}
+
 	if(!isset($args['class'])){
 		$args['class'] = '';
 	}
