@@ -83,7 +83,7 @@ class sobad_page extends _error{
 		if(class_exists($func) && is_callable(array($func,'_reg'))){			
 			self::$page = $func;
 
-			if(!isset($_SESSION[_prefix.'user'])){
+			if(!isset($_SESSION[_prefix.'user'] && !isset($_SESSION[_prefix.'page']))){
 				$_SESSION[_prefix.'page'] = $call_page;
 			}
 
