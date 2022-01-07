@@ -29,11 +29,16 @@ class metronic_layout extends metronic_template{
 		<?php
 	}
 
-	public static function load_here($menu=''){
+	public static function load_here($data=''){
+		$menu = $data;
+		if(gettype($data)=='array'){
+			extract($data);
+		}
+
 		self::_header($menu);
 		self::_clearfix();
 		self::_container();
-		self::_footer();
+		self::_footer($footer);
 	}
 
 	private static function _header($menu=''){
