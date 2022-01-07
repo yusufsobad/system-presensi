@@ -119,15 +119,17 @@ class metronic_layout extends metronic_template{
 		<?php
 	}
 
-	private static function _footer(){
+	private static function _footer($footer=''){
 		?>
 		<div class="page-footer">
-			<div class="page-footer-inner">
-				<?php echo date('Y').' @ '.constant('company') ;?>
-			</div>
-			<div class="scroll-to-top" style="display: none;">
-				<i class="icon-arrow-up"></i>
-			</div>
+			<?php if(empty($footer)): ;?>
+				<div class="page-footer-inner">
+					<?php echo date('Y').' @ '.constant('company') ;?>
+				</div>
+				<div class="scroll-to-top" style="display: none;">
+					<i class="icon-arrow-up"></i>
+				</div>
+			<?php endif;?>
 		</div>
 		<?php
 	}
