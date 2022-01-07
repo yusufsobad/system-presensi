@@ -6,6 +6,7 @@ require dirname(__FILE__).'/template/coming_soon.php';
 require dirname(__FILE__).'/template/login.php';
 
 require dirname(__FILE__).'/template/form.php';
+require dirname(__FILE__).'/template/table.php';
 
 abstract class metronic_template{
 
@@ -523,10 +524,6 @@ abstract class metronic_template{
 	// Create Table --------------------------------
 	// ---------------------------------------------
 	public static function sobad_table($args = array()){
-		if(!class_exists('create_table')){
-			require dirname(__FILE__).'/template/table.php';
-		}
-			
 		$table = create_table::_table($args);
 	}
 
