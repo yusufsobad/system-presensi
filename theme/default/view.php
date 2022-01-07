@@ -30,8 +30,9 @@ class metronic_layout extends metronic_template{
 	}
 
 	public static function load_here($data=''){
-		$menu = $data;
+		$menu = $data;$footer = '';
 		if(gettype($data)=='array'){
+			$menu = '';
 			extract($data);
 		}
 
@@ -134,7 +135,11 @@ class metronic_layout extends metronic_template{
 				<div class="scroll-to-top" style="display: none;">
 					<i class="icon-arrow-up"></i>
 				</div>
-			<?php endif;?>
+			<?php 
+				else: 
+					echo $footer;
+				endif;
+			?>
 		</div>
 		<?php
 	}
