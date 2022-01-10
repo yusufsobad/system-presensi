@@ -203,7 +203,7 @@ abstract class _class{
 				$tbl = $val['table'];
 				$col = $val['key'];
 
-				$tbl = empty($database)?$database.'.`$tbl`':'`$tbl`';
+				$tbl = !empty($database)?$database.'.`'.$tbl.'`':'`$tbl`';
 				self::$_inner .= "LEFT JOIN $tbl AS $key ON `$table`.$_key = $key.$col ";
 				
 				if(isset($val['detail'])){
