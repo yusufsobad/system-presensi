@@ -199,10 +199,12 @@ abstract class _class{
 					self::$_join[] = "$key.$vl AS ".$vl."_".substr($key,1,4);
 				}
 				
+				$database = isset($val['database'])?$val['database']:'';
 				$tbl = $val['table'];
 				$col = $val['key'];
 
-				self::$_inner .= "LEFT JOIN `$tbl` AS $key ON `$table`.$_key = $key.$col ";
+				$tbl = empty($database)?$database.'.`$tbl`':'`$tbl`';
+				self::$_inner .= "LEFT JOIN $tbl AS $key ON `$table`.$_key = $key.$col ";
 				
 				if(isset($val['detail'])){
 					$_detail = $val['detail'];
