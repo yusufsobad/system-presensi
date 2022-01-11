@@ -5,9 +5,9 @@ class conn extends _error{
 	public static function connect(){
 		global $DB_NAME;
 
-		$server = constant("SERVER");
-		$user = constant("USERNAME");
-		$pass = constant("PASSWORD");
+		$server = SERVER;
+		$user = USERNAME;
+		$pass = PASSWORD;
 		$database = $DB_NAME;//constant("DB_NAME");
 
 		$conn=new mysqli($server,$user,$pass,$database);

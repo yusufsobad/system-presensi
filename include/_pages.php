@@ -244,14 +244,22 @@ abstract class _page{
 	}
 
 	public static function _trash($id=0, $role=true){
+		global $DB_NAME;
+
 		$id = str_replace('trash_','',$id);
 		intval($id);
 
 		$object = static::$table;
 		$table = $object::$table;
 
+		$_database = $DB_NAME;
+		if(property_exists(new $object,'database')){
+			$DB_NAME = $object::$database;
+		}
+
 		$q = sobad_db::_update_single($id,$table,array('ID' => $id, 'trash' => 1));
 
+		$DB_NAME = $_database;
 		if($q===1 && $role==true){
 			$pg = isset($_POST['page'])?$_POST['page']:1;
 			return self::_get_table($pg);
@@ -259,14 +267,22 @@ abstract class _page{
 	}
 
 	public static function _recovery($id=0, $role=true){
+		global $DB_NAME;
+
 		$id = str_replace('recovery_','',$id);
 		intval($id);
 
 		$object = static::$table;
 		$table = $object::$table;
 
+		$_database = $DB_NAME;
+		if(property_exists(new $object,'database')){
+			$DB_NAME = $object::$database;
+		}
+
 		$q = sobad_db::_update_single($id,$table,array('ID' => $id, 'trash' => 0));
 
+		$DB_NAME = $_database;
 		if($q===1 && $role==true){
 			$pg = isset($_POST['page'])?$_POST['page']:1;
 			return self::_get_table($pg);
@@ -274,6 +290,8 @@ abstract class _page{
 	}
 
 	public static function _delete($id=0,$role=true){
+		global $DB_NAME;
+
 		$id = str_replace('del_','',$id);
 		intval($id);
 
@@ -287,6 +305,11 @@ abstract class _page{
 
 		$schema = $object::blueprint($post);
 
+		$_database = $DB_NAME;
+		if(property_exists(new $object,'database')){
+			$DB_NAME = $object::$database;
+		}
+
 		if(property_exists($object, 'tbl_meta')){
 			$q = sobad_db::_delete_multiple("meta_id='$id'",$object::$tbl_meta);
 		}
@@ -298,6 +321,7 @@ abstract class _page{
 
 		$q = sobad_db::_delete_single($id,$table);
 
+		$DB_NAME = $_database;
 		if($q===1 && $role==true){
 			$pg = isset($_POST['page'])?$_POST['page']:1;
 			return self::_get_table($pg);
@@ -380,6 +404,8 @@ abstract class _page{
 	// ----------------------------------------------------------
 
 	protected static function _schema($_args=array(),$add=false){
+		global $DB_NAME;
+
 		$args = sobad_asset::ajax_conv_json($_args);
 		if(is_callable(array(new static(), '_callback'))){
 			$args = static::_callback($args,$_args);
@@ -407,6 +433,11 @@ abstract class _page{
 		$object = static::$table;
 		$schema = $object::blueprint($post);
 
+		$_database = $DB_NAME;
+		if(property_exists(new $object,'database')){
+			$DB_NAME = $object::$database;
+		}
+
 		self::$list_meta = $object::list_meta($post);
 
 		$data = array();
@@ -429,6 +460,7 @@ abstract class _page{
 			$q = self::_update_meta_db($id,$args,$schema);
 		}
 
+		$DB_NAME = $_database;
 		return array('index' => $id, 'data' => $q,'search' => $src,'value' => $args);
 	}	
 
