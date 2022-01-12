@@ -201,7 +201,7 @@ class sobad_asset{
 		$loc = is_dir("coding/_views/")?"coding/_views/":"../coding/_views/";
 		$dir = str_replace('.', '/', $dir);
 
-		$lvtypes = array('html','config','table','modal','portlet','tabs');
+		$lvtypes = array('html','config','button','toggle','print','table','modal','portlet','tabs');
 
 		$_dirs = explode('/', $dir);
 		$_cdir = count($_dirs);
@@ -243,6 +243,18 @@ class sobad_asset{
 
 				if($lvtype=='config'){
 					return $config;
+				}
+
+				if($lvtype=='button'){
+					return _click_button($config);
+				}
+
+				if($lvtype=='toggle'){
+					return _modal_button($config,$modal);
+				}
+
+				if($lvtype=='print'){
+					return print_button($config,$modal);
 				}
 
 				if($lvtype=='table'){
