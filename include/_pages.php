@@ -522,7 +522,7 @@ abstract class _page{
 				if(is_callable(array($obj,$menu))){
 					return $obj::{$menu}($args);
 				}else{
-					die(_error::_alert_db("Object Not Found!!!"));
+					//die(_error::_alert_db("Object Not Found!!!"));
 				}
 			}
 		}
@@ -584,7 +584,7 @@ abstract class _page{
 				if(is_callable(array($obj,$menu))){
 					return $obj::{$menu}($args);
 				}else{
-					die(_error::_alert_db("Object Not Found!!!"));
+					//die(_error::_alert_db("Object Not Found!!!"));
 				}
 			}
 		}
