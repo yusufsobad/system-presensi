@@ -400,6 +400,46 @@ abstract class _page{
 	}
 
 	// ----------------------------------------------------------
+	// Function Get Data from database --------------------------
+	// ----------------------------------------------------------
+
+	protected static function _get_db($id=0,$args=array(),$where=''){
+		$post = '';
+		if(property_exists(new static, 'post')){
+			$post = static::$post;
+		}
+
+		$object = static::$table;
+		$args = $object::get_id($id,$args,$where,$post);
+
+		return $args;
+	}
+
+	protected static function _gets_db($args=array(),$where=''){
+		$post = '';
+		if(property_exists(new static, 'post')){
+			$post = static::$post;
+		}
+
+		$object = static::$table;
+		$args = $object::get_all($args,$where,$post);
+
+		return $args;
+	}
+
+	protected static function _count_db($where='',$args=array()){
+		$post = '';
+		if(property_exists(new static, 'post')){
+			$post = static::$post;
+		}
+
+		$object = static::$table;
+		$args = $object::count($where,$args,$post);
+
+		return $args;
+	}
+
+	// ----------------------------------------------------------
 	// Function Update to database ------------------------------
 	// ----------------------------------------------------------
 

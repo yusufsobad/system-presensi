@@ -76,6 +76,7 @@ class sobad_db extends conn{
 			return 0;
 		}
 		
+		$conn->close();
 		return $q;
 	}
 	
@@ -102,7 +103,8 @@ class sobad_db extends conn{
 		$alert = development==1?$query:$alert;
 
 		$conn->query($query)or die($alert);
-		
+		$conn->close();
+
 		return self::_max_table($table);
 	}
 	
@@ -115,8 +117,12 @@ class sobad_db extends conn{
 		$q=$conn->query($query) or die($alert);
 		if($q->num_rows>0){
 			$r=$q->fetch_assoc();
+
+			$conn->close();
 			return $r['max'];
 		}
+
+		return 0;
 	}
 	
 	public static function _update_single($id,$table,$args = array()){
@@ -159,6 +165,7 @@ class sobad_db extends conn{
 		$query = sprintf("TRUNCATE `%s`",$table);
 		$conn->query($query)or die($alert);
 		
+		$conn->close();
 		return 1;
 	}
 	
@@ -189,6 +196,7 @@ class sobad_db extends conn{
 	
 		$conn->query($query)or die($alert);
 		
+			$conn->close();
 		return self::_max_table($to);
 	}
 	
@@ -204,6 +212,7 @@ class sobad_db extends conn{
 		$alert = development==1?$query:$alert;
 		$conn->query($query)or die($alert);
 		
+		$conn->close();
 		return 1;
 	}
 	
@@ -227,6 +236,7 @@ class sobad_db extends conn{
 		$alert = development==1?$query:$alert;
 		$conn->query($query)or die($alert);
 		
+		$conn->close();
 		return 1;
 	}
 
@@ -249,6 +259,7 @@ class sobad_db extends conn{
 			}
 		}
 
+		$conn->close();	
 		return $table;
 	}
 
@@ -270,6 +281,7 @@ class sobad_db extends conn{
 			$table[] = $item;
 		}
 
+		$conn->close();	
 		return $table;
 	}
 

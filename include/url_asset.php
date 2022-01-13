@@ -254,7 +254,7 @@ class sobad_asset{
 				}
 
 				if($lvtype=='print'){
-					return print_button($config,$modal);
+					return print_button($config);
 				}
 
 				if($lvtype=='table'){

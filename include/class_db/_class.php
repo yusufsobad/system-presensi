@@ -297,7 +297,7 @@ abstract class _class{
 				$data[] = $r;//$item;
 			}
 		}
-		
+
 		$DB_NAME = $_database;
 		return $data;
 	}
