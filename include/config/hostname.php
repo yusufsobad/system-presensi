@@ -36,8 +36,9 @@ function load_first_page($key=''){
 
 	// include pages
 	$page = $_SESSION[_prefix.'page'];
+	$theme = isset($reg_page[$page]['theme'])?$reg_page[$page]['theme']:'';
 
-	reg_hook('reg_theme',$reg_page[$page]['theme']);
+	reg_hook('reg_theme',$theme);
 	sobad_asset::_loadPage($reg_page[$page]);
 }
 
