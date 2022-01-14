@@ -18,7 +18,7 @@ abstract class _page{
 	// ----------------------------------------------------------
 	// Layout Pages  --------------------------------------------
 	// ----------------------------------------------------------
-	protected static function _loadView($dir='',$data=array(),$ext=''){
+	protected static function _loadView($dir='',$data=array(),$ext='.php'){
 		$loc = $dir;
 		if(property_exists(new static, 'loc_view')){
 			$loc = static::$loc_view;
