@@ -197,7 +197,7 @@ class sobad_asset{
 		}
 	}
 
-	public static function _loadView($dir = "_views", $data='', $ext=''){
+	public static function _loadView($dir = "_views", $data=''){
 		$loc = is_dir("coding/_views/")?"coding/_views/":"../coding/_views/";
 		$dir = str_replace('.', '/', $dir);
 
@@ -208,7 +208,7 @@ class sobad_asset{
 		$_cdir -= 1;
 
 		$nm_file = $_dirs[$_cdir];
-		$ext = empty($ext)?'.php':'.'.$ext;
+		$ext = '.php';//empty($ext)?'.php':'.'.$ext;
 
 		unset($_dirs[$_cdir]);
 		$dir = implode('/', $_dirs);
