@@ -387,7 +387,7 @@ function sobad_preview(url,data,spec){
 function sobad_picker(){
 	if (jQuery().datepicker) {
         $('.date-picker').datepicker({
-            rtl: Metronic.isRTL(),
+            rtl: false,
             orientation: "right",
             autoclose: true
         });
