@@ -288,14 +288,7 @@ abstract class _class{
 
 		$q = sobad_db::_select_table($where,static::$table,$args);
 		if($q!==0){
-			while($r=$q->fetch_assoc()){
-				//$item = array();
-				//foreach($r as $key => $val){
-				//	$item[$key] = $val;
-				//}
-				
-				$data[] = $r;//$item;
-			}
+			$data = $q->fetch_array();
 		}
 
 		$DB_NAME = $_database;
