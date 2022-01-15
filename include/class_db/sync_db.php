@@ -67,11 +67,16 @@ class sobad_db extends conn{
 		if(empty($table)){die("");}
 		
 		$args = implode(",",$args);
-		$query = sprintf("SELECT %s FROM `%s` %s",$args,$table,$where);
+		//$query = sprintf("SELECT %s FROM `%s` %s",$args,$table,$where);
 		
-		$alert = development==1?$query:$alert;
+		//$alert = development==1?$query:$alert;
 
-		$q = $conn->query($query)or die($alert);	
+		$p = $conn->prepare("SELECT ? FROM `?` ?");
+		$p->bind_param("sss",$args,$table,$where);
+		$p->execute();
+
+		$q = $p->get_result()or die($alert);
+		//$q = $conn->query($query)or die($alert);	
 		if($q->num_rows<1){
 			return 0;
 		}
