@@ -288,7 +288,7 @@ abstract class _class{
 
 		$q = sobad_db::_select_table($where,static::$table,$args);
 		if($q!==0){
-			$data = $q->fetch_array();
+			$data = $q->fetch_array(MYSQLI_ASSOC);
 		}
 
 		$DB_NAME = $_database;
