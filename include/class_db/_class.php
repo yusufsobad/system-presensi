@@ -117,7 +117,13 @@ abstract class _class{
 	}
 
 	public static function get_all($args=array(),$limit='',$type=''){
-		$where = "WHERE 1=1 $limit";
+		$check = substr($limit,0,4);
+		$check = trim($check);
+
+		$limit = strtoupper($check)=="AND"?substr($limit, 4):$limit;
+
+		$limit = empty($limit)?'1=1':$limit;
+		$where = "WHERE $limit";
 		return self::_check_join($where,$args,$type);
 	}
 
