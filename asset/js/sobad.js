@@ -337,16 +337,17 @@ var index_toggle = '';
 	
 function sobad_load(id){
 	var html = html = '<div class="loading-message">' + '<div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>' + '</div>';
+	var cenrerY = false;
 
 	var el = $('#'+id);
     if (el.height() <= ($(window).height())) {
-        options.cenrerY = true;
+        cenrerY = true;
     }
-    
+
     el.block({
         message: html,
-        baseZ: options.zIndex ? options.zIndex : 1000,
-        centerY: options.cenrerY !== undefined ? options.cenrerY : false,
+        baseZ: 1000,
+        centerY: cenrerY,
         css: {
             top: '10%',
             border: '0',
@@ -354,8 +355,8 @@ function sobad_load(id){
             backgroundColor: 'none'
         },
         overlayCSS: {
-            backgroundColor: options.overlayColor ? options.overlayColor : '#555',
-            opacity: options.boxed ? 0.05 : 0.1,
+            backgroundColor: '#555',
+            opacity: 0.1,
             cursor: 'wait'
         }
     });
