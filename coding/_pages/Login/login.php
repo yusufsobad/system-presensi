@@ -40,10 +40,8 @@ class login_system{
 		unset($js['themes-editable']);
 		unset($js['themes-picker']);
 		unset($js['themes-contextmenu']);
-		
-		ob_start();
-		self::load_script();
-		$custom['login'] = ob_get_clean();
+
+		$custom['login'] = self::load_script();
 
 		reg_hook("reg_script_css",$css);
 		reg_hook("reg_script_js",$js);
@@ -51,33 +49,26 @@ class login_system{
 	}
 
 	private function load_script(){
-		?>
-			<script>
-			jQuery(document).ready(function() {     
-			  Metronic.init(); // init metronic core components
-			  Layout.init(); // init current layout
-			  Login.init("login_system");
-			  Demo.init();
-			       // init background slide images
-			       $.backstretch([
-			        "asset/img/bg/1.jpg",
-			        "asset/img/bg/2.jpg",
-					"asset/img/bg/3.jpg",
-			        "asset/img/bg/4.jpg",
-					"asset/img/bg/5.jpg",
-			        "asset/img/bg/6.jpg",
-			        ], {
-			          fade: 1000,
-			          duration: 8000
-			    }
-			    );
-			});
-			</script>
-		<?php
+		$args = array(
+			array(
+				'func'	=> '_init_login',
+				'data'	=> ''
+			),
+			array(
+				'func'	=> '_bg_login',
+				'data'	=> array(
+					'image' => array()
+				)
+			)
+		);
+
+		ob_start();
+		theme_layout('_custom_script',$args);
+		return ob_get_clean();
 	}
 
 	public function _page(){
-		sobad_asset::_loadView('Login.login');
+		user_login::login();
 	}
 
 	public function check_login($args=array()){

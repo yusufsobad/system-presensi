@@ -66,7 +66,7 @@ class sobad_page extends _error{
 
 				$_pages['Home'] = array(
 					'page'	=> $val['page'],
-					'theme'	=> isset($val['theme'])?$val['theme']:'default',
+					'theme'	=> isset($val['theme'])?$val['theme']:theme,
 					'home'	=> true,
 					'view'	=> isset($val['view'])?$val['view']:'folder.file'
 				);

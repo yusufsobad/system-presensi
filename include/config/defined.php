@@ -82,3 +82,7 @@ define('_library',serialize($library_sc));
 // Mode Development
 
 define('development',0);
+
+// Default Theme
+
+define('theme','metronic');

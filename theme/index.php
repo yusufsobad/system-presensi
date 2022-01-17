@@ -16,7 +16,7 @@ function sobad_themes(){
 	global $reg_theme;
 
 	if(empty($reg_theme)){
-		$reg_theme = 'default';
+		$reg_theme = theme;
 	}
 
 	// definisi path theme
@@ -32,13 +32,13 @@ function sobad_themes(){
 
 function theme_layout($func='',$data=''){
 	if(empty($func)){
-		die(_error::_alert_db("Not Load Layout!!!"));
+		die(_error::_alert_db($func . "::Not Load Layout!!!"));
 	}
 
 	$theme = _theme_name;
 
 	if(!is_callable(array($theme,$func))){
-		die(_error::_alert_db("Not Function Layout!!!"));
+		die(_error::_alert_db($theme . "::Not Function Layout!!!"));
 	}
 
 	$theme::{$func}($data);

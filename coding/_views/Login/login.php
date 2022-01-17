@@ -1,23 +1,25 @@
 <?php
 
 // Layout Login
-
+	require 'style.php';
 ?>
-	<!-- BEGIN LOGO -->
+	<!-- BEGIN LOGO
 	<div class="logo">
-		<img src="asset/img/logo-big.png" alt=""> 
+		 <img src="asset/img/logo-big.png" alt="">
 	</div>
-	<!-- END LOGO -->
+	 END LOGO -->
 	<!-- BEGIN LOGIN -->
-	<div class="content">
-	<?php
-		print(user_login::login('login_system'));
-	?>
+	<div class="table-layout">
+		<div class="content">
+		<?php
+			require 'layout.php';
+		?>
+		</div>
 	</div>
 	<!-- END LOGIN -->
 	<!-- BEGIN COPYRIGHT -->
 	<div class="copyright">
-		<?php print(date('Y')) ;?> © System <?php print(constant('company')) ;?>
+		<?php print(date('Y')) ;?> © <?php print(constant('company')) ;?>
 	</div>
 	<!-- END COPYRIGHT -->
 <?php
