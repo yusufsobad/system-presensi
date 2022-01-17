@@ -334,12 +334,17 @@ var index_toggle = '';
 		var data = "ajax="+ajx+"&object="+object+"&data="+dt+'&type='+tp;
 		sobad_ajax('#'+id,data,'html',false,'','');
 	}
-	
+
 function sobad_load(id){
+	sobad_loading('#'+id);
+}
+
+	
+function sobad_loading(id){
 	var html = html = '<div class="loading-message">' + '<div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>' + '</div>';
 	var cenrerY = false;
 
-	var el = $('#'+id);
+	var el = $(id);
     if (el.height() <= ($(window).height())) {
         cenrerY = true;
     }
