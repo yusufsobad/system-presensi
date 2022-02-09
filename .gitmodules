@@ -1,6 +1,6 @@
-[submodule "theme/sasi"]
-	path = theme/sasi
-	url = git@github.com:yusufsobad/theme-sasi.git
 [submodule "theme/metronic"]
 	path = theme/metronic
 	url = git@github.com:yusufsobad/theme-metronic.git
+[submodule "theme/sasi"]
+	path = theme/sasi
+	url = git@github.com:yusufsobad/theme-sasi.git
