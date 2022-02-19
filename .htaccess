@@ -1,6 +1,15 @@
+# <IfModule mod_rewrite.c>
+# RewriteEngine on
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ /cordova-v3/index.php?direct=$1 [NC,L,QSA]
+# </IfModule>
+
 <IfModule mod_rewrite.c>
-RewriteEngine on
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /cordova-v3/index.php?direct=$1 [NC,L,QSA]
+RewriteRule . /cordova-v3/index.php [L]
 </IfModule>

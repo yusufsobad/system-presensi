@@ -127,7 +127,7 @@ class sobad_asset{
 		global $reg_page;
 
 		foreach ($reg_page as $key => $val) {
-			self::_loadPage($reg);
+			self::_loadPage($val);
 		}
 	}
 
