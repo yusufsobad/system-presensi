@@ -468,7 +468,7 @@ class logout_system{
 	// Function Logout Admin ------------------------
 	// ----------------------------------------------
 
-	public function _get(){
+	public static function _get(){
 
 		unset($_SESSION[_prefix.'page']);
 		unset($_SESSION[_prefix.'user']);
