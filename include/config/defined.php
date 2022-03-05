@@ -74,7 +74,8 @@ define('url_logout', '');
 // Library ------------------------------------------
 $library_sc = array(
 	// name folder 		=> lokasi file,
-	'createpdf'			=> 'html2pdf/html2pdf.class.php'
+	'createpdf'			=> 'html2pdf/html2pdf.class.php',
+	'mpdf'				=> 'mpdf/autoload.php'
 );
 
 define('_library',serialize($library_sc));
@@ -86,3 +87,7 @@ define('development',0);
 // Default Theme
 
 define('theme','metronic');
+
+// Default Theme
+
+define('convToPDF','createpdf');
