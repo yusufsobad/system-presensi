@@ -102,16 +102,15 @@ function conv_mPDF($args=array()){
 	$html = array();
 	$css = array();
 
-	if(development==1){
-		echo '<style type="text/css">';
-		foreach($args['style'] as $key => $val){
-			if(is_callable($val)){
-				echo $val();
-			}
+	$footer = '';
+	if(isset($args['footer'])){
+		$func = $args['footer'];
+
+		if(is_callable($func)){
+			ob_start();
+				$func();
+			$footer = ob_get_clean();
 		}
-		echo '</style>';
-	}else{
-		echo get_style($args['style']);
 	}
 
 	if(isset($args['style'])){
@@ -142,7 +141,7 @@ function conv_mPDF($args=array()){
 			$content .= $val;
 		}
 
-		return $content;
+		return $content . $footer;
 	}
 
 	$pos = $args['setting']['posisi'];
@@ -151,7 +150,7 @@ function conv_mPDF($args=array()){
 	
 	try{
 		$mpdf = new \Mpdf\Mpdf([
-		    'format'          => '-', // Default Potrait (Landscape : 'A4-L')
+		    'format'          => $pos . '-' . $lay, // Default Potrait (Landscape : 'A4-L')
 		    'mode'            => 'UTF-8', // Unicode
 		    'lang'            => 'en', // Language
 		    'margin_top'      => isset($margin['top'])?$margin['top']:0,
