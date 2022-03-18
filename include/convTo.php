@@ -150,8 +150,6 @@ function conv_mPDF($args=array()){
 	$nama = $args['name save'];
 	
 	try{
-		$mpdf = new HTML2PDF($pos, $lay, 'en', true, 'UTF-8',array(0,0,0,0));
-
 		$mpdf = new \Mpdf\Mpdf([
 		    'format'          => '-', // Default Potrait (Landscape : 'A4-L')
 		    'mode'            => 'UTF-8', // Unicode
