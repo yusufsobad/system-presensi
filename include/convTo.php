@@ -117,9 +117,7 @@ function conv_mPDF($args=array()){
 		foreach($args['style'] as $key => $val){
 			if(is_callable($val)){
 				ob_start();
-					echo '<style type="text/css">';
 					echo $val();
-					echo '<style>';
 				$css[] = ob_get_clean();
 			}
 		}
@@ -140,7 +138,7 @@ function conv_mPDF($args=array()){
 		$content = '';
 
 		foreach ($css as $key => $val) {
-			$content .= $val;
+			$content .= '<style type="text/css">' . $val . '</style>';
 		}
 
 		foreach ($html as $key => $val) {
