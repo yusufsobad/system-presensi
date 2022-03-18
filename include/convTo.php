@@ -100,6 +100,25 @@ function conv_htmlToPDF($args=array()){
 function conv_mPDF($args=array()){
 	$data = array();
 	$html = array();
+	$css = array();
+
+	if(development==1){
+		echo '<style type="text/css">';
+		foreach($args['style'] as $key => $val){
+			if(is_callable($val)){
+				echo $val();
+			}
+		}
+		echo '</style>';
+	}else{
+		echo get_style($args['style']);
+	}
+
+	if(isset($args['style'])){
+		ob_start();
+		get_style($args['style']);
+		$css[] = ob_get_clean();
+	}
 
 	$type = gettype($args['html']);
 	if($type=='array'){
@@ -114,6 +133,11 @@ function conv_mPDF($args=array()){
 
 	if(development==1){
 		$content = '';
+
+		foreach ($css as $key => $val) {
+			$content .= $val;
+		}
+
 		foreach ($html as $key => $val) {
 			$content .= $val;
 		}
@@ -127,10 +151,6 @@ function conv_mPDF($args=array()){
 	
 	try{
 		$mpdf = new HTML2PDF($pos, $lay, 'en', true, 'UTF-8',array(0,0,0,0));
-		$html2pdf->pdf->SetDisplayMode('fullpage');
-		$html2pdf->setTestTdInOnePage(false);
-		$html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-		$html2pdf->Output($nama.".pdf");
 
 		$mpdf = new \Mpdf\Mpdf([
 		    'format'          => '-', // Default Potrait (Landscape : 'A4-L')
@@ -144,6 +164,10 @@ function conv_mPDF($args=array()){
 
 		$mpdf->SetFooter($footer);  
 		$mpdf->SetDisplayMode('fullwidth');
+
+		foreach ($css as $key => $val) {
+			$mpdf->WriteHTML($val,1);
+		}
 
 		foreach ($html as $key => $val) {
 			$mpdf->WriteHTML($val);
