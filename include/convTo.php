@@ -154,7 +154,8 @@ function conv_mPDF($args=array()){
 	
 	try{
 		$mpdf = new \Mpdf\Mpdf([
-		    'format'          => $lay . '-' . $pos, // Default Potrait (Landscape : 'A4-L')
+		    'format'          => $lay, // Default Potrait (Landscape : 'A4-L')
+		    'orientation'	  => $pos,
 		    'mode'            => 'UTF-8', // Unicode
 		    'lang'            => 'en', // Language
 		    'margin_top'      => isset($margin['top'])?$margin['top']:0,
