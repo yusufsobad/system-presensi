@@ -145,12 +145,16 @@ function conv_mPDF($args=array()){
 	}
 
 	$pos = $args['setting']['posisi'];
+
+	$pos = strtoupper($pos)=='POTRAIT'?'P':$pos;
+	$pos = strtoupper($pos)=='LANDSCAPE'?'L':$pos;
+
 	$lay = $args['setting']['layout'];
 	$nama = $args['name save'];
 	
 	try{
 		$mpdf = new \Mpdf\Mpdf([
-		    'format'          => $pos . '-' . $lay, // Default Potrait (Landscape : 'A4-L')
+		    'format'          => $lay . '-' . $pos, // Default Potrait (Landscape : 'A4-L')
 		    'mode'            => 'UTF-8', // Unicode
 		    'lang'            => 'en', // Language
 		    'margin_top'      => isset($margin['top'])?$margin['top']:0,
