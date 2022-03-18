@@ -114,9 +114,15 @@ function conv_mPDF($args=array()){
 	}
 
 	if(isset($args['style'])){
-		ob_start();
-		get_style($args['style']);
-		$css[] = ob_get_clean();
+		foreach($args['style'] as $key => $val){
+			if(is_callable($val)){
+				ob_start();
+					echo '<style type="text/css">';
+					echo $val();
+					echo '<style>';
+				$css[] = ob_get_clean();
+			}
+		}
 	}
 
 	$type = gettype($args['html']);
@@ -175,7 +181,7 @@ function conv_mPDF($args=array()){
 			$mpdf->WriteHTML($val);
 		}
 
-		$mpdf->Output($nama . '.pdf',"D"); // Format Download
+		$mpdf->Output($nama . '.pdf',"I"); // Format Preview
 	}
 	catch(\Mpdf\MpdfException $e) {
 		echo $e->getMessage();
