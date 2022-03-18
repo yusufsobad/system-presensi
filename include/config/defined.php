@@ -75,7 +75,7 @@ define('url_logout', '');
 $library_sc = array(
 	// name folder 		=> lokasi file,
 	'createpdf'			=> 'html2pdf/html2pdf.class.php',
-	'mpdf'				=> 'mpdf/autoload.php'
+	'mpdf'				=> 'autoload.php'
 );
 
 define('_library',serialize($library_sc));
