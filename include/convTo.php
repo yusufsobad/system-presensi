@@ -12,9 +12,9 @@ function sobad_convToPdf($args = array()){
 	date_default_timezone_set('UTC');
 
 	if(convToPDF=="createpdf"){
-		conv_htmlToPDF($args);
+		return conv_htmlToPDF($args);
 	}else if(convToPDF=="mpdf"){
-		conv_mPDF($args);
+		return conv_mPDF($args);
 	}else{
 		if(is_callable("conv_toPDF")){
 			conv_toPDF($args);
