@@ -175,10 +175,10 @@ function conv_mPDF($args=array()){
 			$mpdf->WriteHTML($val);
 		}
 
-		$mpdf->Output('Tes.pdf'); // Format Download
+		$mpdf->Output($nama . '.pdf'); // Format Download
 	}
-	catch(HTML2PDF_exception $e) {
-		echo $e;
+	catch(\Mpdf\MpdfException $e) {
+		echo $e->getMessage();
 		exit;
 	}
 }
