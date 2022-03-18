@@ -175,7 +175,7 @@ function conv_mPDF($args=array()){
 			$mpdf->WriteHTML($val);
 		}
 
-		$mpdf->Output($nama . '.pdf'); // Format Download
+		$mpdf->Output($nama . '.pdf',"D"); // Format Download
 	}
 	catch(\Mpdf\MpdfException $e) {
 		echo $e->getMessage();
