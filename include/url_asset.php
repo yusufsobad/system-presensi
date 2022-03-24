@@ -111,7 +111,7 @@ class sobad_asset{
 	}
 
 	public static function _getSidemenu($dir = ""){
-		$loc = is_dir("coding/_sidemenu/")?"coding/_sidemenu/":"../coding/_sidemenu/";
+		$loc = "../coding/_sidemenu/";//is_dir("coding/_sidemenu/")?"coding/_sidemenu/":"../coding/_sidemenu/";
 		$dir = str_replace('.', '/', $dir);
 
 		include dirname(__FILE__) . '/' . $loc.$dir.'.php';
