@@ -114,7 +114,7 @@ class sobad_asset{
 		$loc = is_dir("coding/_sidemenu/")?"coding/_sidemenu/":"../coding/_sidemenu/";
 		$dir = str_replace('.', '/', $dir);
 
-		include dirname(__FILE__) . $loc.$dir.'.php';
+		include dirname(__FILE__) . '/' . $loc.$dir.'.php';
 
 		if(!isset($config)){
 			die($dir.' :: Variable config undefined!!!');
