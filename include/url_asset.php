@@ -94,10 +94,10 @@ class sobad_asset{
 	public static function _pages($dir = "coding/_pages/"){
 		$GLOBALS['reg_locFile'] = $dir;
 
-		if(is_dir(dirname(__FILE__) . 'coding')){
-			require_once dirname(__FILE__) . 'coding/_routes/routes.php';
-		}else if(is_dir(dirname(__FILE__) . '../coding')){
-			require_once dirname(__FILE__) . '../coding/_routes/routes.php';
+		if(is_dir('coding')){
+			require_once 'coding/_routes/routes.php';
+		}else if(is_dir('../coding')){
+			require_once '../coding/_routes/routes.php';
 		}
 
 		if(include_pages){
