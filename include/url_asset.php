@@ -111,10 +111,10 @@ class sobad_asset{
 	}
 
 	public static function _getSidemenu($dir = ""){
-		$loc = "../coding/_sidemenu/";//is_dir("coding/_sidemenu/")?"coding/_sidemenu/":"../coding/_sidemenu/";
+		$loc = is_dir("coding/_sidemenu/")?"coding/_sidemenu/":"../coding/_sidemenu/";
 		$dir = str_replace('.', '/', $dir);
 
-		include dirname(__FILE__) . '/' . $loc.$dir.'.php';
+		include $loc.$dir.'.php';
 
 		if(!isset($config)){
 			die($dir.' :: Variable config undefined!!!');
