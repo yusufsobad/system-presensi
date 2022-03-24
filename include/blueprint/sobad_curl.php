@@ -2,7 +2,7 @@
 
 class sobad_curl{
 
-	public function get_data($url='',$data=array()){
+	public static function get_data($url='',$data=array()){
 		if(empty($url)){
 			return '';
 		}
