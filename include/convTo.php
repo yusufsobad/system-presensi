@@ -155,6 +155,11 @@ function conv_mPDF($args=array()){
 
 	$lay = $args['setting']['layout'];
 	$nama = $args['name save'];
+
+	$margin['top'] = $args['margin_top'];
+	$margin['bottom'] = $args['margin_bottom'];
+	$margin['left'] = $args['margin_left'];
+	$margin['right'] = $args['margin_right'];
 	
 	try{
 		$mpdf = new \Mpdf\Mpdf([
@@ -162,10 +167,10 @@ function conv_mPDF($args=array()){
 		    'orientation'	  => $pos,
 		    'mode'            => 'UTF-8', // Unicode
 		    'lang'            => 'en', // Language
-		    'margin_top'      => isset($margin['top'])?$margin['top']:0,
-		    'margin_bottom'   => isset($margin['bottom'])?$margin['bottom']:0,
-		    'margin_left'     => isset($margin['left'])?$margin['left']:0,
-		    'margin_right'    => isset($margin['right'])?$margin['right']:0,
+		    'margin_top'      => isset($margin['top'])?$margin['top']:10,
+		    'margin_bottom'   => isset($margin['bottom'])?$margin['bottom']:10,
+		    'margin_left'     => isset($margin['left'])?$margin['left']:10,
+		    'margin_right'    => isset($margin['right'])?$margin['right']:10,
 		]);
 
 		$mpdf->SetFooter($footer);  

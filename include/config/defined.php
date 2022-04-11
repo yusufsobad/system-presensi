@@ -91,3 +91,7 @@ define('theme','metronic');
 // Default Theme
 
 define('convToPDF','createpdf');
+
+// Awalan nama table
+
+define('base','');
