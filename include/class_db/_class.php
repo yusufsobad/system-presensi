@@ -104,8 +104,8 @@ abstract class _class{
 		if(!empty($check)){
 			$_args = array("`$table`.ID");
 
-			$inner .= "LEFT JOIN `".static::$tbl_meta."` ON `".static::$table."`.ID = `".static::$tbl_meta."`.meta_id ";
-			$limit .= static::$group;
+			//$inner .= "LEFT JOIN `".static::$tbl_meta."` ON `".static::$table."`.ID = `".static::$tbl_meta."`.meta_id ";
+			//$limit .= static::$group;
 			self::$_meta = true;
 		}
 
