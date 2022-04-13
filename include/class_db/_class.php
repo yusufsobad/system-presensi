@@ -102,7 +102,7 @@ abstract class _class{
 		$_args = array("COUNT('`$table`.ID') AS count");
 		$check = array_filter(self::list_meta($type));
 		if(!empty($check)){
-			$_args = array('`$table`.ID');
+			$_args = array("`$table`.ID");
 
 			$inner .= "LEFT JOIN `".static::$tbl_meta."` ON `".static::$table."`.ID = `".static::$tbl_meta."`.meta_id ";
 			$limit .= static::$group;
