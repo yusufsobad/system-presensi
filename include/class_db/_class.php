@@ -8,6 +8,8 @@ abstract class _class{
 
 	private static $_where = '';
 
+	private static $_temp_where = '';
+
 	private static $_meta = false;
 
 	private static $_data_meta = array();
@@ -106,6 +108,7 @@ abstract class _class{
 			$meta = true;
 		}
 
+		self::$_temp_where = "WHERE " . $limit;
 		$count = self::_get_data($inner." WHERE ".$limit,array("COUNT('`$table`.ID') AS count"));
 		
 		if($meta){
@@ -128,6 +131,8 @@ abstract class _class{
 
 		$limit = empty($limit)?'1=1':$limit;
 		$where = "WHERE $limit";
+
+		self::$_temp_where = $where;
 		return self::_check_join($where,$args,$type);
 	}
 
@@ -324,7 +329,7 @@ abstract class _class{
 			}
 
 			if(self::$_meta){
-				$meta = self::_get_meta_join($where);
+				$meta = self::_get_meta_join(self::$_temp_where);
 				$data = self::_combine_data($data,$meta);
 			}
 		}
