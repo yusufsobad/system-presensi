@@ -61,6 +61,7 @@ abstract class _class{
 	}
 
 	public static function count($limit='1=1 ',$args=array(),$type=''){
+		self::$_meta = false;
 		self::$_type = $type;
 
 		$inner = '';$meta = false;
@@ -119,11 +120,15 @@ abstract class _class{
 	}
 	
 	public static function get_id($id,$args=array(),$limit='',$type=''){
+		self::$_meta = false;
+
 		$where = "WHERE `".static::$table."`.ID='$id' $limit";
 		return self::_check_join($where,$args,$type);
 	}
 
 	public static function get_all($args=array(),$limit='',$type=''){
+		self::$_meta = false;
+		
 		$check = substr($limit,0,4);
 		$check = trim($check);
 
