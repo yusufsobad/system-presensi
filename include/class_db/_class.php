@@ -315,6 +315,7 @@ abstract class _class{
 	protected static function _get_data($where='',$args=array()){
 		global $DB_NAME;
 		$data = array();
+		$ids = array();
 
 		$_database = $DB_NAME;
 		if(property_exists(new static,'database')){
