@@ -354,9 +354,14 @@ abstract class _class{
 				$ids[] = $r['ID'];
 			}
 
+			$meta = array();
+			foreach (self::$_data_meta as $key => $val) {
+				$meta[] = "'" . $val . "'"
+			}
+
 			// Get data meta;
 			$ids = implode(',', $ids);
-			$meta = implode(',', self::$_data_meta);
+			$meta = implode(',', $meta);
 
 			$whr = isset($search_meta_global) && !empty($search_meta_global) ? 'AND (' . $search_meta_global . ')' : "AND meta_key IN ($meta)";
 			$where = "WHERE meta_id IN ($ids) " . $whr;
