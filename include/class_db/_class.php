@@ -329,7 +329,10 @@ abstract class _class{
 				//	$item[$key] = $val;
 				//}
 				
-				$ids[] = $r['ID'];
+				if(isset($r['ID'])){
+					$ids[] = $r['ID'];
+				}
+
 				$data[] = $r;//$item;
 			}
 
