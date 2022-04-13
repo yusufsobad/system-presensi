@@ -333,7 +333,8 @@ abstract class _class{
 				$data[] = $r;//$item;
 			}
 
-			if(self::$_meta){
+			$check = array_filter($ids);
+			if(self::$_meta && !empty($check)){
 				$meta = self::_get_meta_join($ids);
 				$data = self::_combine_data($data,$meta);
 			}
