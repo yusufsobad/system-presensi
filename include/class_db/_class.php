@@ -334,7 +334,9 @@ abstract class _class{
 			}
 
 			$check = array_filter($ids);
-			if(self::$_meta && !empty($check)){
+			$check2 = array_filter(self::$_data_meta);
+
+			if(self::$_meta && !empty($check) && !empty($check2)){
 				$meta = self::_get_meta_join($ids);
 				$data = self::_combine_data($data,$meta);
 			}
@@ -346,7 +348,7 @@ abstract class _class{
 
 	protected static function _get_meta_join($ids=array()){
 		global $DB_NAME;
-		$data = array();$ids = array();
+		$data = array();
 		$args = array('ID');
 
 		$_database = $DB_NAME;
