@@ -99,16 +99,19 @@ abstract class _class{
 			}
 		}
 
+		$_args = array("COUNT('`$table`.ID') AS count");
 		$check = array_filter(self::list_meta($type));
 		if(!empty($check)){
+			$_args = array('`$table`.ID');
+
 			$inner .= "LEFT JOIN `".static::$tbl_meta."` ON `".static::$table."`.ID = `".static::$tbl_meta."`.meta_id ";
 			$limit .= static::$group;
-			$meta = true;
+			self::$_meta = true;
 		}
 
-		$count = self::_get_data($inner." WHERE ".$limit,array("COUNT('`$table`.ID') AS count"));
+		$count = self::_get_data($inner." WHERE ".$limit,$_args);
 		
-		if($meta){
+		if(self::$_meta){
 			return count($count);
 		}
 
@@ -123,6 +126,11 @@ abstract class _class{
 	public static function get_all($args=array(),$limit='',$type=''){
 		$check = substr($limit,0,4);
 		$check = trim($check);
+
+		// check ID
+		if(! array_search('ID', $args)){
+			$args[] = 'ID';
+		}
 
 		$limit = strtoupper($check)=="AND"?substr($limit, 4):$limit;
 
@@ -311,11 +319,6 @@ abstract class _class{
 		$_database = $DB_NAME;
 		if(property_exists(new static,'database')){
 			$DB_NAME = static::$database;
-		}
-
-		// check ID
-		if(! array_search('ID', $args)){
-			$args[] = 'ID';
 		}
 
 		$q = sobad_db::_select_table($where,static::$table,$args);
