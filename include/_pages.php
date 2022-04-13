@@ -50,6 +50,7 @@ abstract class _page{
 		$cari = self::$data;
 		$search = isset($cari['search'])?$cari['search']:'';
 		$src = array();
+		$src_meta = array();
 
 		$meta = array();$tbl_meta='';
 		if(property_exists(new static, 'table')){
@@ -86,7 +87,7 @@ abstract class _page{
 				
 				foreach($args as $key => $val){
 					if(in_array($val, $meta)){
-						$src[] = "(`$tbl_meta`.meta_key='$val' AND `$tbl_meta`.meta_value LIKE '%$kata%') ".$whr;
+						$src_meta[] = "(`$tbl_meta`.meta_key='$val' AND `$tbl_meta`.meta_value LIKE '%$kata%') ";
 					}else{
 						$_src = "$val LIKE '%$kata%'";
 
@@ -99,13 +100,17 @@ abstract class _page{
 					}
 				}
 				
+				$src_meta = implode(" OR ",$src_meta);
+				$GLOBALS['search_meta_global'] = $src_meta;
+
 				$src = implode(" OR ",$src);
 				$where = "AND (".$src.") ";
 			}else{
 				$search = $args[$search];
 				$kata = $cari['words'];
 				if(in_array($search, $meta)){
-					$where = "AND (`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%') ".$whr;
+					$where = 'AND ' . $whr;
+					$GLOBALS['search_meta_global'] = "`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%' ";
 				}else{
 					$_src = "$search LIKE '%$kata%'";
 

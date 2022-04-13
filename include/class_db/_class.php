@@ -8,6 +8,10 @@ abstract class _class{
 
 	private static $_where = '';
 
+	private static $_meta = false;
+
+	private static $_data_meta = array();
+
 	protected static $_type = '';
 
 	private static function schema($key=''){
@@ -254,31 +258,47 @@ abstract class _class{
 
 	}
 
+	// private static function _meta($args=array(),$type=''){
+	// 	$where = self::$_where;
+	// 	$inner = '';$group = $where;
+	// 	$meta = self::list_meta($type);
+	// 	//$select = "SUM(IF(`".static::$tbl_meta."`.meta_key = '{{key}}',`".static::$tbl_meta."`.meta_value,'')) AS {{key}}";
+	// 	$select = "max(case when `".static::$tbl_meta."`.meta_key = '{{key}}' then `".static::$tbl_meta."`.meta_value end) '{{key}}'";
+
+	// 	foreach ($args as $key => $val) {
+	// 		if(in_array($val, $meta)){
+	// 			self::$_join[] = str_replace('{{key}}', $val, $select);
+	// 			$inner = "LEFT JOIN `".static::$tbl_meta."` ON `".static::$table."`.ID = `".static::$tbl_meta."`.meta_id ";
+
+	// 			$group_by = static::$group;
+	// 			if(strpos($group, "ORDER BY") !== false){
+	// 				$group = str_replace("ORDER BY",$group_by." ORDER BY",$where);
+	// 			}else if(strpos($group, "LIMIT") !== false){
+	// 				$group = str_replace("LIMIT",$group_by." LIMIT",$where);
+	// 			}else{
+	// 				$group = $where.$group_by;
+	// 			}
+	// 		}
+	// 	}
+
+	// 	self::$_where = $group;
+	// 	self::$_inner .= $inner;
+
+	// 	return $args;
+	// }
+
 	private static function _meta($args=array(),$type=''){
-		$where = self::$_where;
-		$inner = '';$group = $where;
+		$data = array();
 		$meta = self::list_meta($type);
-		//$select = "SUM(IF(`".static::$tbl_meta."`.meta_key = '{{key}}',`".static::$tbl_meta."`.meta_value,'')) AS {{key}}";
-		$select = "max(case when `".static::$tbl_meta."`.meta_key = '{{key}}' then `".static::$tbl_meta."`.meta_value end) '{{key}}'";
 
 		foreach ($args as $key => $val) {
 			if(in_array($val, $meta)){
-				self::$_join[] = str_replace('{{key}}', $val, $select);
-				$inner = "LEFT JOIN `".static::$tbl_meta."` ON `".static::$table."`.ID = `".static::$tbl_meta."`.meta_id ";
-
-				$group_by = static::$group;
-				if(strpos($group, "ORDER BY") !== false){
-					$group = str_replace("ORDER BY",$group_by." ORDER BY",$where);
-				}else if(strpos($group, "LIMIT") !== false){
-					$group = str_replace("LIMIT",$group_by." LIMIT",$where);
-				}else{
-					$group = $where.$group_by;
-				}
+				self::$_meta = true;
+				$data[] = $val;
 			}
 		}
 
-		self::$_where = $group;
-		self::$_inner .= $inner;
+		self::$_data_meta = $data;
 
 		return $args;
 	}
@@ -302,9 +322,72 @@ abstract class _class{
 				
 				$data[] = $r;//$item;
 			}
+
+			if(self::$_meta){
+				$meta = self::_get_meta_join($where);
+				$data = self::_combine_data($data,$meta);
+			}
 		}
 
 		$DB_NAME = $_database;
 		return $data;
+	}
+
+	protected static function _get_meta_join($where=''){
+		global $DB_NAME;
+		$data = array();$ids = array();
+		$args = array('ID');
+
+		$_database = $DB_NAME;
+		if(property_exists(new static,'database')){
+			$DB_NAME = static::$database;
+		}
+
+		$q = sobad_db::_select_table($where,static::$table,$args);
+		if($q!==0){
+			while($r=$q->fetch_assoc()){
+				$ids[] = $r['ID'];
+			}
+
+			// Get data meta;
+			$ids = implode(',', $ids);
+			$meta = implode(',', self::$_data_meta);
+
+			$whr = isset($search_meta_global) && !empty($search_meta_global) ? 'AND (' . $search_meta_global . ')' : "AND meta_key IN ($meta)";
+			$where = "WHERE meta_id IN ($ids) " . $whr;
+			$r = sobad_db::_select_table($where,static::$tbl_meta,array(
+				'meta_id','meta_key','meta_value'
+			));
+
+			if($r!==0){
+				while($s=$r->fetch_assoc()){
+					$idm = $s['meta_id'];
+					$data[$idm] = array(
+						$s['meta_key']	=> $s['meta_value']
+					);
+				}
+			}
+		}
+
+		$DB_NAME = $_database;
+		return $data;
+	}
+
+	protected static function _combine_data($data=array(),$meta=array()){
+		$default = array();
+		foreach (self::$_data_meta as $key => $val) {
+			$default[$val] = '';
+		}
+
+		$filter = array();
+		foreach ($data as $key => $val) {
+			$idx = $val['ID'];
+			if(isset($meta[$idx])){
+				$_meta = array_replace($default,$meta[$idx]);
+				$filter[] = array_merge($val,$_meta);
+			}
+		}
+
+		return $filter;
 	}
 }
