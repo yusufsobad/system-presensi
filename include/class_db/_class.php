@@ -8,8 +8,6 @@ abstract class _class{
 
 	private static $_where = '';
 
-	private static $_temp_where = '';
-
 	private static $_meta = false;
 
 	private static $_data_meta = array();
@@ -108,7 +106,6 @@ abstract class _class{
 			$meta = true;
 		}
 
-		self::$_temp_where = "WHERE " . $limit;
 		$count = self::_get_data($inner." WHERE ".$limit,array("COUNT('`$table`.ID') AS count"));
 		
 		if($meta){
@@ -132,7 +129,6 @@ abstract class _class{
 		$limit = empty($limit)?'1=1':$limit;
 		$where = "WHERE $limit";
 
-		self::$_temp_where = $where;
 		return self::_check_join($where,$args,$type);
 	}
 
@@ -317,6 +313,11 @@ abstract class _class{
 			$DB_NAME = static::$database;
 		}
 
+		// check ID
+		if(! array_search('ID', $args)){
+			$args[] = 'ID';
+		}
+
 		$q = sobad_db::_select_table($where,static::$table,$args);
 		if($q!==0){
 			while($r=$q->fetch_assoc()){
@@ -325,11 +326,12 @@ abstract class _class{
 				//	$item[$key] = $val;
 				//}
 				
+				$ids[] = $r['ID'];
 				$data[] = $r;//$item;
 			}
 
 			if(self::$_meta){
-				$meta = self::_get_meta_join(self::$_temp_where);
+				$meta = self::_get_meta_join($ids);
 				$data = self::_combine_data($data,$meta);
 			}
 		}
@@ -338,7 +340,7 @@ abstract class _class{
 		return $data;
 	}
 
-	protected static function _get_meta_join($where=''){
+	protected static function _get_meta_join($ids=array()){
 		global $DB_NAME;
 		$data = array();$ids = array();
 		$args = array('ID');
@@ -348,34 +350,27 @@ abstract class _class{
 			$DB_NAME = static::$database;
 		}
 
-		$q = sobad_db::_select_table($where,static::$table,$args);
-		if($q!==0){
-			while($r=$q->fetch_assoc()){
-				$ids[] = $r['ID'];
-			}
+		$meta = array();
+		foreach (self::$_data_meta as $key => $val) {
+			$meta[] = "'" . $val . "'";
+		}
 
-			$meta = array();
-			foreach (self::$_data_meta as $key => $val) {
-				$meta[] = "'" . $val . "'";
-			}
+		// Get data meta;
+		$ids = implode(',', $ids);
+		$meta = implode(',', $meta);
 
-			// Get data meta;
-			$ids = implode(',', $ids);
-			$meta = implode(',', $meta);
+		$whr = isset($search_meta_global) && !empty($search_meta_global) ? 'AND (' . $search_meta_global . ')' : "AND meta_key IN ($meta)";
+		$where = "WHERE meta_id IN ($ids) " . $whr;
+		$r = sobad_db::_select_table($where,static::$tbl_meta,array(
+			'meta_id','meta_key','meta_value'
+		));
 
-			$whr = isset($search_meta_global) && !empty($search_meta_global) ? 'AND (' . $search_meta_global . ')' : "AND meta_key IN ($meta)";
-			$where = "WHERE meta_id IN ($ids) " . $whr;
-			$r = sobad_db::_select_table($where,static::$tbl_meta,array(
-				'meta_id','meta_key','meta_value'
-			));
-
-			if($r!==0){
-				while($s=$r->fetch_assoc()){
-					$idm = $s['meta_id'];
-					$data[$idm] = array(
-						$s['meta_key']	=> $s['meta_value']
-					);
-				}
+		if($r!==0){
+			while($s=$r->fetch_assoc()){
+				$idm = $s['meta_id'];
+				$data[$idm] = array(
+					$s['meta_key']	=> $s['meta_value']
+				);
 			}
 		}
 
