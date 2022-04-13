@@ -356,7 +356,7 @@ abstract class _class{
 
 			$meta = array();
 			foreach (self::$_data_meta as $key => $val) {
-				$meta[] = "'" . $val . "'"
+				$meta[] = "'" . $val . "'";
 			}
 
 			// Get data meta;
