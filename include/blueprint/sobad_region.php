@@ -146,10 +146,10 @@ class sobad_region{
 	public static function _conv_address($address='',$args=array()){
 		$data = array();
 		$keys = array(
-			'village'		=> 'kelurahan',
-			'subdistrict'	=> 'kecamatan',
-			'city'			=> 'kabupaten',
-			'province'		=> 'provinsi'
+			'village'		=> 'village',
+			'subdistrict'	=> 'subdistrict',
+			'city'			=> 'city',
+			'province'		=> 'province'
 		);
 
 		$add = array();
