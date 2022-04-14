@@ -374,7 +374,7 @@ abstract class _class{
 
 		// Default meta
 		foreach ($ids as $key) {
-			$data[$idm] = $default;
+			$data[$key] = $default;
 		}
 
 		// Get data meta;
