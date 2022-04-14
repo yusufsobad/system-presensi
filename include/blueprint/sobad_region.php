@@ -164,7 +164,7 @@ class sobad_region{
 				$_lokasi = $lokasi[0][$vl];
 
 				if($ky=='city'){
-					$_lokasi = self::_conv_type_city($lokasi[0]['tipe']);
+					$_lokasi = self::_conv_type_city($lokasi[0]['type']);
 					$_lokasi .= ' '.$lokasi[0][$vl];
 				}
 
