@@ -366,8 +366,15 @@ abstract class _class{
 		}
 
 		$meta = array();
+		$default = array();
 		foreach (self::$_data_meta as $key => $val) {
+			$default[$val] = '';
 			$meta[] = "'" . $val . "'";
+		}
+
+		// Default meta
+		foreach ($ids as $key) {
+			$data[$idm] = $default;
 		}
 
 		// Get data meta;
@@ -380,16 +387,9 @@ abstract class _class{
 			'meta_id','meta_key','meta_value'
 		));
 
-		// Default meta
-		$default = array();
-		foreach (self::$_data_meta as $key => $val) {
-			$default[$val] = '';
-		}
-
 		if($r!==0){
 			while($s=$r->fetch_assoc()){
 				$idm = $s['meta_id'];
-				$data[$idm] = $default;
 
 				$key = $s['meta_key'];
 				$data[$idm][$key] = $s['meta_value'];
