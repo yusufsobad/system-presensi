@@ -152,7 +152,7 @@ abstract class _page{
 		$prov = array();
 		if($id!=0){
 			$prov = sobad_region::get_province_by($id);
-			$prov = convToOption($kec,'ID','province');
+			$prov = convToOption($prov,'ID','province');
 		}
 		
 		return $prov;
