@@ -141,6 +141,14 @@ class sobad_region{
 		return self::_get_wilayah($where,$args);
 	}
 
+	public static function get_postcodes($id=0){
+		self::$table = 'sasi-village';
+		$args = array('DISTINCT postal_code');
+		
+		$where = "WHERE id_subdistrict='$id'";
+		return self::_get_wilayah($where,$args);
+	}
+
 	// ----------------------------------------------------
 	// Conversi Address -----------------------------------
 	// ----------------------------------------------------
