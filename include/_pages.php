@@ -194,8 +194,8 @@ abstract class _page{
 	public static function get_postcodes($id=0){
 		$pos = array();
 		if($id!=0){
-			$pos = sobad_region::get_village_by($id);
-			$pos = convToOption($pos,'ID','postal_code');
+			$pos = sobad_region::get_postcodes($id);
+			$pos = convToOption($pos,'postal_code','postal_code');
 		}
 		
 		return $pos;
