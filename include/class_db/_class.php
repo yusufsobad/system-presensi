@@ -122,6 +122,11 @@ abstract class _class{
 	public static function get_id($id,$args=array(),$limit='',$type=''){
 		self::$_meta = false;
 
+		// check ID
+		if(! array_search('ID', $args)){
+			$args[] = 'ID';
+		}
+
 		$where = "WHERE `".static::$table."`.ID='$id' $limit";
 		return self::_check_join($where,$args,$type);
 	}
