@@ -147,18 +147,26 @@ abstract class _page{
 	// Function Form Select wilayah -----------------------------
 	// ----------------------------------------------------------
 
-		// -------------- get value select opt ----------------------
+	// -------------- get value select opt ----------------------
+	public static function get_provinces($id=1){
+		$kota = array();
+		if($id!=0){
+			$cities = sobad_region::get_province_by($id);
+			foreach($cities as $key => $val){
+				$kota[$kab['ID']] = $val['province'];
+			}
+		}
+		
+		return $kota;
+	}
+
 	public static function get_cities($id=0){
 		$kota = array();
 		if($id!=0){
-			$cities = sobad_wilayah::get_cities($id);
+			$cities = sobad_region::get_city_by($id);
 			foreach($cities as $key => $kab){
-				$tipe = $kab['tipe'];
-				if($tipe=='Kabupaten'){
-					$tipe = 'Kab.';
-				}
-				
-				$kota[$kab['id_kab']] = $tipe.' '.$kab['kabupaten'];
+				$tipe = sobad_region::_conv_type_city($kab['type']);
+				$kota[$kab['ID']] = $tipe.' '.$kab['city'];
 			}
 		}
 		
@@ -169,17 +177,27 @@ abstract class _page{
 		$kec = array();
 		if($id!=0){
 			$kec = sobad_wilayah::get_subdistricts($id);
-			$kec = convToOption($kec,'id_kec','kecamatan');
+			$kec = convToOption($kec,'ID','subdistrict');
 		}
 		
 		return $kec;
 	}
 
-	public static function get_postcodes($prov=0,$kota=0,$kec=0){
+	public static function get_villages($id=0){
 		$pos = array();
 		if($kec!=0){
-			$pos = sobad_wilayah::get_postcode($prov,$kota,$kec);
-			$pos = convToOption($pos,'kodepos','kodepos');
+			$pos = sobad_wilayah::get_village_by($kec);
+			$pos = convToOption($pos,'ID','village');
+		}
+		
+		return $pos;
+	}
+
+	public static function get_postcodes($id=0){
+		$pos = array();
+		if($kec!=0){
+			$pos = sobad_wilayah::get_village_by($kec);
+			$pos = convToOption($pos,'ID','postal_code');
 		}
 		
 		return $pos;
@@ -197,14 +215,13 @@ abstract class _page{
 		return self::_conv_option($data);
 	}
 
-	public static function option_postcode($id=0){
-		$ids = sobad_wilayah::get_id_by_subdistrict($id);
+	public static function option_village($id=0){
+		$data = self::get_villages($id);	
+		return self::_conv_option($data);	
+	}
 
-		$prov = $ids[0]['id_prov'];
-		$kab = $ids[0]['id_kab'];
-		$kec = $ids[0]['id_kec'];
-		
-		$data = self::get_postcodes($prov,$kab,$kec);	
+	public static function option_postcode($id=0){
+		$data = self::get_postcodes($id);	
 		return self::_conv_option($data);	
 	}
 
