@@ -8,8 +8,8 @@ class sobad_region{
 	
 	private static function _list(){
 		$list = sobad_table::_get_list(self::$table);
-		$lis[] = 'ID';
-		
+		$list[] = 'ID';
+
 		return $list;
 	}
 
