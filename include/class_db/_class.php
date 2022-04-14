@@ -128,7 +128,7 @@ abstract class _class{
 
 	public static function get_all($args=array(),$limit='',$type=''){
 		self::$_meta = false;
-		
+
 		$check = substr($limit,0,4);
 		$check = trim($check);
 
@@ -380,12 +380,19 @@ abstract class _class{
 			'meta_id','meta_key','meta_value'
 		));
 
+		// Default meta
+		$default = array();
+		foreach (self::$_data_meta as $key => $val) {
+			$default[$val] = '';
+		}
+
 		if($r!==0){
 			while($s=$r->fetch_assoc()){
 				$idm = $s['meta_id'];
-				$data[$idm] = array(
-					$s['meta_key']	=> $s['meta_value']
-				);
+				$data[$idm] = $default;
+
+				$key = $s['meta_key'];
+				$data[$idm][$key] = $s['meta_value'];
 			}
 		}
 
@@ -394,17 +401,11 @@ abstract class _class{
 	}
 
 	protected static function _combine_data($data=array(),$meta=array()){
-		$default = array();
-		foreach (self::$_data_meta as $key => $val) {
-			$default[$val] = '';
-		}
-
 		$filter = array();
 		foreach ($data as $key => $val) {
 			$idx = $val['ID'];
 			if(isset($meta[$idx])){
-				$_meta = array_replace($default,$meta[$idx]);
-				$filter[] = array_merge($val,$_meta);
+				$filter[] = array_merge($val,$meta[$idx]);
 			}
 		}
 
