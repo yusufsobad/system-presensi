@@ -194,7 +194,7 @@ abstract class _page{
 	public static function get_postcodes($id=0){
 		$pos = array();
 		if($kec!=0){
-			$pos = sobad_wilayah::get_village_by($kec);
+			$pos = sobad_wilayah::get_village_by($id);
 			$pos = convToOption($pos,'ID','postal_code');
 		}
 		
