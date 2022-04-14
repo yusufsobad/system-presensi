@@ -174,7 +174,7 @@ abstract class _page{
 	public static function get_subdistricts($id=0){
 		$kec = array();
 		if($id!=0){
-			$kec = sobad_region::get_subdistricts($id);
+			$kec = sobad_region::get_subdistrict_by($id);
 			$kec = convToOption($kec,'ID','subdistrict');
 		}
 		
