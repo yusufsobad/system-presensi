@@ -149,15 +149,13 @@ abstract class _page{
 
 	// -------------- get value select opt ----------------------
 	public static function get_provinces($id=1){
-		$kota = array();
+		$prov = array();
 		if($id!=0){
-			$cities = sobad_region::get_province_by($id);
-			foreach($cities as $key => $val){
-				$kota[$kab['ID']] = $val['province'];
-			}
+			$prov = sobad_region::get_province_by($id);
+			$prov = convToOption($kec,'ID','province');
 		}
 		
-		return $kota;
+		return $prov;
 	}
 
 	public static function get_cities($id=0){
@@ -204,6 +202,11 @@ abstract class _page{
 	}
 
 	// -------------- option select onchange --------------------
+
+	public static function option_province($id=1){
+		$data = self::get_provinces($id);
+		return self::_conv_option($data);
+	}
 
 	public static function option_city($id=0){
 		$data = self::get_cities($id);
