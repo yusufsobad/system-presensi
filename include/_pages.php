@@ -174,7 +174,7 @@ abstract class _page{
 	public static function get_subdistricts($id=0){
 		$kec = array();
 		if($id!=0){
-			$kec = sobad_wilayah::get_subdistricts($id);
+			$kec = sobad_region::get_subdistricts($id);
 			$kec = convToOption($kec,'ID','subdistrict');
 		}
 		
@@ -184,7 +184,7 @@ abstract class _page{
 	public static function get_villages($id=0){
 		$pos = array();
 		if($kec!=0){
-			$pos = sobad_wilayah::get_village_by($kec);
+			$pos = sobad_region::get_village_by($kec);
 			$pos = convToOption($pos,'ID','village');
 		}
 		
@@ -194,7 +194,7 @@ abstract class _page{
 	public static function get_postcodes($id=0){
 		$pos = array();
 		if($id!=0){
-			$pos = sobad_wilayah::get_village_by($id);
+			$pos = sobad_region::get_village_by($id);
 			$pos = convToOption($pos,'ID','postal_code');
 		}
 		
