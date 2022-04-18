@@ -418,7 +418,7 @@ class sobad_db extends conn{
 
 		// Check table exist
 		$temp_table = "temp-" . $args['temp'];
-		$sql = "SELECT COUNT(*)
+		$sql = "SELECT table_name
 		FROM information_schema.tables 
 		WHERE table_schema = '$DB_NAME' 
 		AND table_name = '$temp_table'";
