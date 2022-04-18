@@ -520,6 +520,18 @@ abstract class _page{
 			$idx = sobad_db::_insert_table($schema['table'],$data);
 			$q = self::_add_meta_db($idx,$args,$schema);
 
+			// Check temporary
+			if(isset($schema['temporary'])){
+				$temp = $schema['temporary'];
+				if(isset($temp[$post])){
+					// insert index in temporary table
+					$temp_table = "temp-" . $temp[$post]['temp'];
+					sobad_db::_insert_table($temp_table,array(
+						'reff_temp' => $idx
+					));
+				}
+			}
+
 			$id = $idx;
 		}else{
 
