@@ -434,7 +434,7 @@ class sobad_db extends conn{
 			$s = $conn->query($sql) or die('Gagal membuat table temporary!!!');
 		}else{
 			// reset data table
-			$conn->query("TRUNCATE TABLE $temp_table") or die('Gagal reset data table!!!');
+			$conn->query("TRUNCATE TABLE `$temp_table`") or die('Gagal reset data table!!!');
 		}
 
 		// Update temporary
