@@ -66,6 +66,7 @@ abstract class _class{
 
 	public static function count($limit='1=1 ',$args=array(),$type=''){
 		self::$_meta = false;
+		self::$_temp = true;
 		self::$_type = $type;
 
 		$inner = '';$meta = false;
@@ -85,7 +86,7 @@ abstract class _class{
 		// Check Temporary
 		if(isset($blueprint['temporary']) && self::$_temp){
 			$temp = $blueprint['temporary'];
-			$temp_table = $temp[$type]['temp'];
+			$temp_table = "temp-" . $temp[$type]['temp'];
 			self::$_temp_table = $temp_table;
 
 			$inner .= "LEFT JOIN `" . $table . "` ON `" . $temp_table . "`.reff_temp = `" . $table . "`.ID ";
@@ -134,6 +135,7 @@ abstract class _class{
 	
 	public static function get_id($id,$args=array(),$limit='',$type=''){
 		self::$_meta = false;
+		self::$_temp = false;
 
 		// check ID
 		if(! array_search('ID', $args)){
@@ -146,6 +148,7 @@ abstract class _class{
 
 	public static function get_all($args=array(),$limit='',$type=''){
 		self::$_meta = false;
+		self::$_temp = true;
 
 		$check = substr($limit,0,4);
 		$check = trim($check);
@@ -191,6 +194,15 @@ abstract class _class{
 			$metas = self::list_meta($type);
 
 			$args = array_merge($user,$joins,$metas);
+		}
+
+		// Check Temporary
+		if(isset($blueprint['temporary']) && self::$_temp){
+			$temp = $blueprint['temporary'];
+			$temp_table = "temp-" . $temp[$type]['temp'];
+			self::$_temp_table = $temp_table;
+
+			self::$_inner .= "LEFT JOIN `" . $table . "` ON `" . $temp_table . "`.reff_temp = `" . $table . "`.ID ";
 		}
 	
 		if(isset($blueprint['detail'])){

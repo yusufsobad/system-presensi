@@ -6,8 +6,9 @@ require "include/config/hostname.php";
 // Check Hostname yang mengakses
 new hostname();
 
-require_once 'include/class_db/sync_db.php';
+require_once 'include/url_asset.php';
 require_once 'include/class_db.php';
+require_once 'include/class_db/sync_db.php';
 
 // Create table temporary
 $temporary = unserialize(_temp_table);
