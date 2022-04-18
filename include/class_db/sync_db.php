@@ -26,6 +26,10 @@ class sobad_db extends conn{
 		self::_create_list_table('sobad_table',$schema);
 		return true;
 	}
+
+	public static function _create_temporary_table($temporary=array()){
+		self::_create_temporary_query($temporary);
+	}
 	
 	public static function _table_db($table){
 		$list = sobad_table::_get_table($table);
@@ -390,6 +394,58 @@ class sobad_db extends conn{
 		if(in_array($dataType, array('datetime')))return "date('Y-m-d H:i:s')";
 
 		return "''";
+	}
+
+	// ----------------------------------------------------------------------
+	// ---- Temporary Table Query -------------------------------------------
+	// ----------------------------------------------------------------------
+
+	private static function _create_temporary_query($args=array()){
+		global $DB_NAME;
+
+		$conn = parent::connect();
+
+		// Get data table temporary
+		$table = $args['table'];
+		$column = $args['column'];
+		$value = $args['value'];
+
+		$where = "WHERE $column='$value'";
+		$data = self::_select_table($where,$table,array('ID'));
+		if($data===0){
+			return false;
+		}
+
+		// Check table exist
+		$temp_table = "temp-" . $args['temp'];
+		$sql = "SELECT COUNT(*)
+		FROM information_schema.tables 
+		WHERE table_schema = '$DB_NAME' 
+		AND table_name = '$temp_table'";
+
+		$q = $conn->query($sql) or die('Gagal check table exist!!!');
+		if($q->num_rows<1){
+			// sql to create table
+			$sql = "CREATE TABLE `$temp_table` (
+			id_temp INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+			reff_temp INT(11) NOT NULL,
+			)";
+
+			$s = $conn->query($sql) or die('Gagal membuat table temporary!!!');
+		}else{
+			// reset data table
+			$conn->query("TRUNCATE TABLE $temp_table") or die('Gagal reset data table!!!');
+		}
+
+		// Update temporary
+		while($r=$data->fetch_assoc()){
+			$idx = $r['ID'];
+			self::_insert_table($temp_table,array(
+				'reff_temp'		=> $idx
+			));
+		}
+
+		return true;
 	}
 	
 }

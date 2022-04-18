@@ -14,6 +14,10 @@ abstract class _class{
 
 	protected static $_type = '';
 
+	protected static $_temp = false;
+
+	protected static $_temp_table = '';
+
 	private static function schema($key=''){
 		$args = static::blueprint(self::$_type);
 
@@ -76,6 +80,15 @@ abstract class _class{
 				$inner .= self::$_inner;
 				self::$_inner = '';
 			}
+		}
+
+		// Check Temporary
+		if(isset($blueprint['temporary']) && self::$_temp){
+			$temp = $blueprint['temporary'];
+			$temp_table = $temp[$type]['temp'];
+			self::$_temp_table = $temp_table;
+
+			$inner .= "LEFT JOIN `" . $table . "` ON `" . $temp_table . "`.reff_temp = `" . $table . "`.ID ";
 		}
 
 		// Check Join
@@ -332,7 +345,8 @@ abstract class _class{
 			$DB_NAME = static::$database;
 		}
 
-		$q = sobad_db::_select_table($where,static::$table,$args);
+		$table = !empty(self::$_temp_table) && self::$_temp ?self::$_temp_table : static::$table;
+		$q = sobad_db::_select_table($where,$table,$args);
 		if($q!==0){
 			while($r=$q->fetch_assoc()){
 				//$item = array();
@@ -356,6 +370,7 @@ abstract class _class{
 			}
 		}
 
+		self::$_temp_table = '';
 		$DB_NAME = $_database;
 		return $data;
 	}

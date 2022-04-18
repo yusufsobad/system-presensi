@@ -95,3 +95,10 @@ define('convToPDF','createpdf');
 // Awalan nama table
 
 define('base','');
+
+// Temporary table
+$temp_table = array(
+	'' // classname blueprint
+);
+
+define('_temp_table',serialize($temp_table));
