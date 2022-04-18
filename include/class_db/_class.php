@@ -74,14 +74,6 @@ abstract class _class{
 
 		$blueprint = self::schema();		
 		$table = $blueprint['table'];
-		if(isset($blueprint['detail'])){
-			$check = array_filter($blueprint['detail']);
-			if(!empty($check)){
-				self::_detail($args,$table,$blueprint['detail']);
-				$inner .= self::$_inner;
-				self::$_inner = '';
-			}
-		}
 
 		// Check Temporary
 		if(isset($blueprint['temporary']) && self::$_temp){
@@ -90,6 +82,16 @@ abstract class _class{
 			self::$_temp_table = $temp_table;
 
 			$inner .= "LEFT JOIN `" . $table . "` ON `" . $temp_table . "`.reff_temp = `" . $table . "`.ID ";
+		}
+
+		// Check Detail
+		if(isset($blueprint['detail'])){
+			$check = array_filter($blueprint['detail']);
+			if(!empty($check)){
+				self::_detail($args,$table,$blueprint['detail']);
+				$inner .= self::$_inner;
+				self::$_inner = '';
+			}
 		}
 
 		// Check Join

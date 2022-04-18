@@ -440,7 +440,7 @@ class sobad_db extends conn{
 		// Update temporary
 		while($r=$data->fetch_assoc()){
 			$idx = $r['ID'];
-			$query = "INSERT INTO `$temp_table`('reff_temp') VALUES('$idx')";
+			$query = "INSERT INTO `$temp_table`(reff_temp) VALUES('$idx')";
 			$conn->query($query) or die('Gagal insert data temporary!!!');
 		}
 
