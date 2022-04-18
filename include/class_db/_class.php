@@ -66,7 +66,7 @@ abstract class _class{
 
 	public static function count($limit='1=1 ',$args=array(),$type=''){
 		self::$_meta = false;
-		self::$_temp = true;
+		self::$_temp = false;
 		self::$_type = $type;
 
 		$inner = '';$meta = false;
