@@ -201,10 +201,14 @@ abstract class _class{
 		// Check Temporary
 		if(isset($blueprint['temporary']) && self::$_temp){
 			$temp = $blueprint['temporary'];
-			$temp_table = "temp-" . $temp[$type]['temp'];
-			self::$_temp_table = $temp_table;
+			if(isset($temp[$type])){
+				$temp_table = "temp-" . $temp[$type]['temp'];
+				self::$_temp_table = $temp_table;
 
-			self::$_inner .= "LEFT JOIN `" . $table . "` ON `" . $temp_table . "`.reff_temp = `" . $table . "`.ID ";
+				self::$_inner .= "LEFT JOIN `" . $table . "` ON `" . $temp_table . "`.reff_temp = `" . $table . "`.ID ";
+			}else{
+				self::$_temp = false;
+			}
 		}
 	
 		if(isset($blueprint['detail'])){
