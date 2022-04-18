@@ -524,11 +524,16 @@ abstract class _page{
 			if(isset($schema['temporary'])){
 				$temp = $schema['temporary'];
 				if(isset($temp[$post])){
+					$conn = sobad_db::connect();
+
 					// insert index in temporary table
 					$temp_table = "temp-" . $temp[$post]['temp'];
 					sobad_db::_insert_table($temp_table,array(
 						'reff_temp' => $idx
 					));
+
+					$query = "INSERT INTO `$temp_table`(reff_temp) VALUES('$idx')";
+					$conn->query($query) or die('Gagal insert data temporary!!!');
 				}
 			}
 
