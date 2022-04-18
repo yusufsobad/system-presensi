@@ -428,7 +428,7 @@ class sobad_db extends conn{
 			// sql to create table
 			$sql = "CREATE TABLE `$temp_table` (
 			id_temp INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-			reff_temp INT(11) NOT NULL,
+			reff_temp INT(11)
 			)";
 
 			$s = $conn->query($sql) or die('Gagal membuat table temporary!!!');
@@ -440,9 +440,8 @@ class sobad_db extends conn{
 		// Update temporary
 		while($r=$data->fetch_assoc()){
 			$idx = $r['ID'];
-			self::_insert_table($temp_table,array(
-				'reff_temp'		=> $idx
-			));
+			$query = "INSERT INTO `$temp_table`('reff_temp') VALUES('$idx')";
+			$conn->query($query);
 		}
 
 		return true;
