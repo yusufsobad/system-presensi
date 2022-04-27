@@ -140,7 +140,7 @@ abstract class _class{
 		self::$_temp = false;
 
 		// check ID
-		if(! array_search('ID', $args)){
+		if(! in_array('ID', $args)){
 			$args[] = 'ID';
 		}
 
@@ -156,7 +156,7 @@ abstract class _class{
 		$check = trim($check);
 
 		// check ID
-		if(! array_search('ID', $args)){
+		if(! in_array('ID', $args)){
 			$args[] = 'ID';
 		}
 
