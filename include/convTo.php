@@ -102,15 +102,27 @@ function conv_mPDF($args=array()){
 	$html = array();
 	$css = array();
 
-	$footer = '';
-	if(isset($args['footer'])){
-		$func = $args['footer'];
+	// $footer = '';
+	// if(isset($args['footer'])){
+	// 	$func = $args['footer'];
 
-		if(is_callable($func)){
-			ob_start();
-				$func();
-			$footer = ob_get_clean();
+	// 	if(is_callable($func)){
+	// 		ob_start();
+	// 			$func();
+	// 		$footer = ob_get_clean();
+	// 	}
+	// }
+
+	$footer = array();
+	$type = gettype($args['footer']);
+	if($type=='array'){
+		foreach ($args['footer'] as $key => $val) {
+			$object = isset($val[$key]['object'])?$val[$key]['object']:'';
+			$footer[] = conv_htmlToVar($val[$key]['footer'],$val[$key]['data_footer'],$object);
 		}
+	}else{
+		$object = isset($args['object'])?$args['object']:'';
+		$footer[] = conv_htmlToVar($args['footer'],$args['data_footer'],$object);
 	}
 
 	if(isset($args['style'])){
@@ -173,8 +185,12 @@ function conv_mPDF($args=array()){
 		    'margin_right'    => isset($margin['right'])?$margin['right']:10,
 		]);
 
-		$mpdf->SetFooter($footer);  
+		// $mpdf->SetFooter($footer);  
 		$mpdf->SetDisplayMode('fullwidth');
+
+		foreach ($footer as $key => $val) {
+			$mpdf->SetFooter($val);
+		}
 
 		foreach ($css as $key => $val) {
 			$mpdf->WriteHTML($val,1);
