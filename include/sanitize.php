@@ -800,7 +800,7 @@ class formatting extends _error{
 	 * @return string Converted text.
 	 */
 	private static function wp_pre_kses_less_than( $text ) {
-		return preg_replace_callback( '%<[^>]*?((?=<)|>|$)%', array($this,'wp_pre_kses_less_than_callback'), $text );
+		return preg_replace_callback( '%<[^>]*?((?=<)|>|$)%', array('formatting','wp_pre_kses_less_than_callback'), $text );
 	}
 
 	/**
@@ -811,7 +811,7 @@ class formatting extends _error{
 	 * @param array $matches Populated by matches to preg_replace.
 	 * @return string The text returned after esc_html if needed.
 	 */
-	private static function wp_pre_kses_less_than_callback( $matches ) {
+	public static function wp_pre_kses_less_than_callback( $matches ) {
 		if ( false === strpos( $matches[0], '>' ) ) {
 			return esc_html( $matches[0] );
 		}
