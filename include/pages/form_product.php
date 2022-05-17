@@ -29,7 +29,7 @@ abstract class form_product extends _file_manager{
 		$order_by = " ORDER BY ".$sort;
 		$where .= $order_by.$limit;
 
-		$sum_data = sobad_item::count("1=1 ".$cari);
+		$sum_data = sobad_item::count("1=1 ".$cari,$args);
 		$args = sobad_item::get_all($args,$where);
 
 		$load = isset($filter['load'])?$filter['load']:'here_modal2';

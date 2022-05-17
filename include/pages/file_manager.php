@@ -28,8 +28,8 @@ abstract class _file_manager extends _page{
 		$func = static::$file_type;
 		$func = 'get_'.$func.'s';
 
+		$sum_data = $object::{$func}($args,$cari);
 		$args = $object::{$func}($args,$where);
-		$sum_data = $object::{$func}(array('ID'),$cari);
 
 		$_list = array();
 		
