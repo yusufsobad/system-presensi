@@ -99,20 +99,21 @@ function conv_htmlToPDF($args=array()){
 
 function conv_mPDF($args=array()){
 	$data = array();
-	$html = array();
-	$css = array();
 
-	// $footer = '';
-	// if(isset($args['footer'])){
-	// 	$func = $args['footer'];
-
-	// 	if(is_callable($func)){
-	// 		ob_start();
-	// 			$func();
-	// 		$footer = ob_get_clean();
-	// 	}
-	// }
-
+	// Setting Config Header Report MPDF
+	$header = array();
+	$type = gettype($args['header']);
+	if($type=='array'){
+		foreach ($args['header'] as $key => $val) {
+			$object = isset($val[$key]['object'])?$val[$key]['object']:'';
+			$header[] = conv_htmlToVar($val[$key]['header'],$val[$key]['data_header'],$object);
+		}
+	}else{
+		$object = isset($args['object'])?$args['object']:'';
+		$header[] = conv_htmlToVar($args['header'],$args['data_header'],$object);
+	}
+	
+	// Setting Config Footer Report MPDF
 	$footer = array();
 	$type = gettype($args['footer']);
 	if($type=='array'){
@@ -125,6 +126,8 @@ function conv_mPDF($args=array()){
 		$footer[] = conv_htmlToVar($args['footer'],$args['data_footer'],$object);
 	}
 
+	// Setting Config CSS Report MPDF
+	$css = array();
 	if(isset($args['style'])){
 		foreach($args['style'] as $key => $val){
 			if(is_callable($val)){
@@ -135,6 +138,8 @@ function conv_mPDF($args=array()){
 		}
 	}
 
+	// Setting Config HTML Report MPDF
+	$html = array();
 	$type = gettype($args['html']);
 	if($type=='array'){
 		foreach ($args['html'] as $key => $val) {
@@ -187,6 +192,10 @@ function conv_mPDF($args=array()){
 
 		// $mpdf->SetFooter($footer);  
 		$mpdf->SetDisplayMode('fullwidth');
+
+		foreach ($header as $key => $val) {
+			$mpdf->SetHTMLHeader($val);
+		}
 
 		foreach ($footer as $key => $val) {
 			$mpdf->SetFooter($val);
