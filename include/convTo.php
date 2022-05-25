@@ -178,23 +178,25 @@ function conv_mPDF($args=array()){
 	$margin['left'] = $args['margin_left'];
 	$margin['right'] = $args['margin_right'];
 
-	// Margin Top
-	$margin['auto_margin_top'] = isset($args['auto_margin_top']) ? $args['auto_margin_top'] : '';
-	$config_margin = array();
-	if (isset($margin['auto_margin_top']) || $margin['auto_margin_top'] !== '') {
-		$config_margin_top = array(
-			'setAutoTopMargin' => isset($args['auto_margin_top']) ? $args['auto_margin_top'] : ''
-		);
-	}
+	$margin['auto_margin_top'] = $args['auto_margin_top'];
 
-	// Margin Bottom
-	$margin['auto_margin_bottom'] = isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : '';
-	$config_margin = array();
-	if (isset($margin['auto_margin_bottom']) || $margin['auto_margin_bottom'] !== '') {
-		$config_margin_bottom = array(
-			'setAutoBottomMargin' => isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : ''
-		);
-	}
+	// // Margin Top
+	// $margin['auto_margin_top'] = isset($args['auto_margin_top']) ? $args['auto_margin_top'] : '';
+	// $config_margin = array();
+	// if (isset($margin['auto_margin_top']) || $margin['auto_margin_top'] !== '') {
+	// 	$config_margin_top = array(
+	// 		'setAutoTopMargin' => isset($args['auto_margin_top']) ? $args['auto_margin_top'] : ''
+	// 	);
+	// }
+
+	// // Margin Bottom
+	// $margin['auto_margin_bottom'] = isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : '';
+	// $config_margin = array();
+	// if (isset($margin['auto_margin_bottom']) || $margin['auto_margin_bottom'] !== '') {
+	// 	$config_margin_bottom = array(
+	// 		'setAutoBottomMargin' => isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : ''
+	// 	);
+	// }
 	
 	try{
 		$mpdf = new \Mpdf\Mpdf([
@@ -206,8 +208,9 @@ function conv_mPDF($args=array()){
 		    'margin_bottom'   		=> isset($margin['bottom'])?$margin['bottom']:10,
 		    'margin_left'     		=> isset($margin['left'])?$margin['left']:10,
 		    'margin_right'    		=> isset($margin['right'])?$margin['right']:10,
-			$config_margin_top,
-			$config_margin_bottom
+			'setAutoTopMargin'		=> $margin['auto_margin_top']
+			// $config_margin_top,
+			// $config_margin_bottom
 		]);
 
 		// $mpdf->SetFooter($footer);  
