@@ -122,6 +122,8 @@ function conv_mPDF($args=array()){
 	$data = array();
 
 	// Setting Config Header Report MPDF
+	$args['header'] = isset($args['header']) ? $args['header'] : '';
+	$args['data_header'] = isset($args['data_header']) ? $args['data_header'] : '';
 	$header = array();
 	$type = gettype($args['header']);
 	if($type=='array'){
@@ -135,6 +137,8 @@ function conv_mPDF($args=array()){
 	}
 	
 	// Setting Config Footer Report MPDF
+	$args['footer'] = isset($args['footer']) ? $args['footer'] : '';
+	$args['data_footer'] = isset($args['data_footer']) ? $args['data_footer'] : '';
 	$footer = array();
 	$type = gettype($args['footer']);
 	if($type=='array'){
