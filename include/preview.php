@@ -50,7 +50,7 @@ if(!isset($_GET['page'])){
 
 class sobad_preview{
 	public static function _get($args=array()){
-		new _libs_(array(convToPDF));
+		// new _libs_(array(convToPDF));
 
 		$func = $args['func'];
 		$data = $args['data'];

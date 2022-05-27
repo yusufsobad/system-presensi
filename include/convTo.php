@@ -21,14 +21,8 @@ function sobad_convToPdf($args = array()){
 		new _libs_(array('mpdf'));
 		return conv_mPDF($args);
 	} else {
-		if(convToPDF=="createpdf"){
-			return conv_htmlToPDF($args);
-		}else if(convToPDF=="mpdf"){
-			return conv_mPDF($args);
-		}else{
-			if(is_callable("conv_toPDF")){
-				conv_toPDF($args);
-			}
+		if(is_callable("conv_toPDF")){
+			conv_toPDF($args);
 		}
 	}
 
@@ -37,9 +31,9 @@ function sobad_convToPdf($args = array()){
 	// }else if(convToPDF=="mpdf"){
 	// 	return conv_mPDF($args);
 	// }else{
-	// 	if(is_callable("conv_toPDF")){
-	// 		conv_toPDF($args);
-	// 	}
+		// if(is_callable("conv_toPDF")){
+		// 	conv_toPDF($args);
+		// }
 	// }
 }
 
