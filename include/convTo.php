@@ -11,15 +11,36 @@ function sobad_convToPdf($args = array()){
 
 	date_default_timezone_set('UTC');
 
-	if(convToPDF=="createpdf"){
+	$key['key'] = isset($args['format']) ? $args['format'] : '';
+	$format = isset($key['key']) ? $key['key'] : '';
+
+	if ($format == "createpdf") {
+		new _libs_(array('createpdf'));
 		return conv_htmlToPDF($args);
-	}else if(convToPDF=="mpdf"){
+	} else if ($format == "mpdf") {
+		new _libs_(array('mpdf'));
 		return conv_mPDF($args);
-	}else{
-		if(is_callable("conv_toPDF")){
-			conv_toPDF($args);
+	} else {
+		if(convToPDF=="createpdf"){
+			return conv_htmlToPDF($args);
+		}else if(convToPDF=="mpdf"){
+			return conv_mPDF($args);
+		}else{
+			if(is_callable("conv_toPDF")){
+				conv_toPDF($args);
+			}
 		}
 	}
+
+	// if(convToPDF=="createpdf"){
+	// 	return conv_htmlToPDF($args);
+	// }else if(convToPDF=="mpdf"){
+	// 	return conv_mPDF($args);
+	// }else{
+	// 	if(is_callable("conv_toPDF")){
+	// 		conv_toPDF($args);
+	// 	}
+	// }
 }
 
 function conv_htmlToVar($html='',$data='',$object=''){
@@ -178,25 +199,23 @@ function conv_mPDF($args=array()){
 	$margin['left'] = $args['margin_left'];
 	$margin['right'] = $args['margin_right'];
 
-	$margin['auto_margin_top'] = $args['auto_margin_top'];
+	// $margin['auto_margin_top'] = $args['auto_margin_top'];
 
-	// // Margin Top
-	// $margin['auto_margin_top'] = isset($args['auto_margin_top']) ? $args['auto_margin_top'] : '';
-	// $config_margin = array();
-	// if (isset($margin['auto_margin_top']) || $margin['auto_margin_top'] !== '') {
-	// 	$config_margin_top = array(
-	// 		'setAutoTopMargin' => isset($args['auto_margin_top']) ? $args['auto_margin_top'] : ''
-	// 	);
-	// }
+	// Margin Top
+	$margin['auto_margin_top'] = isset($args['auto_margin_top']) ? $args['auto_margin_top'] : '';
+	if (isset($margin['auto_margin_top']) || $margin['auto_margin_top'] !== '') {
+		$config_margin_top = array(
+			'setAutoTopMargin' => isset($args['auto_margin_top']) ? $args['auto_margin_top'] : ''
+		);
+	}
 
-	// // Margin Bottom
-	// $margin['auto_margin_bottom'] = isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : '';
-	// $config_margin = array();
-	// if (isset($margin['auto_margin_bottom']) || $margin['auto_margin_bottom'] !== '') {
-	// 	$config_margin_bottom = array(
-	// 		'setAutoBottomMargin' => isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : ''
-	// 	);
-	// }
+	// Margin Bottom
+	$margin['auto_margin_bottom'] = isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : '';
+	if (isset($margin['auto_margin_bottom']) || $margin['auto_margin_bottom'] !== '') {
+		$config_margin_bottom = array(
+			'setAutoBottomMargin' => isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : ''
+		);
+	}
 	
 	try{
 		$mpdf = new \Mpdf\Mpdf([
@@ -208,9 +227,9 @@ function conv_mPDF($args=array()){
 		    'margin_bottom'   		=> isset($margin['bottom'])?$margin['bottom']:10,
 		    'margin_left'     		=> isset($margin['left'])?$margin['left']:10,
 		    'margin_right'    		=> isset($margin['right'])?$margin['right']:10,
-			'setAutoTopMargin'		=> $margin['auto_margin_top']
-			// $config_margin_top,
-			// $config_margin_bottom
+			// 'setAutoTopMargin'		=> isset($margin['auto_margin_top']) ? $margin['auto_margin_top'] : false
+			$config_margin_top,
+			$config_margin_bottom
 		]);
 
 		// $mpdf->SetFooter($footer);  
