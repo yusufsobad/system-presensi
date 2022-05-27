@@ -11,8 +11,7 @@ function sobad_convToPdf($args = array()){
 
 	date_default_timezone_set('UTC');
 
-	$key['key'] = isset($args['type_pdf']) ? $args['type_pdf'] : '';
-	$format = isset($key['key']) ? $key['key'] : convToPDF;
+	$format = isset($args['type_pdf']) ? $args['type_pdf'] : convToPDF;
 
 	if ($format == "createpdf") {
 		new _libs_(array('createpdf'));
@@ -25,16 +24,6 @@ function sobad_convToPdf($args = array()){
 			conv_toPDF($args);
 		}
 	}
-
-	// if(convToPDF=="createpdf"){
-	// 	return conv_htmlToPDF($args);
-	// }else if(convToPDF=="mpdf"){
-	// 	return conv_mPDF($args);
-	// }else{
-		// if(is_callable("conv_toPDF")){
-		// 	conv_toPDF($args);
-		// }
-	// }
 }
 
 function conv_htmlToVar($html='',$data='',$object=''){
