@@ -11,10 +11,10 @@ function sobad_convToPdf($args = array()){
 
 	date_default_timezone_set('UTC');
 
-	$key['key'] = isset($args['format']) ? $args['format'] : '';
+	$key['key'] = isset($args['type_pdf']) ? $args['type_pdf'] : '';
 	$format = isset($key['key']) ? $key['key'] : '';
 
-	if ($format == "createpdf") {
+	if ($format == "html2pdf") {
 		new _libs_(array('createpdf'));
 		return conv_htmlToPDF($args);
 	} else if ($format == "mpdf") {
