@@ -272,6 +272,7 @@ var index_toggle = '';
 		
 		if(file.length>0){
 			formData.append("ajax","sendMail_fileUpload");
+			formData.append("object",object);
 			for(var i = 0;i < file.length;i++){
 				formData.append("file[]", file[i]);
 			}
