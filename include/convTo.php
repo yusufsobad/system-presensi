@@ -13,7 +13,7 @@ function sobad_convToPdf($args = array()){
 
 	$format = isset($args['type_pdf']) ? $args['type_pdf'] : convToPDF;
 
-	if ($format == "createpdf") {
+	if ($format == "createpdf" || $format == "html2pdf") {
 		new _libs_(array('createpdf'));
 		return conv_htmlToPDF($args);
 	} else if ($format == "mpdf") {
