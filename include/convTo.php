@@ -24,7 +24,6 @@ function sobad_convToPdf($args = array()){
 			conv_toPDF($args);
 		}
 	}
-	
 }
 
 function conv_htmlToVar($html='',$data='',$object=''){
@@ -171,7 +170,7 @@ function conv_mPDF($args=array()){
 			$content .= $val;
 		}
 
-		return $content . $footer;
+		return $content;
 	}
 
 	$pos = $args['setting']['posisi'];
