@@ -24,6 +24,7 @@ function sobad_convToPdf($args = array()){
 			conv_toPDF($args);
 		}
 	}
+	
 }
 
 function conv_htmlToVar($html='',$data='',$object=''){
