@@ -229,11 +229,6 @@ abstract class _page{
 	}
 
 	protected function _conv_option($args=array()){
-		$check = array_filter($args);
-		if(empty($check)){
-			return '';
-		}
-		
 		$opt = '<option value="0">Tidak Ada</option>';
 		foreach($args as $key => $val){
 			$opt .= '<option value="'.$key.'">'.$val.'</option>';
