@@ -193,7 +193,8 @@ function conv_mPDF($args=array()){
 		    'margin_bottom'   		=> isset($args['bottom'])?$args['bottom']:10,
 		    'margin_left'     		=> isset($args['left'])?$args['left']:10,
 		    'margin_right'    		=> isset($args['right'])?$args['right']:10,
-			'setAutoTopMargin'		=> isset($args['auto_margin_top']) ? $args['auto_margin_top'] : false
+			'setAutoTopMargin'		=> isset($args['auto_margin_top']) ? $args['auto_margin_top'] : false,
+			'setAutoBottomMargin'	=> isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : false
 		]);
 
 		// $mpdf->SetFooter($footer);  

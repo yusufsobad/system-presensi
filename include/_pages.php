@@ -234,7 +234,7 @@ abstract class _page{
 			return '';
 		}
 		
-		$opt = '';
+		$opt = '<option value="0">Tidak Ada</option>';
 		foreach($args as $key => $val){
 			$opt .= '<option value="'.$key.'">'.$val.'</option>';
 		}
