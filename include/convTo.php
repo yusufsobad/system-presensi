@@ -189,10 +189,10 @@ function conv_mPDF($args=array()){
 		    'orientation'	  		=> $pos,
 		    'mode'            		=> 'UTF-8', // Unicode
 		    'lang'            		=> 'en', // Language
-		    'margin_top'      		=> isset($args['top'])?$args['top']:10,
-		    'margin_bottom'   		=> isset($args['bottom'])?$args['bottom']:10,
-		    'margin_left'     		=> isset($args['left'])?$args['left']:10,
-		    'margin_right'    		=> isset($args['right'])?$args['right']:10,
+		    'margin_top'      		=> isset($args['margin_top'])?$args['margin_top']:10,
+		    'margin_bottom'   		=> isset($args['margin_bottom'])?$args['margin_bottom']:10,
+		    'margin_left'     		=> isset($args['margin_left'])?$args['margin_left']:10,
+		    'margin_right'    		=> isset($args['margin_right'])?$args['margin_right']:10,
 			'setAutoTopMargin'		=> isset($args['auto_margin_top']) ? $args['auto_margin_top'] : false,
 			'setAutoBottomMargin'	=> isset($args['auto_margin_bottom']) ? $args['auto_margin_bottom'] : false
 		]);
