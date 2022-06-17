@@ -195,6 +195,13 @@ function buat_button($val=array()){
 	return $btn;
 }
 
+function dropdown_action($args=array()){
+	$args['label'] = isset($args['label']) ? $args['label'] : '<img src="theme/sasi/asset/img/dot-dropdown.png" alt="">';
+	$args['angle'] = '';
+
+	return dropdown_button($args);
+}
+
 function dropdown_button($args=array()){
 	$check = array_filter($args);
 	if(empty($check)){
@@ -210,10 +217,13 @@ function dropdown_button($args=array()){
 		}
 	}
 
+	$angle = isset($args['angle']) ? $args['angle'] : 'fa-angle-down';
+	$angle = '<i class="fa '.$angle.'"></i>';
+
 	$drop = '
 		<div class="btn-group btn-group-solid">
 			<button type="button" class="btn '.$args['color'].' dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
-				'.$args['label'].' <i class="fa fa-angle-down"></i>
+				'.$args['label'].' '.$angle.'
 			</button>
 			<ul class="dropdown-menu" role="menu">
 				'.$btn.'
