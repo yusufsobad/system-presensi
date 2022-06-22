@@ -202,6 +202,15 @@ function dropdown_action($args=array()){
 	return dropdown_button($args);
 }
 
+function dropdown_icon($args = array())
+{
+	$icon = isset($args['icon']) ? '<i class="' . $args['icon'] . '" aria-hidden="true"></i>' : '';
+	$label = isset($args['label']) ? $args['label'] : '';
+
+	$args['label'] = $icon . $label;
+	return dropdown_button($args);
+}
+
 function dropdown_button($args=array()){
 	$check = array_filter($args);
 	if(empty($check)){
