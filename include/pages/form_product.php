@@ -4,7 +4,7 @@ abstract class form_product extends _file_manager{
 	protected static $object = 'form_product';
 
 	protected static function _array(){
-		return array('ID','name','product_code','price','picture','type','var');
+		return array('ID','name','product_code','price','picture','type','var','_note');
 	}
 
 	private static function table($sort='name ASC'){	
@@ -108,6 +108,12 @@ abstract class form_product extends _file_manager{
 					'left',
 					'auto%',
 					$val['name'],
+					true
+				),
+				'Diskripsi'		=> array(
+					'left',
+					'12%',
+					$val['_note'],
 					true
 				),
 				'Type'		=> array(
