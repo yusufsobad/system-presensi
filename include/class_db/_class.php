@@ -397,7 +397,7 @@ abstract class _class{
 		global $DB_NAME;
 		global $search_meta_global;
 
-		$data = array();
+		$data = $dt_src = array();
 		$args = array('ID');
 
 		$_database = $DB_NAME;
@@ -431,9 +431,19 @@ abstract class _class{
 			while($s=$r->fetch_assoc()){
 				$idm = $s['meta_id'];
 
+				if(!isset($dt_src[$idm])){
+					$dt_src[$idm] = array();
+				}
+
 				$key = $s['meta_key'];
+				
 				$data[$idm][$key] = $s['meta_value'];
+				$dt_src[$idm][$key] = $s['meta_value'];
 			}
+		}
+
+		if(isset($search_meta_global) && !empty($search_meta_global)){
+			$data = $dt_src;
 		}
 
 		$DB_NAME = $_database;
