@@ -395,6 +395,8 @@ abstract class _class{
 
 	protected static function _get_meta_join($ids=array()){
 		global $DB_NAME;
+		global $search_meta_global;
+
 		$data = array();
 		$args = array('ID');
 
