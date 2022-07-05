@@ -109,7 +109,7 @@ abstract class _page{
 				$search = $args[$search];
 				$kata = $cari['words'];
 				if(in_array($search, $meta)){
-					$where = 'AND ' . $whr;
+					$where = $whr;
 					$GLOBALS['search_meta_global'] = "`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%' ";
 				}else{
 					$_src = "$search LIKE '%$kata%'";
