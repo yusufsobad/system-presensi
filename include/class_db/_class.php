@@ -390,6 +390,9 @@ abstract class _class{
 
 		self::$_temp_table = '';
 		$DB_NAME = $_database;
+
+		self::$_meta = false;
+		self::$_temp = false;
 		return $data;
 	}
 
@@ -436,7 +439,7 @@ abstract class _class{
 				}
 
 				$key = $s['meta_key'];
-				
+
 				$data[$idm][$key] = $s['meta_value'];
 				$dt_src[$idm][$key] = $s['meta_value'];
 			}
