@@ -132,6 +132,7 @@ abstract class _class{
 			return count($count);
 		}
 
+		self::$_meta = false;
 		return $count[0]['count'];
 	}
 	
@@ -246,7 +247,10 @@ abstract class _class{
 
 		$where = self::$_inner.self::$_where;
 		self::$_inner = '';self::$_where = '';
-		return self::_get_data($where,$args);
+		$data_join = self::_get_data($where,$args);
+
+		self::$_meta = false;
+		return $data_join;
 	}
 
 	private static function _detail($args=array(),$table='',$detail=''){
@@ -390,9 +394,6 @@ abstract class _class{
 
 		self::$_temp_table = '';
 		$DB_NAME = $_database;
-
-		self::$_meta = false;
-		self::$_temp = false;
 		return $data;
 	}
 

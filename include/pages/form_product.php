@@ -4,7 +4,7 @@ abstract class form_product extends _file_manager{
 	protected static $object = 'form_product';
 
 	protected static function _array(){
-		return array('ID','name','product_code','price','picture','type','var','_note');
+		return array('ID','name','product_code','part_id','price','picture','type','var','_note');
 	}
 
 	private static function table($sort='name ASC'){	
@@ -21,6 +21,7 @@ abstract class form_product extends _file_manager{
 			$cari = $src[0];
 			$where = $src[0];
 			$kata = $src[1];
+			$_search = $src[2];
 		}else{
 			$cari=$where;
 		}
@@ -42,10 +43,11 @@ abstract class form_product extends _file_manager{
 			'func'		=> '_search_product',
 			'load'		=>$load,
 			'name'		=>$search,
-			'type'		=> self::$type
+			'type'		=> self::$type,
+			'value'		=> $_search
 		);
 
-		$data['search'] = array('Semua','name','product_code');
+		$data['search'] = array('Semua','name','product_code','Part ID');
 		$data['class'] = '';
 		$data['table'] = array();
 		$data['page'] = array(

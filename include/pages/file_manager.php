@@ -15,8 +15,9 @@ abstract class _file_manager extends _page{
 		if(parent::$search){
 			$src = parent::like_search($args,$where);
 			$cari = $src[0];
-			$where = $src[0]." ".$where;
+			$where = $src[0];
 			$kata = $src[1];
+			$_search = $src[2];
 		}else{
 			$cari=$where;
 		}
@@ -38,7 +39,8 @@ abstract class _file_manager extends _page{
 			'func' 		=> '_search_list_file',
 			'data' 		=> $kata,
 			'load' 		=> 'inline_malika81',
-			'name' 		=>'_file'
+			'name' 		=>'_file',
+			'value'		=> $_search
 		);
 
 		$_list['search'] = array('name');
