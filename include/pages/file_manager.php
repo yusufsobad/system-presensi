@@ -13,7 +13,7 @@ abstract class _file_manager extends _page{
 
 		$kata = '';$where = property_exists(new static, 'file_where')?static::$file_where:'';
 		if(parent::$search){
-			$src = parent::like_search($args);
+			$src = parent::like_search($args,$where);
 			$cari = $src[0];
 			$where = $src[0]." ".$where;
 			$kata = $src[1];
