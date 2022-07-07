@@ -15,7 +15,9 @@ abstract class form_product extends _file_manager{
 		$start = intval(parent::$page);
 		$nLimit = intval(parent::$limit);
 	
-		$kata = '';$where = isset($filter['where'])?$filter['where']:'';
+		$kata = $_search = '';
+		$where = isset($filter['where'])?$filter['where']:'';
+		
 		if(parent::$search){
 			$src = parent::like_search($args,$where,'sobad_item');
 			$cari = $src[0];

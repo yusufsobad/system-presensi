@@ -11,7 +11,9 @@ abstract class _file_manager extends _page{
 	protected static function _get_image_list_file($start=1){
 		$args = array('ID','notes','var');
 
-		$kata = '';$where = property_exists(new static, 'file_where')?static::$file_where:'';
+		$kata = $_search = '';
+		$where = property_exists(new static, 'file_where')?static::$file_where:'';
+		
 		if(parent::$search){
 			$src = parent::like_search($args,$where);
 			$cari = $src[0];
