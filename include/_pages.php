@@ -45,7 +45,7 @@ abstract class _page{
 		return ob_get_clean();
 	}
 
-	protected static function like_search($args=array(),$whr=''){
+	protected static function like_search($args=array(),$whr='',$table=''){
 		$kata = '';$where = '';
 		$cari = self::$data;
 		$search = isset($cari['search'])?$cari['search']:'';
@@ -59,7 +59,7 @@ abstract class _page{
 				$post = static::$post;
 			}
 
-			$object = static::$table;
+			$object = empty($table) ? static::$table : $table;
 
 			if(property_exists(new $object, 'tbl_meta')){
 				$tbl_meta = $object::$tbl_meta;
