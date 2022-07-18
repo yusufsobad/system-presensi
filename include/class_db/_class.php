@@ -454,7 +454,9 @@ abstract class _class{
 		}
 
 		if(isset($search_meta_global) && !empty($search_meta_global)){
-			$data = $dt_src;
+			if($search_type_meta_global==1){
+				$data = $dt_src;
+			}
 		}
 
 		$DB_NAME = $_database;
