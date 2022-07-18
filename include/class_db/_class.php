@@ -400,6 +400,7 @@ abstract class _class{
 	protected static function _get_meta_join($ids=array()){
 		global $DB_NAME;
 		global $search_meta_global;
+		global $search_type_meta_global;
 
 		$data = $dt_src = array();
 		$args = array('ID');
@@ -426,7 +427,13 @@ abstract class _class{
 		$meta = implode(',', $meta);
 
 		$whr = isset($search_meta_global) && !empty($search_meta_global) ? 'AND (' . $search_meta_global . ')' : "AND meta_key IN ($meta)";
-		$where = "WHERE meta_id IN ($ids) " . $whr;
+
+		if(!isset($search_type_meta_global) || $search_type_meta_global==0){
+			$where = "WHERE meta_id IN ($ids) " . $whr;
+		}else{
+			$where = "WHERE 1=1 " . $whr;
+		}
+
 		$r = sobad_db::_select_table($where,static::$tbl_meta,array(
 			'meta_id','meta_key','meta_value'
 		));
