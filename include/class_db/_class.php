@@ -359,12 +359,18 @@ abstract class _class{
 
 	protected static function _get_data($where='',$args=array()){
 		global $DB_NAME;
+		global $search_join_meta_global;
+
 		$data = array();
 		$ids = array();
 
 		$_database = $DB_NAME;
 		if(property_exists(new static,'database')){
 			$DB_NAME = static::$database;
+		}
+
+		if(isset($search_join_meta_global)){
+			$where = $search_join_meta_global . " " . $where;
 		}
 
 		$table = !empty(self::$_temp_table) && self::$_temp ?self::$_temp_table : static::$table;

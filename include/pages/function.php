@@ -243,6 +243,52 @@ function dropdown_button($args=array()){
 	return $drop;
 }
 
+function button_toggle_block($val=array()){
+	$check = array_filter($val);
+	if(empty($check)){
+		return '';
+	}
+	
+	$val['toggle'] = 'modal';
+	$val['load'] = 'here_modal';
+	$val['href'] = '#myModal';
+	
+	return button_dash_block($val);
+}
+
+function button_direct_block($val=array()){
+	$check = array_filter($val);
+	if(empty($check)){
+		return '';
+	}
+	
+	$val['toggle'] = '';
+	$val['load'] = 'sobad_portlet';
+	$val['href'] = 'javascript:;';
+	$val['script'] = 'sobad_sidemenu(this)';
+	
+	return button_dash_block($val);
+}
+
+function button_dash_block($val=array()){
+	$status = '';
+	if(isset($val['status'])){
+		$status = $val['status'];
+	}
+
+	$onclick = 'sobad_button(this,false)';
+	if(isset($val['script'])){
+		$onclick = $val['script'];
+	}
+
+	$button = '
+		<a id="'.$val['ID'].'" class="more" data-toggle="'.$val['toggle'].'" data-sobad="'.$val['func'].'" data-load="'.$val['load'].'" href="'.$val['href'].'" onclick="'.$onclick.'" '.$status.'>
+			View more <i class="m-icon-swapright m-icon-white"></i>
+		</a>';
+
+	return $button;	
+}
+
 function _detectDelimiter($csvFile){
     $delimiters = array(
         ';' => 0,

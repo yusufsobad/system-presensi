@@ -113,6 +113,7 @@ abstract class _page{
 					$where = $whr;
 					$GLOBALS['search_type_meta_global'] = 1;
 					$GLOBALS['search_meta_global'] = "`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%' ";
+					$GLOBALS['search_join_meta_global'] = "LEFT JOIN `$tbl_meta` ON `$post`.ID = `$tbl_meta`.meta_id ";
 				}else{
 					$_src = "$search LIKE '%$kata%'";
 
