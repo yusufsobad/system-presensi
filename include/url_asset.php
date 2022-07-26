@@ -28,7 +28,7 @@ class sobad_asset{
 	}
 
 	public function _js_file(){
-		$dir = "asset/js/";
+		$dir = SITE .'://' . HOSTNAME . '/' . URL . "/asset/js/";
 		$list = self::_name_file($dir);
 		if(count($list)>0){
 			for($i=0;$i<count($list);$i++){
@@ -38,7 +38,7 @@ class sobad_asset{
 	}
 
 	public function _css_file(){
-		$dir = "asset/css/";
+		$dir = SITE .'://' . HOSTNAME . '/' . URL . "/asset/css/";
 		$list = self::_name_file($dir);
 		if(count($list)>0){
 			for($i=0;$i<count($list);$i++){
