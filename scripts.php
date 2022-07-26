@@ -17,7 +17,8 @@ if(!class_exists('vendor_script')){
 		}
 		
 		private function lokasi(){
-			return 'vendor/';
+			$loc = SITE .'://' . HOSTNAME . '/' . URL . '/';
+			return $loc . 'vendor/';
 		}
 	// BEGIN GLOBAL MANDATORY STYLES ---->
 

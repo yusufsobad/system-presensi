@@ -28,7 +28,8 @@ class sobad_asset{
 	}
 
 	public function _js_file(){
-		$dir = SITE .'://' . HOSTNAME . '/' . URL . "/asset/js/";
+		$loc = SITE .'://' . HOSTNAME . '/' . URL . '/';
+		$dir = "asset/js/";
 		$list = self::_name_file($dir);
 		if(count($list)>0){
 			for($i=0;$i<count($list);$i++){
@@ -38,11 +39,12 @@ class sobad_asset{
 	}
 
 	public function _css_file(){
-		$dir = SITE .'://' . HOSTNAME . '/' . URL . "/asset/css/";
+		$loc = SITE .'://' . HOSTNAME . '/' . URL . '/';
+		$dir = "asset/css/";
 		$list = self::_name_file($dir);
 		if(count($list)>0){
 			for($i=0;$i<count($list);$i++){
-				echo '<link rel="stylesheet" type="text/css" href="'.$dir.$list[$i].'">';
+				echo '<link rel="stylesheet" type="text/css" href="'.$loc.$dir.$list[$i].'">';
 			}
 		}
 	}
