@@ -33,7 +33,7 @@ class sobad_asset{
 		$list = self::_name_file($dir);
 		if(count($list)>0){
 			for($i=0;$i<count($list);$i++){
-				echo '<script src="'.$dir.$list[$i].'"></script>';
+				echo '<script src="'.$loc.$dir.$list[$i].'"></script>';
 			}
 		}
 	}
