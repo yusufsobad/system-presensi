@@ -140,11 +140,6 @@ abstract class _class{
 		self::$_meta = false;
 		self::$_temp = false;
 
-		// check ID
-		// if(! in_array('ID', $args)){
-		// 	$args[] = 'ID';
-		// }
-
 		$where = "WHERE `".static::$table."`.ID='$id' $limit";
 		return self::_check_join($where,$args,$type);
 	}
@@ -155,11 +150,6 @@ abstract class _class{
 
 		$check = substr($limit,0,4);
 		$check = trim($check);
-
-		// check ID
-		// if(! in_array('ID', $args)){
-		// 	$args[] = 'ID';
-		// }
 
 		$limit = strtoupper($check)=="AND"?substr($limit, 4):$limit;
 
@@ -341,25 +331,8 @@ abstract class _class{
 		return $args;
 	}
 
-	// private static function _meta($args=array(),$type=''){
-	// 	$data = array();
-	// 	$meta = self::list_meta($type);
-
-	// 	foreach ($args as $key => $val) {
-	// 		if(in_array($val, $meta)){
-	// 			self::$_meta = true;
-	// 			$data[] = $val;
-	// 		}
-	// 	}
-
-	// 	self::$_data_meta = $data;
-
-	// 	return $args;
-	// }
-
 	protected static function _get_data($where='',$args=array()){
 		global $DB_NAME;
-//		global $search_join_meta_global;
 
 		$data = array();
 		$ids = array();
@@ -369,108 +342,17 @@ abstract class _class{
 			$DB_NAME = static::$database;
 		}
 
-		// if(isset($search_join_meta_global)){
-		// 	$where = $search_join_meta_global . " " . $where;
-		// }
-
 		$table = !empty(self::$_temp_table) && self::$_temp ?self::$_temp_table : static::$table;
 		$q = sobad_db::_select_table($where,$table,$args);
 		if($q!==0){
 			while($r=$q->fetch_assoc()){
-				//$item = array();
-				//foreach($r as $key => $val){
-				//	$item[$key] = $val;
-				//}
-				
-				// if(isset($r['ID'])){
-				// 	$ids[] = $r['ID'];
-				// }
 
 				$data[] = $r;//$item;
 			}
-
-			// $check = array_filter($ids);
-			// $check2 = array_filter(self::$_data_meta);
-
-			// if(self::$_meta && !empty($check) && !empty($check2)){
-			// 	$meta = self::_get_meta_join($ids);
-			// 	$data = self::_combine_data($data,$meta);
-			// }
 		}
 
 		self::$_temp_table = '';
 		$DB_NAME = $_database;
 		return $data;
 	}
-
-	// protected static function _get_meta_join($ids=array()){
-	// 	global $DB_NAME;
-	// 	global $search_meta_global;
-	// 	global $search_type_meta_global;
-
-	// 	$data = $dt_src = array();
-	// 	$args = array('ID');
-
-	// 	$_database = $DB_NAME;
-	// 	if(property_exists(new static,'database')){
-	// 		$DB_NAME = static::$database;
-	// 	}
-
-	// 	$meta = array();
-	// 	$default = array();
-	// 	foreach (self::$_data_meta as $key => $val) {
-	// 		$default[$val] = '';
-	// 		$meta[] = "'" . $val . "'";
-	// 	}
-
-	// 	// Default meta
-	// 	foreach ($ids as $key) {
-	// 		$data[$key] = $default;
-	// 	}
-
-	// 	// Get data meta;
-	// 	$ids = implode(',', $ids);
-	// 	$meta = implode(',', $meta);
-
-	// 	$whr = isset($search_meta_global) && !empty($search_meta_global) ? 'AND (' . $search_meta_global . ')' : "AND meta_key IN ($meta)";
-
-	// 	if(!isset($search_type_meta_global) || $search_type_meta_global==0){
-	// 		$where = "WHERE meta_id IN ($ids) " . $whr;
-	// 	}else{
-	// 		$where = "WHERE 1=1 " . $whr;
-	// 	}
-
-	// 	$r = sobad_db::_select_table($where,static::$tbl_meta,array(
-	// 		'meta_id','meta_key','meta_value'
-	// 	));
-
-	// 	if($r!==0){
-	// 		while($s=$r->fetch_assoc()){
-	// 			$idm = $s['meta_id'];
-
-	// 			if(!isset($dt_src[$idm])){
-	// 				$dt_src[$idm] = array();
-	// 			}
-
-	// 			$key = $s['meta_key'];
-
-	// 			$data[$idm][$key] = $s['meta_value'];
-	// 		}
-	// 	}
-
-	// 	$DB_NAME = $_database;
-	// 	return $data;
-	// }
-
-	// protected static function _combine_data($data=array(),$meta=array()){
-	// 	$filter = array();
-	// 	foreach ($data as $key => $val) {
-	// 		$idx = $val['ID'];
-	// 		if(isset($meta[$idx])){
-	// 			$filter[] = array_merge($val,$meta[$idx]);
-	// 		}
-	// 	}
-
-	// 	return $filter;
-	// }
 }
