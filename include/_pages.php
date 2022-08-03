@@ -87,7 +87,7 @@ abstract class _page{
 				
 				foreach($args as $key => $val){
 					if(in_array($val, $meta)){
-						$_src[] = "(`$tbl_meta`.meta_key='$val' AND `$tbl_meta`.meta_value LIKE '%$kata%') ";
+						$_src = "(`$tbl_meta`.meta_key='$val' AND `$tbl_meta`.meta_value LIKE '%$kata%') ";
 //						$GLOBALS['search_type_meta_global'] = 2;
 					}else{
 						$_src = "$val LIKE '%$kata%'";
@@ -112,7 +112,7 @@ abstract class _page{
 				if(in_array($search, $meta)){
 					$where = $whr;
 //					$GLOBALS['search_type_meta_global'] = 1;
-					$_src = "`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%' ";
+					$_src = "(`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%') ";
 //					$GLOBALS['search_join_meta_global'] = "LEFT JOIN `$tbl_meta` ON `$post`.ID = `$tbl_meta`.meta_id ";
 				}else{
 					$_src = "$search LIKE '%$kata%'";
