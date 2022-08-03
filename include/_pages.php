@@ -110,9 +110,9 @@ abstract class _page{
 				$search = $args[$search];
 				$kata = $cari['words'];
 				if(in_array($search, $meta)){
-					$where = $whr;
+//					$where = $whr;
 //					$GLOBALS['search_type_meta_global'] = 1;
-					$_src = "(`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%') ";
+					$_src = "(`$tbl_meta`.meta_key='$search' AND `$tbl_meta`.meta_value LIKE '%$kata%')";
 //					$GLOBALS['search_join_meta_global'] = "LEFT JOIN `$tbl_meta` ON `$post`.ID = `$tbl_meta`.meta_id ";
 				}else{
 					$_src = "$search LIKE '%$kata%'";
@@ -121,9 +121,9 @@ abstract class _page{
 						$_xsrc = static::_filter_search($search,$kata);
 						$_src = empty($_xsrc)?$_src:$_xsrc;
 					}
-
-					$where = "AND ".$_src." ".$whr;
 				}
+
+				$where = "AND ".$_src." ".$whr;
 			}
 		}else{
 			$where = $whr;
