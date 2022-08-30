@@ -155,6 +155,10 @@ function format_terbilang($x=0) {
     return format_terbilang($x / 1000) . " ribu" . format_terbilang($x % 1000);
   elseif ($x < 1000000000)
     return format_terbilang($x / 1000000) . " juta" . format_terbilang($x % 1000000);
+  elseif ($x < 1000000000000)
+    return format_terbilang($x / 1000000000) . " miliar" . format_terbilang($x % 1000000000);
+  elseif ($x < 1000000000000000)
+    return format_terbilang($x / 1000000000000) . " triliun" . format_terbilang($x % 1000000000000);
 }
 
 function format_terbilang_usd($number)
