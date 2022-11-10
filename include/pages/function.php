@@ -50,6 +50,21 @@ function convToGroup($args=array(),$data=array()){
 	return $group;
 }
 
+function switch_toggle($val=array()){
+	$id = isset($val['id']) ? $val['id'] : '';
+	$label = isset($val['label']) ? $val['label'] : '';
+
+	$btn = '
+		<div class="form-check '.$val['class'].'">
+            <label>
+              <input id="'.$id.'" type="checkbox" name="'.$val['key'].'" value="'.$val['value'].'"><span>'.$label.'</span>
+            </label>
+        </div>
+	';
+
+	return $btn;
+}
+
 function hapus_button($val){
 	return _click_button($val);
 }
