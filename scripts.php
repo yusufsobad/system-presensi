@@ -220,6 +220,7 @@ if(!class_exists('vendor_script')){
 				'fullcalender'			=> $loc.'fullcalendar/fullcalendar.min.js',
 				'jquery-piechart'		=> $loc.'jquery-easypiechart/jquery.easypiechart.min.js',
 				'jquery-sparkline'		=> $loc.'jquery.sparkline.min.js',
+				'jquery-repeater'		=> $loc.'jquery-repeater/jquery-repeater.min.js'
 			);
 			
 			$check = array_filter($idx);
