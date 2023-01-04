@@ -393,3 +393,16 @@ function script_chart(){
 	</script>
 	<?php
 }
+
+function _importPage($page='',$class=''){
+	$loc = is_dir("coding/_pages/")?"coding/_pages/":"../coding/_page/";
+
+	if(!class_exists($class)){
+		$dir = $loc . $page . '/view';
+		if(is_dir($dir)){
+			require $dir . '/' . $class . '.php';
+		}else{
+			die($class.'::class not found!!!');
+		}
+	}
+}
