@@ -395,7 +395,7 @@ function script_chart(){
 }
 
 function _importPage($page='',$class=''){
-	$loc = is_dir("coding/_pages/")?"coding/_pages/":"../../coding/_pages/";
+	$loc = dirname(__FILE__) . "/../../coding/_pages/";
 
 	if(!class_exists($class)){
 		$dir = $loc . $page . '/view';
