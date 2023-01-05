@@ -401,10 +401,26 @@ abstract class _page{
 		        	}
 
 		        	if($check['status']){
-		        		$q = self::_schema(json_encode($data),false); //Update data
+		        		$args = self::_schema(json_encode($data),false); //Update data
+
+		        		$q = $args['data'];
+						$src = $args['search'];
+
+						$obj = empty($obj)?static::$object:$obj;
+						if(is_callable(array(new static(), '_updateDetail'))){
+							static::_updateDetail($args,$_args);
+						}
 		        	}else{
 		        		if($check['insert']){
-		        			$q = self::_schema(json_encode($data),true); // Add data
+		        			$args = self::_schema(json_encode($data),true); // Add data
+
+		        			$q = $args['data'];
+							$src = $args['search'];
+
+							$obj = empty($obj)?static::$object:$obj;
+							if(is_callable(array(new static(), '_addDetail'))){
+								static::_addDetail($args,$_args);
+							}
 		        		}
 		        	}
 		        }
