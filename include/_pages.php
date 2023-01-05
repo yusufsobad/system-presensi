@@ -405,10 +405,10 @@ abstract class _page{
 
 		        		$q = $args['data'];
 						$src = $args['search'];
+						$callback = isset($check['update']) ? $check['update'] : '_not_update';
 
-						$obj = empty($obj)?static::$object:$obj;
-						if(is_callable(array(new static(), '_updateDetail'))){
-							static::_updateDetail($args,$_args);
+						if(is_callable(array(new static(), $callback))){
+							static::{$callback}($args,$_args);
 						}
 		        	}else{
 		        		if($check['insert']){
@@ -416,10 +416,10 @@ abstract class _page{
 
 		        			$q = $args['data'];
 							$src = $args['search'];
+							$callback = isset($check['insert']) ? $check['insert'] : '_not_insert';
 
-							$obj = empty($obj)?static::$object:$obj;
-							if(is_callable(array(new static(), '_addDetail'))){
-								static::_addDetail($args,$_args);
+							if(is_callable(array(new static(), $callback))){
+								static::{$callback}($args,$_args);
 							}
 		        		}
 		        	}
@@ -557,7 +557,6 @@ abstract class _page{
 		$q = $args['data'];
 		$src = $args['search'];
 
-		$obj = empty($obj)?static::$object:$obj;
 		if(is_callable(array(new static(), '_updateDetail'))){
 			static::_updateDetail($args,$_args);
 		}
@@ -567,6 +566,7 @@ abstract class _page{
 				$pg = isset($_POST['page'])?$_POST['page']:1;
 				return self::_get_table($pg,$src);
 			}else{
+				$obj = empty($obj) ? static::$object : $obj;
 				if(is_callable(array($obj,$menu))){
 					return $obj::{$menu}($args);
 				}else{
@@ -619,7 +619,6 @@ abstract class _page{
 		$q = $args['data'];
 		$src = $args['search'];
 
-		$obj = empty($obj)?static::$object:$obj;
 		if(is_callable(array(new static(), '_addDetail'))){
 			static::_addDetail($args,$_args);
 		}
@@ -629,6 +628,7 @@ abstract class _page{
 				$pg = isset($_POST['page'])?$_POST['page']:1;
 				return self::_get_table($pg,$src);
 			}else{
+				$obj = empty($obj) ? static::$object : $obj;
 				if(is_callable(array($obj,$menu))){
 					return $obj::{$menu}($args);
 				}else{
