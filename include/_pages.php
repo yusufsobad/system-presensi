@@ -405,7 +405,7 @@ abstract class _page{
 
 		        		$q = $args['data'];
 						$src = $args['search'];
-						$callback = isset($check['update']) ? $check['update'] : '_not_update';
+						$callback = isset($check['callback']) ? $check['callback'] : '_not_update';
 
 						if(is_callable(array(new static(), $callback))){
 							static::{$callback}($args,$_args);
@@ -416,7 +416,7 @@ abstract class _page{
 
 		        			$q = $args['data'];
 							$src = $args['search'];
-							$callback = isset($check['insert']) ? $check['insert'] : '_not_insert';
+							$callback = isset($check['callback']) ? $check['callback'] : '_not_insert';
 
 							if(is_callable(array(new static(), $callback))){
 								static::{$callback}($args,$_args);
