@@ -408,7 +408,7 @@ abstract class _page{
 						$callback = isset($check['callback']) ? $check['callback'] : '_not_update';
 
 						if(is_callable(array(new static(), $callback))){
-							static::{$callback}($args,$_args);
+							static::{$callback}($args,$data);
 						}
 		        	}else{
 		        		if($check['insert']){
@@ -419,7 +419,7 @@ abstract class _page{
 							$callback = isset($check['callback']) ? $check['callback'] : '_not_insert';
 
 							if(is_callable(array(new static(), $callback))){
-								static::{$callback}($args,$_args);
+								static::{$callback}($args,$data);
 							}
 		        		}
 		        	}
