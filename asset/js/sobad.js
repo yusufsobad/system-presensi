@@ -6,6 +6,7 @@ var url_preview = "include/preview.php";
 var url_sending = "include/sending.php";
 var filter = '';
 var uploads = '';
+var repeater = '';
 
 var modal_toggle = false;
 var index_toggle = '';
@@ -226,7 +227,7 @@ var index_toggle = '';
 		var pg = $('#'+id+' #dash_pagination li.disabled a').attr('data-qty');
 		data = conv_array_submit(data);
 		
-		data = "ajax="+ajx+"&object="+object+"&data="+data+"&type="+tp+"&page="+pg+"&filter="+filter;
+		data = "ajax="+ajx+"&object="+object+"&data="+data+"&type="+tp+"&page="+pg+"&filter="+filter+"&repeater="+repeater;
 		sobad_ajax('#'+id,data,sobad_option_search,true,val,html);
 	}
 	
