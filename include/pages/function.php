@@ -65,6 +65,12 @@ function switch_toggle($val=array()){
 	return $btn;
 }
 
+function menu_button($val){
+	$val['load'] = 'here_content';
+	$val['script'] = 'sobad_sidemenu(this)';
+	return _click_button($val,'');
+}
+
 function hapus_button($val){
 	return _click_button($val);
 }
@@ -196,6 +202,11 @@ function buat_button($val=array()){
 	if(isset($val['spin'])){
 		$spin = $val['spin']?1:0;
 	}
+
+	$uri = '';
+	if(isset($val['uri'])){
+		$uri = $val['uri'];
+	}
 	
 	$onclick = 'sobad_button(this,'.$spin.')';
 	if(isset($val['script'])){
@@ -203,7 +214,7 @@ function buat_button($val=array()){
 	}
 	
 	$btn = '
-	<a id="'.$val['ID'].'" data-toggle="'.$val['toggle'].'" data-sobad="'.$val['func'].'" data-load="'.$val['load'].'" data-type="'.$type.'" data-alert="'.$alert.'" href="'.$val['href'].'" class="btn '.$class.' '.$val['color'].' btn_data_malika" onclick="'.$onclick.'" '.$status.'>
+	<a id="'.$val['ID'].'" data-toggle="'.$val['toggle'].'" data-sobad="'.$val['func'].'" data-load="'.$val['load'].'" data-type="'.$type.'" data-alert="'.$alert.'" href="'.$val['href'].'" class="btn '.$class.' '.$val['color'].' btn_data_malika" data-uri="'.$uri.'" onclick="'.$onclick.'" '.$status.'>
 		<i class="'.$val['icon'].'"></i> '.$val['label'].'
 	</a>';
 	
