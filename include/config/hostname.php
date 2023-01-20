@@ -15,6 +15,8 @@ function get_uri(){
 	}
 
 	$uri = explode('/', $uri);
+	define('uri',$uri);
+	
 	return $uri[0];
 }
 
