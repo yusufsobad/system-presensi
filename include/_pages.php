@@ -28,11 +28,11 @@ abstract class _page{
 		return sobad_asset::_loadView($loc,$data);
 	}
 
-	public static function _sidemenu(){
+	public static function _sidemenu($data=''){
 		$func = 'layout';
 
 		// Check url menu
-		$uri = uri;
+		$uri = $data;
 		$count = count($uri);
 		if($count > 1){
 			if(property_exists(new static, 'uri_menu')){
