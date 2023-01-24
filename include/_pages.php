@@ -32,7 +32,7 @@ abstract class _page{
 		$func = 'layout';
 
 		// Check url menu
-		$uri = $data;
+		$uri = explode('/',$data);
 		$count = count($uri);
 		if($count > 1){
 			if(property_exists(new static, 'uri_menu')){
