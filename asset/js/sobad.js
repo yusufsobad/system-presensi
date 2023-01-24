@@ -84,7 +84,7 @@ var index_toggle = '';
 			
 			var uri = $(val).attr("data-uri");
 			//setcookie("sidemenu",ajx);
-			window.history.pushState(sobad_history(object), ajx, '/'+system+'/'+uri);
+			window.history.pushState(sobad_history_page(val), ajx, '/'+system+'/'+object+'/'+uri);
 		}
 	}
 
@@ -94,6 +94,15 @@ var index_toggle = '';
 		object = obj;
 
 		data = "ajax=_sidemenu&object="+obj+"&data=";
+		sobad_ajax('#here_content',data,'html',false);
+	}
+
+	// function history newpage
+	function sobad_history_page(val){
+		var ajx = $(val).attr("data-sobad");
+		var uri = $(val).attr("data-uri");
+
+		data = "ajax="+ajx+"&object="+object+"&data="+uri;
 		sobad_ajax('#here_content',data,'html',false);
 	}
 	
