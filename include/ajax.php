@@ -25,9 +25,6 @@ if(!isset($_POST['ajax'])){
 	// get file component
 	new _component();
 
-	// get url
-	get_uri();
-
 	// load route
 	$asset = sobad_asset::_pages("../coding/_pages/");
 
