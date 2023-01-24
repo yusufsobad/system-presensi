@@ -76,6 +76,18 @@ var index_toggle = '';
 		}
 	}
 
+	// function sidemenu
+	function sobad_newpage(val){
+		var ajx = $(val).attr("id");
+		if(ajx!='sobad_#' && ajx!='sobad_'){
+			sobad_load('here_content');
+			
+			var uri = $(val).attr("data-uri");
+			//setcookie("sidemenu",ajx);
+			window.history.pushState(sobad_history(object), ajx, '/'+system+'/'+uri);
+		}
+	}
+
 	// function history sidemenu
 	function sobad_history(obj){
 		obj = obj.replace("sobad_",'');

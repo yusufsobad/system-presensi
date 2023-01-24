@@ -65,10 +65,10 @@ function switch_toggle($val=array()){
 	return $btn;
 }
 
-function menu_button($val){
+function newpage_button($val){
 	$val['func'] = isset($val['func']) ? $val['func'] : '_sidemenu';
 	$val['load'] = 'here_content';
-	$val['script'] = 'sobad_sidemenu(this)';
+	$val['script'] = 'sobad_newpage(this)';
 	return _click_button($val,'');
 }
 
