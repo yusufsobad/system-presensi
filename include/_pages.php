@@ -34,11 +34,11 @@ abstract class _page{
 		// Check url menu
 		$uri = explode('/',$data);
 		$count = count($uri);
-		if($count > 1){
+		if($count > 0){
 			if(property_exists(new static, 'uri_menu')){
 				$menu = static::$uri_menu;
 
-				for($i=1;$i<$count;$i++){
+				for($i=0;$i<$count;$i++){
 					$key = $uri[$i];
 					if(isset($menu[$key])){
 						$func = $menu[$key]['func'];
