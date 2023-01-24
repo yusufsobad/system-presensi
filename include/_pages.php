@@ -29,7 +29,26 @@ abstract class _page{
 	}
 
 	public static function _sidemenu(){
-		return static::layout();
+		$func = 'layout';
+
+		// Check url menu
+		$uri = uri;
+		$count = count($uri);
+		if($count > 1){
+			if(property_exists(new static, 'uri_menu')){
+				$menu = static::$uri_menu;
+
+				for($i=1;$i<$count;$i++){
+					$key = $uri[$i];
+					if(isset($menu[$key])){
+						$func = $menu[$key]['func'];
+						$menu = $menu[$key]['child'];
+					}
+				}
+			}
+		}
+
+		return static::$func();
 	}
 
 	public static function _tabs($type){

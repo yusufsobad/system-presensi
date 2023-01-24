@@ -66,6 +66,7 @@ function switch_toggle($val=array()){
 }
 
 function menu_button($val){
+	$val['func'] = isset($val['func']) ? $val['func'] : '_sidemenu';
 	$val['load'] = 'here_content';
 	$val['script'] = 'sobad_sidemenu(this)';
 	return _click_button($val,'');
