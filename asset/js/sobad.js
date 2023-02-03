@@ -512,7 +512,7 @@ function prefix_format(num, digits) {
 
 function sobad_upload(data){
 	$.ajax({
-		url:url_ajax,
+		url:server+'/'+url_ajax,
 		type:"POST",
 		data:data,
 		async: false,
@@ -527,7 +527,7 @@ function sobad_upload(data){
 
 function sobad_ajax(id,data,func,msg,val,html){
 	$.ajax({
-		url:url_ajax,
+		url:server+'/'+url_ajax,
 		type:"POST",
 		data:data,
 		success:function(response){
