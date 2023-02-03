@@ -101,8 +101,9 @@ var index_toggle = '';
 	function sobad_history_page(val){
 		var ajx = $(val).attr("data-sobad");
 		var uri = $(val).attr("data-uri");
+		var tp = $(val).attr('data-type');
 
-		data = "ajax="+ajx+"&object="+object+"&data="+uri;
+		data = "ajax="+ajx+"&object="+object+"&data="+uri+"&type="+tp;
 		sobad_ajax('#here_content',data,'html',false);
 	}
 	
