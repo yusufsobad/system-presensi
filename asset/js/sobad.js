@@ -490,6 +490,11 @@ function number_format(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+function remove_format(x){
+	x = x.replace(/\./g,'');
+	return parseInt(x,10);
+}
+
 function prefix_format(num, digits) {
   var si = [
     { value: 1, symbol: "" },
