@@ -130,6 +130,12 @@ var index_toggle = '';
 		$(id).html(data);
 		$(id + '.bs-select').selectpicker('refresh');
 	}
+
+	function sobad_selectOption_search(data, id) {
+		sobad_option_search(data,id);
+
+		$('div.bs-select:nth-child(2) ul.selectpicker .blockUI').remove();
+	}
 	
 	// function button
 	function sobad_button(val,spin){
