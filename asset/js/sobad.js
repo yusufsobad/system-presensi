@@ -435,7 +435,7 @@ function sobad_preview(url,data,spec){
 	}
 	
 //	data = $.rot13(data);
-	url = url_preview+"?"+data;
+	url = server+"/"+url_preview+"?"+data;
 	window.open(url,'scrollwindow',spec);
 }
 
