@@ -500,7 +500,12 @@ abstract class _page{
 		global $DB_NAME;
 
 		$args = sobad_asset::ajax_conv_json($_args);
-		if(is_callable(array(new static(), '_callback'))){
+		if(property_exists(new static, '_callback')){
+			$_callback = static::$_callback;
+			if(is_callable(array(new static(), $_callback))){
+				$args = static::{$_callback}($args,$_args);
+			}
+		}else if(is_callable(array(new static(), '_callback'))){
 			$args = static::_callback($args,$_args);
 		}
 	
@@ -576,7 +581,12 @@ abstract class _page{
 		$q = $args['data'];
 		$src = $args['search'];
 
-		if(is_callable(array(new static(), '_updateDetail'))){
+		if(property_exists(new static, '_updateDetail')){
+			$_update = static::$_updateDetail;
+			if(is_callable(array(new static(), $_update))){
+				$args = static::{$_update}($args,$_args);
+			}
+		}else if(is_callable(array(new static(), '_updateDetail'))){
 			static::_updateDetail($args,$_args);
 		}
 
@@ -638,7 +648,12 @@ abstract class _page{
 		$q = $args['data'];
 		$src = $args['search'];
 
-		if(is_callable(array(new static(), '_addDetail'))){
+		if(property_exists(new static, '_addDetail')){
+			$_add = static::$_addDetail;
+			if(is_callable(array(new static(), $_add))){
+				$args = static::{$_add}($args,$_args);
+			}
+		}else if(is_callable(array(new static(), '_addDetail'))){
 			static::_addDetail($args,$_args);
 		}
 		
