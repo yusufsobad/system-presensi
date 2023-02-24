@@ -582,7 +582,7 @@ abstract class _page{
 		$src = $args['search'];
 
 		if(property_exists(new static, '_updateDetail')){
-			$_update = static::$_updateDetail;
+			$_update = !empty(static::$_updateDetail) ? static::$_updateDetail : '_updateDetail';
 			if(is_callable(array(new static(), $_update))){
 				$args = static::{$_update}($args,$_args);
 			}
@@ -649,7 +649,7 @@ abstract class _page{
 		$src = $args['search'];
 
 		if(property_exists(new static, '_addDetail')){
-			$_add = static::$_addDetail;
+			$_add = !empty(static::$_addDetail) ? static::$_addDetail : '_addDetail';
 			if(is_callable(array(new static(), $_add))){
 				$args = static::{$_add}($args,$_args);
 			}
