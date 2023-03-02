@@ -133,8 +133,15 @@ var index_toggle = '';
 	    	sobad_loading('.bs-select ul.selectpicker');
 			
 			data = "ajax=" + dt + "&object=" + object + "&data=" + this.value;
-			sobad_ajax(tag, data, sobad_selectOption_search, false);
+			sobad_ajax(tag, data, sobad_select_liveSearch, false);
 	    }
+	}
+
+	function sobad_select_liveSearch(data,id){
+		$(id).html(data);
+		$(id).selectpicker('refresh');
+
+		$('div.bs-select:nth-child(2) ul.selectpicker .blockUI').remove();
 	}
 
 	function sobad_option_search(data,id){
