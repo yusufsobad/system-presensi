@@ -126,6 +126,17 @@ var index_toggle = '';
 		}
 	}
 
+	function sobad_live_search(val){
+		var tag = $(val).parent().parent().parent().parent().children('select');
+	    var dt = tag.attr('data-change');
+	    if(dt){
+	    	sobad_loading('.bs-select ul.selectpicker');
+			
+			data = "ajax=" + dt + "&object=" + object + "&data=" + this.value;
+			sobad_ajax(tag, data, sobad_selectOption_search, false);
+	    }
+	}
+
 	function sobad_option_search(data,id){
 		$(id).html(data);
 		$(id + '.bs-select').selectpicker('refresh');
