@@ -132,7 +132,7 @@ var index_toggle = '';
 	    if(dt){
 	    	sobad_loading('.bs-select ul.selectpicker');
 			
-			data = "ajax=" + dt + "&object=" + object + "&data=" + this.value;
+			data = "ajax=" + dt + "&object=" + object + "&data=" + $(val).val();
 			sobad_ajax(tag, data, sobad_select_liveSearch, false);
 	    }
 	}
