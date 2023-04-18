@@ -334,6 +334,19 @@ function _detectDelimiter($csvFile){
     return array_search(max($delimiters), $delimiters);
 }
 
+function _conv_date($awal='', $akhir=''){
+	$awal = empty($awal) ? date('Y-m-d') : $awal;
+	$akhir = empty($akhir) ? date('Y-m-d') : $akhir;
+
+	$tgl1 = strtotime($awal); 
+	$tgl2 = strtotime($akhir); 
+
+	$jarak = $tgl2 - $tgl1;
+	$hari = $jarak / 60 / 60 / 24;
+
+	return $hari;
+}
+
 function _conv_time($awal='00:00:00', $akhir='00:00:00', $conv=1){
 	// conv 1 = detik , 2 = menit , 3 = jam , 4 = Jam : Menit , 5 = Jam : menit : detik
 
