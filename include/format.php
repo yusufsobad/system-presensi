@@ -72,6 +72,10 @@ function format_number_currency($current,$nominal){
 }
 
 function format_date_id($date){
+	if(empty($date) || $date == '0000-00-00'){
+		return '-';
+	}
+
 	$date = strtotime($date);
 	$date = date('Y-m-d',$date);
 	$date = explode('-',$date);
