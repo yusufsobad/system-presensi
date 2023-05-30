@@ -234,6 +234,12 @@ var index_toggle = '';
 		var tp = $(val).attr('data-type');
 		var index = $(val).attr('data-index');
 		var mdl = $(val).attr('data-modal');
+		var node = $(val).attr('data-socket');
+
+		var callback = 'sobad_option_search';
+		if(typeof node != 'undefined'){
+			callback = node;
+		}
 
 		var srcData = $("form.sobad_form").serializeArray();
 		var data = $("form"+index).serializeArray();
@@ -274,7 +280,7 @@ var index_toggle = '';
 		data = conv_array_submit(data);
 		
 		data = "ajax="+ajx+"&object="+object+"&data="+data+"&type="+tp+"&page="+pg+"&filter="+filter+"&repeater="+repeater;
-		sobad_ajax('#'+id,data,sobad_option_search,true,val,html);
+		sobad_ajax('#'+id,data,callback,true,val,html);
 	}
 	
 	// get data summernote
