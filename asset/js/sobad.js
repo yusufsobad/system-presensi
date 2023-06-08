@@ -237,7 +237,7 @@ var index_toggle = '';
 		var node = $(val).attr('data-socket');
 
 		var callback = 'sobad_option_search';
-		if(typeof node != 'undefined'){
+		if(node){
 			callback = node;
 		}
 
