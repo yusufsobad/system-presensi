@@ -247,7 +247,8 @@ abstract class _class{
 
 		foreach($detail as $_key => $val){
 			if($args==='*' || in_array($_key,$args)){
-				$key = "_".$_key;
+				$alias = isset($val['alias']) ? $val['alias'] : '';
+				$key = !empty($alias) ? "_" . $alias : "_" . $_key;
 				
 				foreach($val['column'] as $ky => $vl){
 					self::$_join[] = "$key.$vl AS ".$vl."_".substr($key,1,4);
