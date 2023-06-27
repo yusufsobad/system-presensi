@@ -24,6 +24,14 @@ function get_home(){
 	return HOSTNAME.'/'.URL;
 }
 
+function get_local(){
+	return SITE.'://'.HOSTNAME;
+}
+
+function get_system_url(){
+	return get_local() . '/' . URL;
+}
+
 function get_page_url(){
 	$url = '';
 	if(defined('load_menu')){
