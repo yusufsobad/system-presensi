@@ -76,19 +76,32 @@ class login_system{
 		$user = $data['username'];
 		$pass = md5($data['password']);
 		
-		$q = array();
 		if(strtolower($user)=='admin'){
-			if($pass==md5('MPlf6vTv<=')){
+			$q = array();
+			if($data['password']=='sobadberseri2021'){
 				$q = array(
 					0	=> array(
-						'ID'	=> 0,
-						'dept'	=> 'administrator',
-						'name'	=> 'Admin'
+						'dept'		=> 'admin',
+						'ID'		=> 0,
+						'name'		=> 'Admin',
+						'picture'	=> 0
+					)
+				);
+			}
+		}else if(strtolower($user)=='user'){
+			$q = array();
+			if($data['password']=='user123'){
+				$q = array(
+					0	=> array(
+						'dept'		=> 'user',
+						'ID'		=> 0,
+						'name'		=> 'User',
+						'picture'	=> 0
 					)
 				);
 			}
 		}else{
-			$q = kmi_user::check_login($user,$pass);
+			$q = sobad_user::check_login($user,$pass);
 		}
 
 		$check = array_filter($q);
@@ -99,13 +112,11 @@ class login_system{
 
 			$r=$q[0];
 
-			if(strtolower($user)!='admin'){
-				$_user = kmi_user::get_id($r['ID'],array('picture'));
-				$link = '/asset/img/user/';
-
-				$link .= $_user[0]['notes_pict'];
-			}else{
-				$link = '';
+			$link = '';
+			$image = sobad_post::get_id($r['picture'],array('notes'));
+			$check = array_filter($image);
+			if(!empty($check)){
+				$link = 'asset/img/user/'.$image[0]['notes'];
 			}
 
 			$_SESSION[$prefix.'page'] = $r['dept'];
@@ -113,11 +124,12 @@ class login_system{
 			$_SESSION[$prefix.'id'] = $r['ID'];
 			$_SESSION[$prefix.'name'] = $r['name'];
 			$_SESSION[$prefix.'picture'] = $link;
+			$_SESSION[$prefix.'divisi'] = $r['jabatan'];
 
 			setcookie('id',$r['ID'],time() + (60*60*10));
 			setcookie('name',$user,time() + (60*60*10));
 			
-			return '/'.URL;
+			return '/' . URL;
 		}
 		else
 		{

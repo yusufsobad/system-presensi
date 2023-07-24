@@ -1,7 +1,7 @@
 <?php
 (!defined('AUTHPATH'))?exit:'';
 
-class sobad_table{
+class sobad_table{
 
 	public static function _get_table($func){
 		$func = str_replace('-','_',$func);
@@ -32,29 +32,36 @@ class sobad_table{
 		// Information data table
 		
 		$table = array(
-				'sdn-about'		=> self::sdn_about(),
-				'sdn-account'		=> self::sdn_account(),
-				'sdn-cashflow'		=> self::sdn_cashflow(),
-				'sdn-company'		=> self::sdn_company(),
-				'sdn-company-meta'		=> self::sdn_company_meta(),
-				'sdn-item'		=> self::sdn_item(),
-				'sdn-item-detail'		=> self::sdn_item_detail(),
-				'sdn-item-join'		=> self::sdn_item_join(),
-				'sdn-item-meta'		=> self::sdn_item_meta(),
-				'sdn-meta'		=> self::sdn_meta(),
-				'sdn-module'		=> self::sdn_module(),
-				'sdn-post'		=> self::sdn_post(),
-				'sdn-post-meta'		=> self::sdn_post_meta(),
-				'sdn-transaksi'		=> self::sdn_transaksi(),
-				'tbl_wilayah'		=> self::tbl_wilayah(),
+				'abs-about'		=> self::abs_about(),
+				'abs-contract'		=> self::abs_contract(),
+				'abs-history'		=> self::abs_history(),
+				'abs-holiday'		=> self::abs_holiday(),
+				'abs-log-detail'		=> self::abs_log_detail(),
+				'abs-module'		=> self::abs_module(),
+				'abs-overtime'		=> self::abs_overtime(),
+				'abs-overtime-detail'		=> self::abs_overtime_detail(),
+				'abs-permit'		=> self::abs_permit(),
+				'abs-post'		=> self::abs_post(),
+				'abs-university'		=> self::abs_university(),
 				'abs-user'		=> self::abs_user(),
+				'abs-user-log'		=> self::abs_user_log(),
+				'abs-user-meta'		=> self::abs_user_meta(),
+				'abs-user-recall'		=> self::abs_user_recall(),
+				'abs-work'		=> self::abs_work(),
+				'abs-work-normal'		=> self::abs_work_normal(),
+				'tbl_wilayah'		=> self::tbl_wilayah(),
+				'sasi-city'		=> self::sasi_city(),
+				'sasi-country'		=> self::sasi_country(),
+				'sasi-province'		=> self::sasi_province(),
+				'sasi-subdistrict'		=> self::sasi_subdistrict(),
+				'sasi-village'		=> self::sasi_village(),
 		);
 		
 		return $table;
 	}
 		
 
-		private static function sdn_about(){
+		private static function abs_about(){
 			$list = array(
 				'config_name'	=> '',
 				'config_value'	=> '',
@@ -63,139 +70,109 @@ class sobad_table{
 			
 			return $list;
 		}
-
-		private static function sdn_account(){
+
+		private static function abs_contract(){
 			$list = array(
-				'name'	=> '',
-				'no_rek'	=> '',
-				'user'	=> 0,
-				'balance'	=> 0,
-				'bank'	=> 0,
-				'address'	=> '',
-				'updated'	=> date('Y-m-d H:i:s'),
-				'trash'	=> 0,	
-			);
-			
-			return $list;
-		}
-
-		private static function sdn_cashflow(){
-			$list = array(
-				'reff'	=> 0,
-				'user'	=> 0,
-				'type'	=> '',
-				'payment'	=> 0,
-				'saldo_awal'	=> 0,
-				'saldo_akhir'	=> 0,
-				'account'	=> 0,
+				'user_id'	=> 0,
 				'status'	=> 0,
-				'note'	=> '',
-				'date_log'	=> date('Y-m-d H:i:s'),	
+				'no_surat'	=> 0,
+				'inserted'	=> date('Y-m-d'),
+				'notes'	=> '',	
 			);
 			
 			return $list;
 		}
-
-		private static function sdn_company(){
-			$list = array(
-				'name'	=> '',
-				'phone_no'	=> '',
-				'type'	=> 0,
-				'inserted'	=> date('Y-m-d H:i:s'),
-				'updated'	=> date('Y-m-d H:i:s'),
-				'reff'	=> 0,	
-			);
-			
-			return $list;
-		}
-
-		private static function sdn_company_meta(){
+
+		private static function abs_history(){
 			$list = array(
 				'meta_id'	=> 0,
 				'meta_key'	=> '',
-				'meta_value'	=> '',	
+				'meta_value'	=> '',
+				'meta_note'	=> '',
+				'meta_var'	=> '',
+				'meta_date'	=> date('Y-m-d H:i:s'),	
 			);
 			
 			return $list;
 		}
-
-		private static function sdn_item(){
+
+		private static function abs_holiday(){
 			$list = array(
-				'name'	=> '',
-				'product_code'	=> '',
-				'picture'	=> '',
-				'price'	=> 0,
-				'category'	=> 0,
-				'weight'	=> 0.00,
-				'company'	=> 0,
-				'type'	=> 0,
-				'var'	=> 0,
-				'stock'	=> 0.00,
-				'inserted'	=> date('Y-m-d H:i:s'),
-				'updated'	=> date('Y-m-d H:i:s'),
-				'trash'	=> 0,	
-			);
-			
-			return $list;
-		}
-
-		private static function sdn_item_detail(){
-			$list = array(
-				'item'	=> 0,
-				'sku'	=> '',
-				'off_date'	=> date('Y-m-d'),
-				'notes'	=> '',
-				'reff'	=> 0,
+				'title'	=> '',
+				'holiday'	=> date('Y-m-d'),
 				'status'	=> 0,	
 			);
 			
 			return $list;
 		}
-
-		private static function sdn_item_join(){
+
+		private static function abs_log_detail(){
 			$list = array(
-				'item_id'	=> 0,
-				'join_id'	=> 0,
-				'status'	=> 0,	
+				'log_id'	=> 0,
+				'date_schedule'	=> date('Y-m-d'),
+				'times'	=> 0,
+				'status'	=> 0,
+				'date_actual'	=> '',
+				'log_history'	=> '',
+				'type_log'	=> 0,	
 			);
 			
 			return $list;
 		}
-
-		private static function sdn_item_meta(){
-			$list = array(
-				'meta_id'	=> 0,
-				'meta_key'	=> '',
-				'meta_value'	=> '',	
-			);
-			
-			return $list;
-		}
-
-		private static function sdn_meta(){
+
+		private static function abs_module(){
 			$list = array(
 				'meta_key'	=> '',
 				'meta_value'	=> '',
 				'meta_note'	=> '',
-				'inserted'	=> date('Y-m-d H:i:s'),
-				'updated'	=> date('Y-m-d H:i:s'),
 				'meta_reff'	=> 0,	
 			);
 			
 			return $list;
 		}
-
-		private static function sdn_module(){
+
+		private static function abs_overtime(){
 			$list = array(
-				'name'	=> '',
-				'meta_name'	=> '',
-				'detail'	=> '',	
+				'title'	=> 0,
+				'user'	=> 0,
+				'approve'	=> 0,
+				'accept'	=> 0,
+				'post_date'	=> date('Y-m-d'),
+				'inserted'	=> date('Y-m-d H:i:s'),
+				'note'	=> '',	
 			);
 			
 			return $list;
 		}
-
-		private static function sdn_post(){
+
+		private static function abs_overtime_detail(){
+			$list = array(
+				'over_id'	=> 0,
+				'user_id'	=> 0,
+				'start_time'	=> '',
+				'finish_time'	=> '',
+				'status'	=> 0,
+				'notes'	=> '',	
+			);
+			
+			return $list;
+		}
+
+		private static function abs_permit(){
+			$list = array(
+				'user'	=> 0,
+				'start_date'	=> date('Y-m-d'),
+				'range_date'	=> date('Y-m-d'),
+				'num_day'	=> 0.00,
+				'type_date'	=> 0,
+				'type'	=> 0,
+				'note'	=> '',	
+			);
+			
+			return $list;
+		}
+
+		private static function abs_post(){
 			$list = array(
 				'title'	=> 0,
 				'company'	=> 0,
@@ -204,19 +181,68 @@ class sobad_table{
 				'user'	=> 0,
 				'payment'	=> 0,
 				'post_date'	=> date('Y-m-d'),
-				'status'	=> 0,
+				'_status'	=> 0,
 				'inserted'	=> date('Y-m-d H:i:s'),
 				'updated'	=> date('Y-m-d H:i:s'),
 				'var'	=> '',
 				'notes'	=> '',
-				'reff'	=> 0,
 				'trash'	=> 0,	
 			);
 			
 			return $list;
 		}
-
-		private static function sdn_post_meta(){
+
+		private static function abs_university(){
+			$list = array(
+				'name'	=> '',
+				'phone_no'	=> '',
+				'email'	=> '',
+				'address'	=> '',
+				'province'	=> 0,
+				'city'	=> 0,
+				'subdistrict'	=> 0,
+				'post_code'	=> 0,	
+			);
+			
+			return $list;
+		}
+
+		private static function abs_user(){
+			$list = array(
+				'username'	=> '',
+				'password'	=> '',
+				'no_induk'	=> 0,
+				'divisi'	=> 0,
+				'phone_no'	=> '',
+				'name'	=> '',
+				'picture'	=> 0,
+				'work_time'	=> 0,
+				'dayOff'	=> 0.00,
+				'status'	=> 0,
+				'end_status'	=> 0,
+				'inserted'	=> date('Y-m-d'),	
+			);
+			
+			return $list;
+		}
+
+		private static function abs_user_log(){
+			$list = array(
+				'user'	=> 0,
+				'shift'	=> 0,
+				'type'	=> 0,
+				'_inserted'	=> date('Y-m-d'),
+				'time_in'	=> '',
+				'time_out'	=> '',
+				'note'	=> '',
+				'punish'	=> 0,
+				'history'	=> '',	
+			);
+			
+			return $list;
+		}
+
+		private static function abs_user_meta(){
 			$list = array(
 				'meta_id'	=> 0,
 				'meta_key'	=> '',
@@ -225,22 +251,41 @@ class sobad_table{
 			
 			return $list;
 		}
-
-		private static function sdn_transaksi(){
+
+		private static function abs_user_recall(){
 			$list = array(
-				'post'	=> 0,
-				'barang'	=> 0,
-				'qty'	=> 0.00,
-				'unit'	=> '',
-				'price'	=> 0.00,
-				'discount'	=> 0,
-				'note'	=> '',
-				'keyword'	=> '',	
+				'user_id'	=> 0,
+				'end_status'	=> 0,
+				'_entry_date'	=> date('Y-m-d'),
+				'_resign_date'	=> date('Y-m-d'),
+				'note'	=> '',	
 			);
 			
 			return $list;
 		}
-
+
+		private static function abs_work(){
+			$list = array(
+				'name'	=> '',
+				'type'	=> 0,	
+			);
+			
+			return $list;
+		}
+
+		private static function abs_work_normal(){
+			$list = array(
+				'reff'	=> 0,
+				'days'	=> 0,
+				'time_in'	=> '',
+				'time_out'	=> '',
+				'note'	=> '',
+				'status'	=> 0,	
+			);
+			
+			return $list;
+		}
+
 		private static function tbl_wilayah(){
 			$list = array(
 				'id_prov'	=> 0,
@@ -256,21 +301,51 @@ class sobad_table{
 			
 			return $list;
 		}
-
-		private static function abs_user(){
+
+		private static function sasi_city(){
 			$list = array(
-				'username'	=> '',
-				'password'	=> '',
-				'no_induk'	=> 0,
-				'divisi'	=> 0,
-				'phone_no'	=> '',
-				'name'	=> '',
-				'picture'	=> 0,
-				'work_time'	=> 0,
-				'dayOff'	=> 0.00,
-				'status'	=> 0,
-				'end_status'	=> 0,
-				'inserted'	=> date('Y-m-d'),	
+				'id_province'	=> 0,
+				'city'	=> '',
+				'type'	=> '',	
+			);
+			
+			return $list;
+		}
+
+		private static function sasi_country(){
+			$list = array(
+				'country'	=> '',
+				'code'	=> '',
+				'code1'	=> '',
+				'currency'	=> '',	
+			);
+			
+			return $list;
+		}
+
+		private static function sasi_province(){
+			$list = array(
+				'id_country'	=> 0,
+				'province'	=> '',	
+			);
+			
+			return $list;
+		}
+
+		private static function sasi_subdistrict(){
+			$list = array(
+				'id_city'	=> 0,
+				'subdistrict'	=> '',	
+			);
+			
+			return $list;
+		}
+
+		private static function sasi_village(){
+			$list = array(
+				'id_subdistrict'	=> 0,
+				'village'	=> '',
+				'postal_code'	=> 0,	
 			);
 			
 			return $list;

@@ -18,13 +18,17 @@ define('USERNAME',"root");
 define('PASSWORD','');
 
 // set Database
-define('DB_NAME','cordova');
+define('DB_NAME','hrd2022');
 $GLOBALS['DB_NAME'] = DB_NAME;
 
 // set rule database
 $database_sc = array(
 	0 => array(
 		'db' 	=> DB_NAME, // nama database
+		'where'	=> '' // TABLE_NAME= . . .
+	),
+	array(
+		'db' 	=> 'sasi_region', // nama database
 		'where'	=> '' // TABLE_NAME= . . .
 	)
 );
@@ -40,7 +44,7 @@ define('SITE','http');
 define('HOSTNAME',$_SERVER['SERVER_NAME']);
 
 // set name url
-define('URL','cordova-v3');
+define('URL','system-hrd');
 
 // set check table
 define('ABOUT','');
@@ -48,7 +52,7 @@ define('ABOUT','');
 // Setting -------------------------------------------
 
 // prefix SESSION
-define('_prefix','cordova_');
+define('_prefix','hrd-presensi_');
 		
 // authentic include
 define('AUTH_KEY','qJB0rGtInG03efyCpWs');
@@ -60,10 +64,10 @@ define('DEFPATH',dirname(__FILE__));
 define('language',true);
 
 // set nama Perusahaan
-define('company','Cordova');
+define('company','Solo Abadi Group');
 
 // set judul Website
-define('title','Cordova');
+define('title','System HRD');
 
 // set Auto Include Page
 define('include_pages', true);
@@ -82,19 +86,19 @@ define('_library',serialize($library_sc));
 
 // Mode Development
 
-define('development',0);
+define('development',1);
 
 // Default Theme
 
-define('theme','metronic');
+define('theme','sasi');
 
 // Default Theme
 
-define('convToPDF','createpdf');
+define('convToPDF','mpdf');
 
 // Awalan nama table
 
-define('base','');
+define('base','hrd-');
 
 // Temporary table
 $temp_table = array(

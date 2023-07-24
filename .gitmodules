@@ -4,3 +4,6 @@
 [submodule "theme/sasi"]
 	path = theme/sasi
 	url = git@github.com:yusufsobad/theme-sasi.git
+[submodule "theme/presensi"]
+	path = theme/presensi
+	url = git@github.com:yusufsobad/theme-presensi.git
