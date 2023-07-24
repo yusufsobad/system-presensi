@@ -21,10 +21,10 @@ $args['hrd'] = array(
 	'home'		=> false
 );
 
-$args['absensi'] = array(
+$args['dashboard'] = array(
 	'home'	=> true,
-	'view'	=> 'Dashboard/absensi',
-	'page'	=> 'dashboard_absensi'
+	'view'	=> '',
+	'page'	=> 'dashboard'
 );
 
 reg_hook('reg_page',$args);

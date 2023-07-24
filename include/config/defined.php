@@ -18,7 +18,7 @@ define('USERNAME',"root");
 define('PASSWORD','');
 
 // set Database
-define('DB_NAME','hrd2022');
+define('DB_NAME','absen2020');
 $GLOBALS['DB_NAME'] = DB_NAME;
 
 // set rule database
@@ -44,7 +44,7 @@ define('SITE','http');
 define('HOSTNAME',$_SERVER['SERVER_NAME']);
 
 // set name url
-define('URL','system-hrd');
+define('URL','system-presensi');
 
 // set check table
 define('ABOUT','');
@@ -86,11 +86,11 @@ define('_library',serialize($library_sc));
 
 // Mode Development
 
-define('development',1);
+define('development',0);
 
 // Default Theme
 
-define('theme','sasi');
+define('theme','presensi');
 
 // Default Theme
 
@@ -98,7 +98,7 @@ define('convToPDF','mpdf');
 
 // Awalan nama table
 
-define('base','hrd-');
+define('base','abs-');
 
 // Temporary table
 $temp_table = array(
