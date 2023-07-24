@@ -19,7 +19,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Cuti</p>
-                                            <h2 class="purple">40</h2>'
+                                            <h2 class="purple">-</h2>'
                     ]
                 ],
                 [
@@ -31,7 +31,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Sakit</p>
-                                            <h2 class="purple">3</h2>'
+                                            <h2 id="ammount-sick" class="purple">-</h2>'
                     ]
                 ],
                 [
@@ -43,7 +43,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Izin</p>
-                                            <h2 class="purple">-</h2>'
+                                            <h2 id="ammount-permit" class="purple">-</h2>'
                     ]
                 ],
                 [
@@ -55,7 +55,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Luar Kota</p>
-                                            <h2 class="purple">-</h2>'
+                                            <h2 id="ammount-outcity" class="purple">-</h2>'
                     ]
                 ],
                 [
@@ -91,7 +91,7 @@ $config = [
                                                     <img width="90%" src="' . $base_url . 'ic-employe.png" alt="">
                                                 </div>
                                                 <div class="col-xs-7 text-center space">
-                                                    <h2 class="purple bold">60</h2>
+                                                    <h2 class="purple bold">0</h2>
                                                 </div>
                                             </div>'
                     ]
@@ -111,7 +111,7 @@ $config = [
                                                     <img width="90%" src="' . $base_url . 'ic-internship.png" alt="">
                                                 </div>
                                                 <div class="col-xs-7 text-center space">
-                                                    <h2 class="purple bold">60</h2>
+                                                    <h2 class="purple bold">0</h2>
                                                 </div>
                                             </div>'
                     ]
@@ -131,7 +131,7 @@ $config = [
                                                     <img width="90%" src="' . $base_url . 'ic-team.png" alt="">
                                                 </div>
                                                 <div class="col-xs-7 text-center space">
-                                                    <h2 class="purple bold">60</h2>
+                                                    <h2 id="ammount-work" class="purple bold">0</h2>
                                                 </div>
                                             </div>'
                     ]

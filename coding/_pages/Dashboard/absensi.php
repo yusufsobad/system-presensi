@@ -278,6 +278,8 @@ class dashboard_absensi extends _page
                     $("#" + nik + "-notwork").remove();
                     work_data[nik] = data;
                     delete notwork_data[nik];
+                    dom_ammount_work();
+                    dom_count_team();
                 }
             }
 
@@ -319,6 +321,27 @@ class dashboard_absensi extends _page
                 $('#home_permit').show();
             }
 
+            // ALLERT GLOBAL SECONDARY
+            function second_alert_scan(nik, data) {
+                var allert_title = "Mau Kemana?"
+                var allert_sub_title = "Tekan pilihan tombol di bawah"
+                var url_img_employe = url + data.image
+                $('#alert_global').fadeIn();
+                $('#alert_data').val(nik);
+                $('#alert_img_employ').attr('src', url_img_employe);
+                $('#alert_name_employe').html(data.name);
+                $('#alert_divisi_employe').html(data.divisi);
+                $('#alert_title').html(allert_title);
+                $('#allert_sub_title').html(allert_sub_title);
+                $('#sick_permit').show();
+                $('#permit_change_time').show();
+                $('#cuti').show();
+
+                $('#out_city').hide();
+                $('#permit').hide();
+                $('#home_permit').hide();
+            }
+
             // ACTION KETIKA USER MEMILIH LUAR KOTA
             function go_out_city(data) {
                 nik = $('#alert_data').val();
@@ -354,6 +377,8 @@ class dashboard_absensi extends _page
                         });
                     }
                 }
+                dom_ammount_work();
+                dom_ammount_outcity();
             }
 
             // ACTION KETIKA USER MEMILIH IZIN
@@ -373,7 +398,7 @@ class dashboard_absensi extends _page
                 var nik = args;
                 check_nik = nik in work_data;
                 if (check_nik) {
-                    outcity_data[nik] = data
+                    permit_data[nik] = data
                     var data = work_data[nik];
                     $("#permit_content").append(permit_html(nik, data));
                     delete work_data[nik];
@@ -390,6 +415,17 @@ class dashboard_absensi extends _page
                             arrows: false,
                         });
                     }
+                }
+                dom_ammount_work();
+                dom_ammount_permit();
+            }
+
+            function home_permit(args) {
+                nik = $('#alert_data').val();
+                check_nik = nik in work_data;
+                if (check_nik) {
+                    $('#alert_global').fadeOut();
+                    second_alert_scan(nik, work_data[nik]);
                 }
             }
         </script>
