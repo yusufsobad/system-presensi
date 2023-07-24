@@ -37,7 +37,7 @@ class dashboard_absensi extends _page
         $sag_content = self::sobad_group_content();
         $sobad_content = self::sobad_content();
         $kmi_content = self::kmi_content();
-        $carousel_user = self::out_work();
+        $carousel_user = [];
 
         $config = [
             [
@@ -88,8 +88,8 @@ class dashboard_absensi extends _page
 
     public static function sobad_group_content()
     {
-        $base_url = SITE . '://' . HOSTNAME . '/' . URL;
-        $base_url = $base_url .  "/theme/absensi/assets/image/icon/";
+        $base_url = self::base_url();
+        $base_url = $base_url .  "image/icon/";
 
         $data_company = model_absensi::_get_company(89);
         $data_company = $data_company[0];
@@ -101,8 +101,8 @@ class dashboard_absensi extends _page
         ];
         $content = self::_loadView('sobad_group/content', $data);
 
-        $base_url = SITE . '://' . HOSTNAME . '/' . URL;
-        $base_url = $base_url .  "/theme/absensi/assets/image/icon/";
+        $base_url = self::base_url();
+        $base_url = $base_url .  "image/icon/";
         $config = [
             'color' => 'light',
             'title' => $data_company['meta_value'],
@@ -116,8 +116,8 @@ class dashboard_absensi extends _page
 
     public static function sobad_content()
     {
-        $base_url = SITE . '://' . HOSTNAME . '/' . URL;
-        $base_url = $base_url .  "/theme/absensi/assets/image/icon/";
+        $base_url = self::base_url();
+        $base_url = $base_url .  "image/icon/";
 
         $data_company = model_absensi::_get_company(90);
         $data_company = $data_company[0];
@@ -129,8 +129,8 @@ class dashboard_absensi extends _page
         ];
         $content = self::_loadView('sobad/content', $data);
 
-        $base_url = SITE . '://' . HOSTNAME . '/' . URL;
-        $base_url = $base_url .  "/theme/absensi/assets/image/icon/";
+        $base_url = self::base_url();
+        $base_url = $base_url .  "image/icon/";
         $config = [
             'color' => 'light',
             'title' => $data_company['meta_value'],
@@ -144,8 +144,8 @@ class dashboard_absensi extends _page
 
     public static function kmi_content()
     {
-        $base_url = SITE . '://' . HOSTNAME . '/' . URL;
-        $base_url = $base_url .  "/theme/absensi/assets/image/icon/";
+        $base_url = self::base_url();
+        $base_url = $base_url .  "image/icon/";
 
         $data_company = model_absensi::_get_company(91);
         $data_company = $data_company[0];
@@ -158,8 +158,8 @@ class dashboard_absensi extends _page
         ];
         $content = self::_loadView('kmi/content', $data);
 
-        $base_url = SITE . '://' . HOSTNAME . '/' . URL;
-        $base_url = $base_url .  "/theme/absensi/assets/image/icon/";
+        $base_url = self::base_url();
+        $base_url = $base_url .  "image/icon/";
         $config = [
             'color' => 'light',
             'title' => $data_company['meta_value'],
@@ -171,21 +171,6 @@ class dashboard_absensi extends _page
         return $config;
     }
 
-    public static function out_work()
-    {
-        $data = model_absensi::_data_outwork();
-        $url = "https://s.soloabadi.com/system-absen/asset/img/user/";
-        $config = [];
-        // foreach ($data as $value) {
-        //     $nick_name = explode(" ", $value['_nickname']);
-        //     $config[] = [
-        //         'title'     => $nick_name[0],
-        //         'url_img' => $url . $value['notes_pict']
-        //     ];
-        // }
-
-        return $config;
-    }
 
     public static function scan()
     {
@@ -411,5 +396,10 @@ class dashboard_absensi extends _page
 <?php
         $contents = ob_get_clean();
         return $contents;
+    }
+
+    private function base_url()
+    {
+        return SITE . '://' . HOSTNAME . '/' . URL . '/theme/' . _theme_folder . '/assets/';
     }
 }

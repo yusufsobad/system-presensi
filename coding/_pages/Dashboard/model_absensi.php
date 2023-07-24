@@ -51,12 +51,7 @@ class model_absensi
         return $user;
     }
 
-    public static function _sag_inwork()
-    {
-        $whr = "AND `abs-user`.status!=0  AND `abs-user`.divisi IN ('30','57','84','6','68') ";
-        $user = sobad_user::get_all(array('ID', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date'), $whr);
-        return $user;
-    }
+
 
     public static function _get_company($id = 0)
     {
