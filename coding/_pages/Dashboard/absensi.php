@@ -91,10 +91,10 @@ class dashboard_absensi extends _page
         $base_url = self::base_url();
         $base_url = $base_url .  "image/icon/";
 
-        $data_company = model_absensi::_get_company(89);
+        $data_company = model_absensi::_dummy_data_company();
         $data_company = $data_company[0];
 
-        $data_department = model_absensi::_get_department($data_company['ID']);
+        $data_department = model_absensi::_dummy_data_dpartment()[0];
 
         $data = [
             'department'    => $data_department,
@@ -119,11 +119,10 @@ class dashboard_absensi extends _page
         $base_url = self::base_url();
         $base_url = $base_url .  "image/icon/";
 
-        $data_company = model_absensi::_get_company(90);
-        $data_company = $data_company[0];
+        $data_company = model_absensi::_dummy_data_company();
+        $data_company = $data_company[1];
 
-        $data_department = model_absensi::_get_department($data_company['ID']);
-
+        $data_department = model_absensi::_dummy_data_dpartment()[1];
         $data = [
             'department'    => $data_department,
         ];
@@ -147,11 +146,10 @@ class dashboard_absensi extends _page
         $base_url = self::base_url();
         $base_url = $base_url .  "image/icon/";
 
-        $data_company = model_absensi::_get_company(91);
-        $data_company = $data_company[0];
+        $data_company = model_absensi::_dummy_data_company();
+        $data_company = $data_company[2];
 
-        $data_department = model_absensi::_get_department($data_company['ID']);
-
+        $data_department = model_absensi::_dummy_data_dpartment()[2];
 
         $data = [
             'department'    => $data_department,

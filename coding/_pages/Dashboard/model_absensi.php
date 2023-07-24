@@ -44,6 +44,139 @@ class model_absensi
         ];
         return $data;
     }
+
+    public static function _dummy_data_company()
+    {
+        $data = [
+            [
+                'ID'            => '89',
+                'meta_value'    => 'Solo Abadi Group',
+                'meta_note'     => 'ic-sobad-group.png'
+            ],
+            [
+                'ID'            => '90',
+                'meta_value'    => 'Solo Abadi Indonesia',
+                'meta_note'     => 'ic-sobad.png'
+            ],
+            [
+                'ID'            => '91',
+                'meta_value'    => 'Kreasi Muda Indonesia',
+                'meta_note'     => 'ic-kmi.png'
+            ],
+        ];
+        return $data;
+    }
+
+    public static function _dummy_data_dpartment()
+    {
+        $data = [
+            [
+                [
+                    'ID'            => 2,
+                    'meta_value'    => 'HRD',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '89'
+                ],
+                [
+                    'ID'            => 6,
+                    'meta_value'    => 'IT',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '89'
+                ],
+                [
+                    'ID'            => 30,
+                    'meta_value'    => 'APD',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '89'
+                ],
+                [
+                    'ID'            => 52,
+                    'meta_value'    => 'Serabutan',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '89'
+                ],
+                [
+                    'ID'            => 62,
+                    'meta_value'    => 'MR',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '89'
+                ],
+            ],
+            [
+                [
+                    'ID'            => 3,
+                    'meta_value'    => 'PPIC',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '90'
+                ],
+                [
+                    'ID'            => 4,
+                    'meta_value'    => 'Enginering',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '90'
+                ],
+                [
+                    'ID'            => 7,
+                    'meta_value'    => 'Teknisi',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '90'
+                ],
+                [
+                    'ID'            => 8,
+                    'meta_value'    => 'Marketing',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '90'
+                ],
+                [
+                    'ID'            => 9,
+                    'meta_value'    => 'Produksi',
+                    'meta_note'     => '100',
+                    'meta_reff'     => '90'
+                ],
+                [
+                    'ID'            => 93,
+                    'meta_value'    => 'Internship',
+                    'meta_note'     => '100',
+                    'meta_reff'     => '90'
+                ],
+            ],
+            [
+                [
+                    'ID'            => 94,
+                    'meta_value'    => 'PPIC',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '91'
+                ],
+                [
+                    'ID'            => 95,
+                    'meta_value'    => 'Enginering',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '91'
+                ],
+                [
+                    'ID'            => 96,
+                    'meta_value'    => 'Teknisi',
+                    'meta_note'     => '20',
+                    'meta_reff'     => '91'
+                ],
+                [
+                    'ID'            => 97,
+                    'meta_value'    => 'Marketing',
+                    'meta_note'     => '40',
+                    'meta_reff'     => '91'
+                ],
+                [
+                    'ID'            => 98,
+                    'meta_value'    => 'Produksi',
+                    'meta_note'     => '100',
+                    'meta_reff'     => '91'
+                ],
+            ]
+        ];
+
+        return $data;
+    }
+
     public static function _data_outwork()
     {
         $whr = "AND `abs-user`.status!=0";
