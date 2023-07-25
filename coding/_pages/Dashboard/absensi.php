@@ -198,9 +198,8 @@ class dashboard_absensi extends _page
         $data_args = model_absensi::_dummy_data();
 
         // CEK ADA APAKAH ADA NIK 
-        if (isset($args[$nik])) {
-            $data = $args[$nik];
-            $data['time'] = $time_now;
+        if (isset($data_args[$nik])) {
+            $data = $data_args[$nik];
             // CEK APAKAH TELAT ABSEN
             if ($time_now >= $time_default) {
                 $data['type'] = 1;
@@ -254,22 +253,35 @@ class dashboard_absensi extends _page
                 var data = args.data;
                 var nik = args.nik;
                 check_nik = nik in work_data;
+                time_work = "08.00";
+                time_go_home = "16.00";
+                trial = "#" + nik + "-work"
                 if (check_nik) {
-                    time_work = "08.00";
+                    // JIKA SCAN LAGI DI JAM KERJA
                     if (data.time >= time_work) {
-                        alert_scan(nik, work_data[nik]);
+                        // JIKA SCAN DIATAS JAM 4 / SCAN PULANG
+                        if (data.time >= time_go_home) {
+                            // $("#group_not_work").append(notwork_content(nik, data));
+                            $("#" + nik + "-work").empty()
+                            notwork_data[nik] = data;
+                            delete work_data[nik];
+                            alert_success_scan_home(data);
+                        } else {
+                            alert_scan(nik, work_data[nik]);
+                        }
                     } else {
                         alert_already_scan(data);
                     }
                 } else {
                     alert_success_scan(data);
                     $("#" + data.group + "").append(work_html(nik, data));
-                    $("#" + nik + "-notwork").remove();
+                    $("#" + nik + "-notwork").empty();
                     work_data[nik] = data;
                     delete notwork_data[nik];
-                    dom_ammount_work();
-                    dom_count_team();
+
                 }
+                dom_ammount_work();
+                dom_count_team();
                 destroyCarousel(data.width);
             }
 
@@ -286,6 +298,17 @@ class dashboard_absensi extends _page
             // ALLERT KETIKA SUKSES SCAN
             function alert_success_scan(data) {
                 var mesage = "Anda Berhasil Scan Masuk"
+
+                $('#success_scan').html(mesage);
+                $('#success_scan').fadeIn();
+                setTimeout(function() {
+                    $("#success_scan").fadeOut();
+                }, 2000);
+            }
+
+            // ALLERT KETIKA SUKSES SCAN
+            function alert_success_scan_home(data) {
+                var mesage = "Anda Berhasil Scan Pulang"
 
                 $('#success_scan').html(mesage);
                 $('#success_scan').fadeIn();
