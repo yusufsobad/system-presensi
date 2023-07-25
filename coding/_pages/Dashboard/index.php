@@ -30,7 +30,7 @@ class dashboard
 
         // url script css ----->
         $js = array_merge(
-            $js->_get_('_vendor_js'),
+            // $js->_get_('_vendor_js'),
             $js->_get_('_bootstrap_js'),
             $js->_get_('_plugin_js'),
             $js->_get_('_sasi_js')

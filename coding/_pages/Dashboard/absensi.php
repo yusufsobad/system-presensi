@@ -237,14 +237,6 @@ class dashboard_absensi extends _page
         ob_start();
     ?>
         <script>
-            // REFRESH CARAOUSEL AGAR BISA SLIDER KETIKA SCAN
-            function destroyCarousel(clas) {
-                if ($('.' + clas + '-carousel').hasClass('slick-initialized')) {
-                    $('.' + clas + '-carousel').slick('destroy');
-                    slick_carousel();
-                }
-
-            }
             // SCAN DATA MASUK
             function scan(data) {
                 var _nik = $('#nik').val();
@@ -255,7 +247,6 @@ class dashboard_absensi extends _page
                 var object = 'dashboard_absensi';
                 data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik + "&args=" + args;
                 sobad_ajax(id, data, _dom_scan_work, false);
-                destroyCarousel(data.width)
             }
 
             // DOM SCAN MASUK
@@ -279,6 +270,7 @@ class dashboard_absensi extends _page
                     dom_ammount_work();
                     dom_count_team();
                 }
+                destroyCarousel(data.width);
             }
 
             // ALERT KETIKA DOUBLE SCAN
