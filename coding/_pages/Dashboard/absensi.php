@@ -234,6 +234,7 @@ class dashboard_absensi extends _page
     public static function script()
     {
         ob_start();
+
     ?>
         <script>
             // SCAN DATA MASUK
@@ -252,107 +253,55 @@ class dashboard_absensi extends _page
             function _dom_scan_work(args) {
                 var data = args.data;
                 var nik = args.nik;
-                check_nik = nik in work_data;
+                in_work = nik in work_data;
+                out_city = nik in outcity_data;
                 time_work = "08.00";
                 time_go_home = "16.00";
                 trial = "#" + nik + "-work"
-                if (check_nik) {
-                    // JIKA SCAN LAGI DI JAM KERJA
-                    if (data.time >= time_work) {
-                        // JIKA SCAN DIATAS JAM 4 / SCAN PULANG
-                        if (data.time >= time_go_home) {
-                            // $("#group_not_work").append(notwork_content(nik, data));
-                            $("#" + nik + "-work").empty()
+
+                if (in_work) { // JIKA NIK ADA DI WORK_DATA
+                    if (data.time >= time_work) { // JIKA SCAN LEBIH DARI JAM MASUK
+                        if (data.time >= time_go_home) { // JIKA SCAN SESUDAH JAM PULANG
                             notwork_data[nik] = data;
                             delete work_data[nik];
+                            $("#" + nik + "-work").remove()
                             alert_success_scan_home(data);
-                        } else {
+                        } else { // JIKA SCAN SEBELUM JAM PULANG
                             alert_scan(nik, work_data[nik]);
                         }
                     } else {
                         alert_already_scan(data);
                     }
-                } else {
-                    alert_success_scan(data);
-                    $("#" + data.group + "").append(work_html(nik, data));
-                    $("#" + nik + "-notwork").empty();
-                    work_data[nik] = data;
-                    delete notwork_data[nik];
-
+                } else { //JIKA NIK TIDAK ADA DI WORK_DATA
+                    if (out_city) { // JIKA NIK ADA DI OUTCITY_DATA
+                        if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
+                            var workhtml = work_html(nik, data);
+                            $("#" + data.group + "").append(workhtml);
+                            work_data[nik] = data;
+                            delete outcity_data[nik];
+                            $("#" + nik + "-permit").remove();
+                            dom_ammount_outcity();
+                            alert_success_scan(data);
+                        } else { // JIKA SCAN SESUDAH JAM PULANG
+                            notwork_data[nik] = data;
+                            delete work_data[nik];
+                            $("#" + nik + "-permit").remove()
+                            alert_success_scan_home(data);
+                            destroyCarousel('footer');
+                        }
+                    } else { // JIKA NIK TIDAK ADA DI OUTCITY_DATA
+                        var workhtml = work_html(nik, data);
+                        $("#" + data.group + "").append(workhtml);
+                        work_data[nik] = data;
+                        delete notwork_data[nik];
+                        $("#" + nik + "-notwork").remove();
+                        alert_success_scan(data);
+                        destroyCarousel(data.width);
+                    }
                 }
+
                 dom_ammount_work();
                 dom_count_team();
-                destroyCarousel(data.width);
-            }
-
-            // ALERT KETIKA DOUBLE SCAN
-            function alert_already_scan(data) {
-                var mesage = "Anda Sudah Scan Masuk !!!"
-                $('#warning_scan').html(mesage);
-                $('#warning_scan').fadeIn();
-                setTimeout(function() {
-                    $("#warning_scan").fadeOut();
-                }, 2000);
-            }
-
-            // ALLERT KETIKA SUKSES SCAN
-            function alert_success_scan(data) {
-                var mesage = "Anda Berhasil Scan Masuk"
-
-                $('#success_scan').html(mesage);
-                $('#success_scan').fadeIn();
-                setTimeout(function() {
-                    $("#success_scan").fadeOut();
-                }, 2000);
-            }
-
-            // ALLERT KETIKA SUKSES SCAN
-            function alert_success_scan_home(data) {
-                var mesage = "Anda Berhasil Scan Pulang"
-
-                $('#success_scan').html(mesage);
-                $('#success_scan').fadeIn();
-                setTimeout(function() {
-                    $("#success_scan").fadeOut();
-                }, 2000);
-            }
-
-            // ALLERT GLOBAL
-            function alert_scan(nik, data) {
-                var allert_title = "Mau Kemana?"
-                var allert_sub_title = "Tekan pilihan tombol di bawah"
-                var url_img_employe = url + data.image
-                $('#alert_global').fadeIn();
-                $('#alert_data').val(nik);
-                $('#alert_img_employ').attr('src', url_img_employe);
-                $('#alert_name_employe').html(data.name);
-                $('#alert_divisi_employe').html(data.divisi);
-                $('#alert_title').html(allert_title);
-                $('#allert_sub_title').html(allert_sub_title);
-                $('#out_city').show();
-                $('#permit').show();
-                $('#home_permit').show();
-            }
-
-            // ALLERT GLOBAL SECONDARY
-            function second_alert_scan(nik, data) {
-                var allert_title = "Mau Kemana?"
-                var allert_sub_title = "Tekan pilihan tombol di bawah"
-                var url_img_employe = url + data.image
-                $('#alert_global').fadeIn();
-                $('#alert_data').val(nik);
-                $('#alert_img_employ').attr('src', url_img_employe);
-                $('#alert_name_employe').html(data.name);
-                $('#alert_divisi_employe').html(data.divisi);
-                $('#alert_title').html(allert_title);
-                $('#allert_sub_title').html(allert_sub_title);
-                $('#sick_permit').show();
-                $('#permit_change_time').show();
-                $('#cuti').show();
-
-                $('#out_city').hide();
-                $('#permit').hide();
-                $('#home_permit').hide();
             }
 
             // ACTION KETIKA USER MEMILIH LUAR KOTA
@@ -365,6 +314,7 @@ class dashboard_absensi extends _page
                 var object = 'dashboard_absensi';
                 data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
                 sobad_ajax(id, data, _dom_out_city, false);
+                destroyCarousel('permit');
             }
 
             // DOM CONTENT LUAR KOTA
@@ -376,19 +326,8 @@ class dashboard_absensi extends _page
                     var data = work_data[nik];
                     $("#out_city_content").append(outcity_html(nik, data));
                     delete work_data[nik];
-                    $("#" + nik + "-work").remove();
-
                     // RE INIT CAROUSEL
-                    if ($(".permit-carousel").hasClass('slick-initialized')) {
-                        $(".permit-carousel").slick('destroy');
-                        $(".permit-carousel").slick({
-                            slidesToShow: 5,
-                            slidesToScroll: 1,
-                            autoplay: true,
-                            autoplaySpeed: 2000,
-                            arrows: false,
-                        });
-                    }
+                    $("#" + nik + "-work").remove();
                 }
                 dom_ammount_work();
                 dom_ammount_outcity();
@@ -415,11 +354,12 @@ class dashboard_absensi extends _page
                     var data = work_data[nik];
                     $("#permit_content").append(permit_html(nik, data));
                     delete work_data[nik];
-                    $("#" + nik + "-work").remove();
+
 
                     // RE INIT CAROUSEL
                     if ($(".permit-split-carousel").hasClass('slick-initialized')) {
-                        $(".permit-split-carousel").slick('destroy');
+                        $(".permit-split-carousel").slick('unslick');
+                        $("#" + nik + "-work").remove();
                         $(".permit-split-carousel").slick({
                             slidesToShow: 2,
                             slidesToScroll: 1,
