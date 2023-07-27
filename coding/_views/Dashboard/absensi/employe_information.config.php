@@ -19,7 +19,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Cuti</p>
-                                            <h2 class="purple">-</h2>'
+                                            <h2 id="ammount-cuti" class="purple">0</h2>'
                     ]
                 ],
                 [
@@ -31,7 +31,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Sakit</p>
-                                            <h2 id="ammount-sick" class="purple">-</h2>'
+                                            <h2 id="ammount-sick" class="purple">0</h2>'
                     ]
                 ],
                 [
@@ -43,7 +43,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Izin</p>
-                                            <h2 id="ammount-permit" class="purple">-</h2>'
+                                            <h2 id="ammount-permit" class="purple">0</h2>'
                     ]
                 ],
                 [
@@ -55,7 +55,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Luar Kota</p>
-                                            <h2 id="ammount-outcity" class="purple">-</h2>'
+                                            <h2 id="ammount-outcity" class="purple">0</h2>'
                     ]
                 ],
                 [
@@ -67,7 +67,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Tugas Luar</p>
-                                            <h2 class="purple">-</h2>'
+                                            <h2 class="purple">0</h2>'
                     ]
                 ],
             ]

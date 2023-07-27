@@ -231,6 +231,20 @@ class dashboard_absensi extends _page
         return $nik;
     }
 
+    public static function _sick_permit()
+    {
+        $nik = $_POST['nik'];
+
+        return $nik;
+    }
+
+    public static function _cuti()
+    {
+        $nik = $_POST['nik'];
+
+        return $nik;
+    }
+
     public static function script()
     {
         ob_start();
@@ -294,9 +308,9 @@ class dashboard_absensi extends _page
                         $("#" + data.group + "").append(workhtml);
                         work_data[nik] = data;
                         delete notwork_data[nik];
+                        destroyCarousel(data.width);
                         $("#" + nik + "-notwork").remove();
                         alert_success_scan(data);
-                        destroyCarousel(data.width);
                     }
                 }
 
@@ -314,7 +328,6 @@ class dashboard_absensi extends _page
                 var object = 'dashboard_absensi';
                 data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
                 sobad_ajax(id, data, _dom_out_city, false);
-                destroyCarousel('permit');
             }
 
             // DOM CONTENT LUAR KOTA
@@ -327,6 +340,7 @@ class dashboard_absensi extends _page
                     $("#out_city_content").append(outcity_html(nik, data));
                     delete work_data[nik];
                     // RE INIT CAROUSEL
+                    destroyCarousel('permit');
                     $("#" + nik + "-work").remove();
                 }
                 dom_ammount_work();
@@ -354,25 +368,15 @@ class dashboard_absensi extends _page
                     var data = work_data[nik];
                     $("#permit_content").append(permit_html(nik, data));
                     delete work_data[nik];
-
-
                     // RE INIT CAROUSEL
-                    if ($(".permit-split-carousel").hasClass('slick-initialized')) {
-                        $(".permit-split-carousel").slick('unslick');
-                        $("#" + nik + "-work").remove();
-                        $(".permit-split-carousel").slick({
-                            slidesToShow: 2,
-                            slidesToScroll: 1,
-                            autoplay: true,
-                            autoplaySpeed: 2000,
-                            arrows: false,
-                        });
-                    }
+                    destroyCarousel('permit-split');
+                    $("#" + nik + "-work").remove();
                 }
                 dom_ammount_work();
                 dom_ammount_permit();
             }
 
+            // ACTION KETIKA USER MEMILIH 
             function home_permit(args) {
                 nik = $('#alert_data').val();
                 check_nik = nik in work_data;
@@ -380,6 +384,60 @@ class dashboard_absensi extends _page
                     $('#alert_global').fadeOut();
                     second_alert_scan(nik, work_data[nik]);
                 }
+            }
+
+            function sick_permit() {
+                nik = $('#alert_data').val();
+                $('#alert_global').fadeOut();
+                var ajx = '_sick_permit';
+                var id = '';
+                var nik = nik;
+                var object = 'dashboard_absensi';
+                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
+                sobad_ajax(id, data, _dom_sick_permit, false);
+            }
+
+            function _dom_sick_permit(args) {
+                var nik = args;
+                check_nik = nik in work_data;
+                if (check_nik) {
+                    sick_data[nik] = data
+                    var data = work_data[nik];
+                    $("#sick_content").append(permit_html(nik, data));
+                    delete work_data[nik];
+                    // RE INIT CAROUSEL
+                    destroyCarousel('permit');
+                    $("#" + nik + "-work").remove();
+                }
+                dom_ammount_work();
+                dom_ammount_sickpermit();
+            }
+
+            function cuti() {
+                nik = $('#alert_data').val();
+                $('#alert_global').fadeOut();
+                var ajx = '_cuti';
+                var id = '';
+                var nik = nik;
+                var object = 'dashboard_absensi';
+                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
+                sobad_ajax(id, data, _dom_cuti, false);
+            }
+
+            function _dom_cuti(args) {
+                var nik = args;
+                check_nik = nik in work_data;
+                if (check_nik) {
+                    cuti_data[nik] = data
+                    var data = work_data[nik];
+                    $("#cuti_content").append(permit_html(nik, data));
+                    delete work_data[nik];
+                    // RE INIT CAROUSEL
+                    destroyCarousel('permit-split');
+                    $("#" + nik + "-work").remove();
+                }
+                dom_ammount_work();
+                dom_ammount_cuti();
             }
         </script>
 <?php
