@@ -220,29 +220,66 @@ class dashboard_absensi extends _page
     public static function _go_out_city()
     {
         $nik = $_POST['nik'];
+        $data_args = model_absensi::_dummy_data();
+        $data = $data_args[$nik];
 
-        return $nik;
+        $data = [
+            'data' => $data,
+            'nik'   => $nik,
+        ];
+        return $data;
     }
 
     public static function _permit()
     {
         $nik = $_POST['nik'];
+        $data_args = model_absensi::_dummy_data();
+        $data = $data_args[$nik];
 
-        return $nik;
+        $data = [
+            'data' => $data,
+            'nik'   => $nik,
+        ];
+        return $data;
     }
 
     public static function _sick_permit()
     {
         $nik = $_POST['nik'];
+        $data_args = model_absensi::_dummy_data();
+        $data = $data_args[$nik];
 
-        return $nik;
+        $data = [
+            'data' => $data,
+            'nik'   => $nik,
+        ];
+        return $data;
     }
 
     public static function _cuti()
     {
         $nik = $_POST['nik'];
+        $data_args = model_absensi::_dummy_data();
+        $data = $data_args[$nik];
 
-        return $nik;
+        $data = [
+            'data' => $data,
+            'nik'   => $nik,
+        ];
+        return $data;
+    }
+
+    public static function _permit_change_time()
+    {
+        $nik = $_POST['nik'];
+        $data_args = model_absensi::_dummy_data();
+        $data = $data_args[$nik];
+
+        $data = [
+            'data' => $data,
+            'nik'   => $nik,
+        ];
+        return $data;
     }
 
     public static function script()
@@ -272,13 +309,21 @@ class dashboard_absensi extends _page
                 time_work = "08.00";
                 time_go_home = "16.00";
                 trial = "#" + nik + "-work"
-
                 if (in_work) { // JIKA NIK ADA DI WORK_DATA
                     if (data.time >= time_work) { // JIKA SCAN LEBIH DARI JAM MASUK
                         if (data.time >= time_go_home) { // JIKA SCAN SESUDAH JAM PULANG
                             notwork_data[nik] = data;
                             delete work_data[nik];
-                            $("#" + nik + "-work").remove()
+                            var notworkhtml = notwork_html(nik, data);
+                            $(".footer-carousel").append(notworkhtml);
+                            // REINIT ===============================
+                            reinit_carousel('footer')
+                            $('.' + data.width + '-carousel').slick('slickRemove');
+                            $("." + nik + "-work").remove()
+                            $('.' + data.width + '-carousel').slick('slickAdd');
+                            reinit_carousel(data.width)
+                            // END REINIT ===========================
+
                             alert_success_scan_home(data);
                         } else { // JIKA SCAN SEBELUM JAM PULANG
                             alert_scan(nik, work_data[nik]);
@@ -293,23 +338,40 @@ class dashboard_absensi extends _page
                             $("#" + data.group + "").append(workhtml);
                             work_data[nik] = data;
                             delete outcity_data[nik];
-                            $("#" + nik + "-permit").remove();
+                            // REINIT ===============================
+                            reinit_carousel(data.width)
+                            $('.permit-carousel').slick('slickRemove');
+                            $("." + nik + "-permit").remove();
+                            $('.permit-carousel').slick('slickAdd');
+                            reinit_carousel('permit')
+                            // END REINIT ===========================
                             dom_ammount_outcity();
                             alert_success_scan(data);
                         } else { // JIKA SCAN SESUDAH JAM PULANG
                             notwork_data[nik] = data;
-                            delete work_data[nik];
-                            $("#" + nik + "-permit").remove()
+                            delete outcity_data[nik];
+                            var notworkhtml = notwork_html(nik, data);
+                            $(".footer-carousel").append(notworkhtml);
+                            // REINIT ===============================
+                            reinit_carousel('footer');
+                            $('.permit-carousel').slick('slickRemove');
+                            $("." + nik + "-permit").remove();
+                            $('.permit-carousel').slick('slickAdd');
+                            reinit_carousel('permit')
+                            // END REINIT ===========================
+                            dom_ammount_outcity();
                             alert_success_scan_home(data);
-                            destroyCarousel('footer');
                         }
                     } else { // JIKA NIK TIDAK ADA DI OUTCITY_DATA
                         var workhtml = work_html(nik, data);
                         $("#" + data.group + "").append(workhtml);
                         work_data[nik] = data;
                         delete notwork_data[nik];
-                        destroyCarousel(data.width);
-                        $("#" + nik + "-notwork").remove();
+                        reinit_carousel(data.width)
+                        $('.footer-carousel').slick('slickRemove');
+                        $("." + nik + "-notwork").remove();
+                        $('.footer-carousel').slick('slickAdd');
+                        reinit_carousel('footer')
                         alert_success_scan(data);
                     }
                 }
@@ -332,7 +394,9 @@ class dashboard_absensi extends _page
 
             // DOM CONTENT LUAR KOTA
             function _dom_out_city(args) {
-                var nik = args;
+                var data = args.data;
+                var nik = args.nik;
+
                 check_nik = nik in work_data;
                 if (check_nik) {
                     outcity_data[nik] = data
@@ -340,8 +404,11 @@ class dashboard_absensi extends _page
                     $("#out_city_content").append(outcity_html(nik, data));
                     delete work_data[nik];
                     // RE INIT CAROUSEL
-                    destroyCarousel('permit');
-                    $("#" + nik + "-work").remove();
+                    reinit_carousel('permit')
+                    $('.' + data.width + '-carousel').slick('slickRemove');
+                    $("." + nik + "-work").remove();
+                    $('.' + data.width + '-carousel').slick('slickAdd');
+                    reinit_carousel(data.width)
                 }
                 dom_ammount_work();
                 dom_ammount_outcity();
@@ -361,7 +428,8 @@ class dashboard_absensi extends _page
 
             // DOM CONTENT IZIN
             function _dom_permit(args) {
-                var nik = args;
+                var data = args.data;
+                var nik = args.nik;
                 check_nik = nik in work_data;
                 if (check_nik) {
                     permit_data[nik] = data
@@ -369,8 +437,11 @@ class dashboard_absensi extends _page
                     $("#permit_content").append(permit_html(nik, data));
                     delete work_data[nik];
                     // RE INIT CAROUSEL
-                    destroyCarousel('permit-split');
-                    $("#" + nik + "-work").remove();
+                    reinit_carousel('permit-split');
+                    $('.' + data.width + '-carousel').slick('slickRemove');
+                    $("." + nik + "-work").remove();
+                    $('.' + data.width + '-carousel').slick('slickAdd');
+                    reinit_carousel(data.width)
                 }
                 dom_ammount_work();
                 dom_ammount_permit();
@@ -398,7 +469,8 @@ class dashboard_absensi extends _page
             }
 
             function _dom_sick_permit(args) {
-                var nik = args;
+                var data = args.data;
+                var nik = args.nik;
                 check_nik = nik in work_data;
                 if (check_nik) {
                     sick_data[nik] = data
@@ -406,8 +478,11 @@ class dashboard_absensi extends _page
                     $("#sick_content").append(permit_html(nik, data));
                     delete work_data[nik];
                     // RE INIT CAROUSEL
-                    destroyCarousel('permit');
-                    $("#" + nik + "-work").remove();
+                    reinit_carousel('permit');
+                    $('.' + data.width + '-carousel').slick('slickRemove');
+                    $("." + nik + "-work").remove();
+                    $('.' + data.width + '-carousel').slick('slickAdd');
+                    reinit_carousel(data.width)
                 }
                 dom_ammount_work();
                 dom_ammount_sickpermit();
@@ -425,7 +500,9 @@ class dashboard_absensi extends _page
             }
 
             function _dom_cuti(args) {
-                var nik = args;
+                var data = args.data;
+                var nik = args.nik;
+
                 check_nik = nik in work_data;
                 if (check_nik) {
                     cuti_data[nik] = data
@@ -433,9 +510,41 @@ class dashboard_absensi extends _page
                     $("#cuti_content").append(permit_html(nik, data));
                     delete work_data[nik];
                     // RE INIT CAROUSEL
-                    destroyCarousel('permit-split');
-                    $("#" + nik + "-work").remove();
+                    reinit_carousel('permit-split');
+                    $('.' + data.width + '-carousel').slick('slickRemove');
+                    $("." + nik + "-work").remove();
+                    $('.' + data.width + '-carousel').slick('slickAdd');
+                    reinit_carousel(data.width)
                 }
+                dom_ammount_work();
+                dom_ammount_cuti();
+            }
+
+            function permit_change_time() {
+                nik = $('#alert_data').val();
+                $('#alert_global').fadeOut();
+                var ajx = '_permit_change_time';
+                var id = '';
+                var nik = nik;
+                var object = 'dashboard_absensi';
+                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
+                sobad_ajax(id, data, _dom_permit_changetime, false);
+            }
+
+            function _dom_permit_changetime(args) {
+                var data = args.data;
+                var nik = args.nik;
+                check_nik = nik in work_data;
+                notwork_data[nik] = data;
+                var notworkhtml = notwork_html(nik, data);
+                $(".footer-carousel").append(notworkhtml);
+                delete work_data[nik];
+                // RE INIT CAROUSEL
+                reinit_carousel('footer');
+                $('.' + data.width + '-carousel').slick('slickRemove');
+                $("." + nik + "-work").remove();
+                $('.' + data.width + '-carousel').slick('slickAdd');
+                reinit_carousel(data.width)
                 dom_ammount_work();
                 dom_ammount_cuti();
             }

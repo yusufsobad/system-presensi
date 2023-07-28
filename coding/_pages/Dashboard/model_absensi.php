@@ -52,8 +52,8 @@ class model_absensi
             ],
             "006" => [
                 'group'     => '90-3',
-                'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'image'     => 'huda-min.png',
+                'name'      => 'Huda',
                 'width'     => '20',
                 'divisi'    => 'PPIC',
                 'time'      => '',
@@ -61,8 +61,8 @@ class model_absensi
             ],
             "007" => [
                 'group'     => '90-3',
-                'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'image'     => 'bangsur-min.png',
+                'name'      => 'Bangsur',
                 'width'     => '20',
                 'divisi'    => 'PPIC',
                 'time'      => '',
@@ -70,8 +70,8 @@ class model_absensi
             ],
             "008" => [
                 'group'     => '90-3',
-                'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'image'     => 'lukma-min.png',
+                'name'      => 'Lukma',
                 'width'     => '20',
                 'divisi'    => 'PPIC',
                 'time'      => '',
@@ -79,8 +79,8 @@ class model_absensi
             ],
             "009" => [
                 'group'     => '90-3',
-                'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'image'     => 'rusi-min.png',
+                'name'      => 'Rusi',
                 'width'     => '20',
                 'divisi'    => 'PPIC',
                 'time'      => '',
@@ -89,7 +89,7 @@ class model_absensi
             "010" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Ari',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -98,7 +98,7 @@ class model_absensi
             "011" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Taufan',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -107,7 +107,7 @@ class model_absensi
             "012" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Pras',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -116,7 +116,7 @@ class model_absensi
             "013" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Carles',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -125,7 +125,7 @@ class model_absensi
             "014" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Yusuf',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -134,7 +134,7 @@ class model_absensi
             "015" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Supri',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -143,7 +143,7 @@ class model_absensi
             "016" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Dian',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -152,7 +152,7 @@ class model_absensi
             "017" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Naufal',
+                'name'      => 'Dono',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -161,7 +161,7 @@ class model_absensi
             "018" => [
                 'group'     => '91-97',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Kasino',
                 'width'     => '40',
                 'divisi'    => 'Marketing',
                 'time'      => '',
@@ -170,7 +170,7 @@ class model_absensi
             "019" => [
                 'group'     => '90-9',
                 'image'     => '176. Naufal.png',
-                'name'      => 'Noufal',
+                'name'      => 'Endro',
                 'width'     => '100',
                 'divisi'    => 'Produksi',
                 'time'      => '',
