@@ -9,7 +9,19 @@ class dashboard_absensi extends _page
 
     public static function index()
     {
-        $args = model_absensi::_dummy_data();
+        $notwork_data = model_absensi::_dummy_data();
+        $birthday_data = model_absensi::_dummy_data_birthday();
+        $announcement_data = model_absensi::_dummy_data_announcement();
+        $args = [
+            'notwork_data'      => $notwork_data,
+            'work_data'         => [],
+            'outcity_data'      => [],
+            'permit_data'       => [],
+            'cuti_data'         => [],
+            'sick_data'         => [],
+            'birthday_data'     => $birthday_data,
+            'announcement_data' => $announcement_data,
+        ];
         self::scan();
         $title = '
                     <h2 class="bold grey">This is</h2>
@@ -643,6 +655,21 @@ class dashboard_absensi extends _page
                 dom_ammount_work();
                 dom_count_team(data.group);
             }
+
+            var settimer = 0;
+            setInterval(function() {
+                if (settimer === 1) {
+                    $('.birthday').show(500);
+                    $('#announcement-title').show(500);
+                    $('#announ-info').hide(500);
+                    settimer = 0;
+                } else {
+                    $('#announcement-title').hide(500);
+                    $('.birthday').hide(500);
+                    $('#announ-info').show(500);
+                    settimer = 1;
+                }
+            }, 30000);
         </script>
 <?php
         $contents = ob_get_clean();

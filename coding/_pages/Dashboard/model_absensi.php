@@ -348,26 +348,31 @@ class model_absensi
         return $data;
     }
 
-    public static function _data_outwork()
+    public static function _dummy_data_birthday()
     {
-        $whr = "AND `abs-user`.status!=0";
-        $user = sobad_user::get_all(array('ID', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date'), $whr);
-        return $user;
-    }
-
-
-
-    public static function _get_company($id = 0)
-    {
-        $where = "AND meta_key='company' AND ID='$id'";
-        $data = sobad_module::get_all(['ID', 'meta_value', 'meta_note'], $where);
+        $data = [
+            [
+                'name'  => 'Ammri',
+                'image' => 'AMRI.png',
+            ],
+            [
+                'name'  => 'Lintang',
+                'image' => 'lintang-min.png',
+            ],
+        ];
         return $data;
     }
 
-    public static function _get_department($id = 0)
+    public static function _dummy_data_announcement()
     {
-        $where = "AND meta_key='department' AND meta_reff='$id'";
-        $data = sobad_module::get_all(['ID', 'meta_value', 'meta_note', 'meta_reff'], $where);
+        $data = [
+            'title'     => 'Speak Training Bulan Juli',
+            'date'      => 'Sabtu, 29 Juli 2023',
+            'start'     => '12:00',
+            'end'       => '13:00',
+            'location'  => 'Unit 2'
+        ];
+
         return $data;
     }
 }
