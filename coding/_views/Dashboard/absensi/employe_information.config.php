@@ -1,6 +1,6 @@
 <?php
-$base_url = SITE . '://' . HOSTNAME . '/' . URL;
-$base_url = $base_url .  "/theme/absensi/assets/image/icon/";
+$base_url = SITE . '://' . HOSTNAME . '/' . URL . '/theme/' . _theme_folder . '/assets/';
+$base_url = $base_url .  "image/icon/";
 $config = [
     'color'     => 'light',
     'class'     => 'pl-sm pt-xs pr-sm pb-xs card-information',
@@ -85,7 +85,7 @@ $config = [
                         'class' => 'p-xs',
                         'func'  => 'free_html',
                         'data'  => '<p class="black">Total</p>
-                                            <h6 class="black">Karyawan</h6>
+                                            <h6 class="black semi-bold">Karyawan</h6>
                                             <div class="row pl-xs pr-xs pt-xs">
                                                 <div class="col-xs-5 space">
                                                     <img width="90%" src="' . $base_url . 'ic-employe.png" alt="">
@@ -105,7 +105,7 @@ $config = [
                         'class' => 'p-xs',
                         'func'  => 'free_html',
                         'data'  => '<p class="black">Total</p>
-                                            <h6 class="black">Internship</h6>
+                                            <h6 class="black semi-bold">Internship</h6>
                                             <div class="row pl-xs pr-xs pt-xs">
                                                 <div class="col-xs-5 space">
                                                     <img width="90%" src="' . $base_url . 'ic-internship.png" alt="">
@@ -125,7 +125,7 @@ $config = [
                         'class' => 'p-xs',
                         'func'  => 'free_html',
                         'data'  => '<p class="black">Team</p>
-                                            <h6 class="black">Masuk</h6>
+                                            <h6 class="black semi-bold">Masuk</h6>
                                             <div class="row pl-xs pr-xs pt-xs">
                                                 <div class="col-xs-5 space">
                                                     <img width="90%" src="' . $base_url . 'ic-team.png" alt="">

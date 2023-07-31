@@ -159,12 +159,13 @@ class dashboard_absensi extends _page
         $base_url = self::base_url();
         $base_url = $base_url .  "image/icon/";
         $config = [
-            'color' => 'light',
-            'title' => $data_company['meta_value'],
-            'logo'  => $base_url . $data_company['meta_note'],
-            'count' => 0,
-            'func'  => 'card_divisi',
-            'data'  => $content
+            'color'     => 'light',
+            'title'     => $data_company['meta_value'],
+            'logo'      => $base_url . $data_company['meta_note'],
+            'count'     => 0,
+            'func'      => 'card_divisi',
+            'size_logo' => '123px',
+            'data'      => $content
         ];
         return $config;
     }
@@ -308,6 +309,7 @@ class dashboard_absensi extends _page
                 out_city = nik in outcity_data;
                 sick = nik in sick_data;
                 _permit = nik in permit_data;
+                _cuti = nik in cuti_data;
                 time_work = "08.00";
                 time_go_home = "17.00";
                 trial = "#" + nik + "-work"
@@ -401,10 +403,10 @@ class dashboard_absensi extends _page
                             delete permit_data[nik];
                             // REINIT ===============================
                             reinit_carousel(data.width)
-                            $('.permit-carousel').slick('slickRemove');
+                            $('.permit-split-carousel').slick('slickRemove');
                             $("." + nik + "-permit").remove();
-                            $('.permit-carousel').slick('slickAdd');
-                            reinit_carousel('permit')
+                            $('.permit-split-carousel').slick('slickAdd');
+                            reinit_carousel('permit-split')
                             // END REINIT ===========================
                             dom_ammount_permit();
                             alert_success_scan(data);
@@ -423,6 +425,36 @@ class dashboard_absensi extends _page
                             dom_ammount_permit();
                             alert_success_scan_home(data);
                         }
+                    } else if (_cuti) { // JIKA NIK ADA DI PERMIT DATA
+                        if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
+                            var workhtml = work_html(nik, data);
+                            $("#" + data.group + "").append(workhtml);
+                            work_data[nik] = data;
+                            delete cuti_data[nik];
+                            // REINIT ===============================
+                            reinit_carousel(data.width)
+                            $('.permit-split-carousel').slick('slickRemove');
+                            $("." + nik + "-permit").remove();
+                            $('.permit-split-carousel').slick('slickAdd');
+                            reinit_carousel('permit-split')
+                            // END REINIT ===========================
+                            dom_ammount_cuti();
+                            alert_success_scan(data);
+                        } else { // JIKA SCAN SESUDAH JAM PULANG
+                            notwork_data[nik] = data;
+                            delete cuti_data[nik];
+                            var notworkhtml = notwork_html(nik, data);
+                            $(".footer-carousel").append(notworkhtml);
+                            // REINIT ===============================
+                            reinit_carousel('footer');
+                            $('.permit-split-carousel').slick('slickRemove');
+                            $("." + nik + "-permit").remove();
+                            $('.permit-split-carousel').slick('slickAdd');
+                            reinit_carousel('permit-split')
+                            // END REINIT ===========================
+                            dom_ammount_cuti();
+                            alert_success_scan_home(data);
+                        }
                     } else { // JIKA NIK TIDAK ADA DI OUTCITY_DATA & SICK_DATA & WORK_DATA
                         var workhtml = work_html(nik, data);
                         $("#" + data.group + "").append(workhtml);
@@ -436,9 +468,8 @@ class dashboard_absensi extends _page
                         alert_success_scan(data);
                     }
                 }
-
                 dom_ammount_work();
-                dom_count_team();
+                dom_count_team(data.group);
             }
 
             // ACTION KETIKA USER MEMILIH LUAR KOTA
@@ -470,9 +501,11 @@ class dashboard_absensi extends _page
                     $("." + nik + "-work").remove();
                     $('.' + data.width + '-carousel').slick('slickAdd');
                     reinit_carousel(data.width)
+                    alert_success_scan(data);
                 }
                 dom_ammount_work();
                 dom_ammount_outcity();
+                dom_count_team(data.group);
             }
 
             // ACTION KETIKA USER MEMILIH IZIN
@@ -506,9 +539,9 @@ class dashboard_absensi extends _page
                 }
                 dom_ammount_work();
                 dom_ammount_permit();
+                dom_count_team(data.group);
             }
 
-            // ACTION KETIKA USER MEMILIH 
             function home_permit(args) {
                 nik = $('#alert_data').val();
                 check_nik = nik in work_data;
@@ -547,6 +580,7 @@ class dashboard_absensi extends _page
                 }
                 dom_ammount_work();
                 dom_ammount_sickpermit();
+                dom_count_team(data.group);
             }
 
             function cuti() {
@@ -563,7 +597,6 @@ class dashboard_absensi extends _page
             function _dom_cuti(args) {
                 var data = args.data;
                 var nik = args.nik;
-
                 check_nik = nik in work_data;
                 if (check_nik) {
                     cuti_data[nik] = data
@@ -579,6 +612,7 @@ class dashboard_absensi extends _page
                 }
                 dom_ammount_work();
                 dom_ammount_cuti();
+                dom_count_team(data.group);
             }
 
             function permit_change_time() {
@@ -607,7 +641,7 @@ class dashboard_absensi extends _page
                 $('.' + data.width + '-carousel').slick('slickAdd');
                 reinit_carousel(data.width)
                 dom_ammount_work();
-                dom_ammount_cuti();
+                dom_count_team(data.group);
             }
         </script>
 <?php
