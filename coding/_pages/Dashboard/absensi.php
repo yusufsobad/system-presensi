@@ -10,11 +10,12 @@ class dashboard_absensi extends _page
     public static function index()
     {
         $notwork_data = model_absensi::_dummy_data();
+        $work_data = model_absensi::_dummy_data_work();
         $birthday_data = model_absensi::_dummy_data_birthday();
         $announcement_data = model_absensi::_dummy_data_announcement();
         $args = [
             'notwork_data'      => $notwork_data,
-            'work_data'         => [],
+            'work_data'         => $work_data,
             'outcity_data'      => [],
             'permit_data'       => [],
             'cuti_data'         => [],
@@ -482,6 +483,7 @@ class dashboard_absensi extends _page
                 }
                 dom_ammount_work();
                 dom_count_team(data.group);
+
             }
 
             // ACTION KETIKA USER MEMILIH LUAR KOTA
@@ -659,17 +661,17 @@ class dashboard_absensi extends _page
             var settimer = 0;
             setInterval(function() {
                 if (settimer === 1) {
-                    $('.birthday').show(500);
-                    $('#announcement-title').show(500);
-                    $('#announ-info').hide(500);
+                    $('.birthday').show(1000);
+                    $('#announcement-title').show(1000);
+                    $('#announ-info').hide(1000);
                     settimer = 0;
                 } else {
-                    $('#announcement-title').hide(500);
-                    $('.birthday').hide(500);
-                    $('#announ-info').show(500);
+                    $('#announcement-title').hide(1000);
+                    $('.birthday').hide(1000);
+                    $('#announ-info').show(1000);
                     settimer = 1;
                 }
-            }, 30000);
+            }, 5000);
         </script>
 <?php
         $contents = ob_get_clean();

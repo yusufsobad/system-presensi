@@ -215,6 +215,11 @@ class model_absensi
         ];
         return $data;
     }
+    public static  function _dummy_data_work()
+    {
+        $data = [];
+        return $data;
+    }
 
     public static function _dummy_data_company()
     {
@@ -237,6 +242,8 @@ class model_absensi
         ];
         return $data;
     }
+
+
 
     public static function _dummy_data_dpartment()
     {
