@@ -318,168 +318,173 @@ class dashboard_absensi extends _page
             function _dom_scan_work(args) {
                 var data = args.data;
                 var nik = args.nik;
+                _notwork = nik in notwork_data
                 in_work = nik in work_data;
                 out_city = nik in outcity_data;
                 sick = nik in sick_data;
                 _permit = nik in permit_data;
                 _cuti = nik in cuti_data;
                 time_work = "08.00";
-                time_go_home = "17.00";
-                trial = "#" + nik + "-work"
-                if (in_work) { // JIKA NIK ADA DI WORK_DATA
-                    if (data.time >= time_work) { // JIKA SCAN LEBIH DARI JAM MASUK
-                        if (data.time >= time_go_home) { // JIKA SCAN SESUDAH JAM PULANG
-                            notwork_data[nik] = data;
-                            delete work_data[nik];
-                            var notworkhtml = notwork_html(nik, data);
-                            $(".footer-carousel").append(notworkhtml);
-                            // REINIT ===============================
+                time_go_home = "16.00";
+
+                if (_notwork || in_work || out_city || sick || _permit || _cuti) {
+                    if (in_work) { // JIKA NIK ADA DI WORK_DATA
+                        if (data.time >= time_work) { // JIKA SCAN LEBIH DARI JAM MASUK
+                            if (data.time >= time_go_home) { // JIKA SCAN SESUDAH JAM PULANG
+                                notwork_data[nik] = data;
+                                delete work_data[nik];
+                                var notworkhtml = notwork_html(nik, data);
+                                $(".footer-carousel").append(notworkhtml);
+                                // REINIT ===============================
+                                reinit_carousel('footer')
+                                $('.' + data.width + '-carousel').slick('slickRemove');
+                                $("." + nik + "-work").remove()
+                                $('.' + data.width + '-carousel').slick('slickAdd');
+                                reinit_carousel(data.width)
+                                // END REINIT ===========================
+                                alert_success_scan(data);
+                            } else { // JIKA SCAN SEBELUM JAM PULANG
+                                alert_scan(nik, work_data[nik]);
+                            }
+                        } else {
+                            alert_already_scan(data);
+                        }
+                    } else { //JIKA NIK TIDAK ADA DI WORK_DATA
+                        if (out_city) { // JIKA NIK ADA DI OUTCITY_DATA
+                            if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
+                                var workhtml = work_html(nik, data);
+                                $("#" + data.group + "").append(workhtml);
+                                work_data[nik] = data;
+                                delete outcity_data[nik];
+                                // REINIT ===============================
+                                reinit_carousel(data.width)
+                                $('.permit-carousel').slick('slickRemove');
+                                $("." + nik + "-permit").remove();
+                                $('.permit-carousel').slick('slickAdd');
+                                reinit_carousel('permit')
+                                // END REINIT ===========================
+                                dom_ammount_outcity();
+                                alert_success_scan(data);
+                            } else { // JIKA SCAN SESUDAH JAM PULANG
+                                notwork_data[nik] = data;
+                                delete outcity_data[nik];
+                                var notworkhtml = notwork_html(nik, data);
+                                $(".footer-carousel").append(notworkhtml);
+                                // REINIT ===============================
+                                reinit_carousel('footer');
+                                $('.permit-carousel').slick('slickRemove');
+                                $("." + nik + "-permit").remove();
+                                $('.permit-carousel').slick('slickAdd');
+                                reinit_carousel('permit')
+                                // END REINIT ===========================
+                                dom_ammount_outcity();
+                                alert_success_scan(data);
+                            }
+                        } else if (sick) { // JIKA NIK ADA DI SICK DATA
+                            if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
+                                var workhtml = work_html(nik, data);
+                                $("#" + data.group + "").append(workhtml);
+                                work_data[nik] = data;
+                                delete sick_data[nik];
+                                // REINIT ===============================
+                                reinit_carousel(data.width)
+                                $('.permit-carousel').slick('slickRemove');
+                                $("." + nik + "-permit").remove();
+                                $('.permit-carousel').slick('slickAdd');
+                                reinit_carousel('permit')
+                                // END REINIT ===========================
+                                dom_ammount_sickpermit();
+                                alert_success_scan(data);
+                            } else { // JIKA SCAN SESUDAH JAM PULANG
+                                notwork_data[nik] = data;
+                                delete sick_data[nik];
+                                var notworkhtml = notwork_html(nik, data);
+                                $(".footer-carousel").append(notworkhtml);
+                                // REINIT ===============================
+                                reinit_carousel('footer');
+                                $('.permit-carousel').slick('slickRemove');
+                                $("." + nik + "-permit").remove();
+                                $('.permit-carousel').slick('slickAdd');
+                                reinit_carousel('permit')
+                                // END REINIT ===========================
+                                dom_ammount_sickpermit();
+                                alert_success_scan(data);
+                            }
+                        } else if (_permit) { // JIKA NIK ADA DI PERMIT DATA
+                            if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
+                                var workhtml = work_html(nik, data);
+                                $("#" + data.group + "").append(workhtml);
+                                work_data[nik] = data;
+                                delete permit_data[nik];
+                                // REINIT ===============================
+                                reinit_carousel(data.width)
+                                $('.permit-split-carousel').slick('slickRemove');
+                                $("." + nik + "-permit").remove();
+                                $('.permit-split-carousel').slick('slickAdd');
+                                reinit_carousel('permit-split')
+                                // END REINIT ===========================
+                                dom_ammount_permit();
+                                alert_success_scan(data);
+                            } else { // JIKA SCAN SESUDAH JAM PULANG
+                                notwork_data[nik] = data;
+                                delete permit_data[nik];
+                                var notworkhtml = notwork_html(nik, data);
+                                $(".footer-carousel").append(notworkhtml);
+                                // REINIT ===============================
+                                reinit_carousel('footer');
+                                $('.permit-split-carousel').slick('slickRemove');
+                                $("." + nik + "-permit").remove();
+                                $('.permit-split-carousel').slick('slickAdd');
+                                reinit_carousel('permit-split')
+                                // END REINIT ===========================
+                                dom_ammount_permit();
+                                alert_success_scan(data);
+                            }
+                        } else if (_cuti) { // JIKA NIK ADA DI PERMIT DATA
+                            if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
+                                var workhtml = work_html(nik, data);
+                                $("#" + data.group + "").append(workhtml);
+                                work_data[nik] = data;
+                                delete cuti_data[nik];
+                                // REINIT ===============================
+                                reinit_carousel(data.width)
+                                $('.permit-split-carousel').slick('slickRemove');
+                                $("." + nik + "-permit").remove();
+                                $('.permit-split-carousel').slick('slickAdd');
+                                reinit_carousel('permit-split')
+                                // END REINIT ===========================
+                                dom_ammount_cuti();
+                                alert_success_scan(data);
+                            } else { // JIKA SCAN SESUDAH JAM PULANG
+                                notwork_data[nik] = data;
+                                delete cuti_data[nik];
+                                var notworkhtml = notwork_html(nik, data);
+                                $(".footer-carousel").append(notworkhtml);
+                                // REINIT ===============================
+                                reinit_carousel('footer');
+                                $('.permit-split-carousel').slick('slickRemove');
+                                $("." + nik + "-permit").remove();
+                                $('.permit-split-carousel').slick('slickAdd');
+                                reinit_carousel('permit-split')
+                                // END REINIT ===========================
+                                dom_ammount_cuti();
+                                alert_success_scan(data);
+                            }
+                        } else { // JIKA NIK TIDAK ADA DI OUTCITY_DATA & SICK_DATA & WORK_DATA
+                            var workhtml = work_html(nik, data);
+                            $("#" + data.group + "").append(workhtml);
+                            work_data[nik] = data;
+                            delete notwork_data[nik];
+                            reinit_carousel(data.width)
+                            $('.footer-carousel').slick('slickRemove');
+                            $("." + nik + "-notwork").remove();
+                            $('.footer-carousel').slick('slickAdd');
                             reinit_carousel('footer')
-                            $('.' + data.width + '-carousel').slick('slickRemove');
-                            $("." + nik + "-work").remove()
-                            $('.' + data.width + '-carousel').slick('slickAdd');
-                            reinit_carousel(data.width)
-                            // END REINIT ===========================
-                            alert_success_scan_home(data);
-                        } else { // JIKA SCAN SEBELUM JAM PULANG
-                            alert_scan(nik, work_data[nik]);
+                            alert_success_scan(data);
                         }
-                    } else {
-                        alert_already_scan(data);
                     }
-                } else { //JIKA NIK TIDAK ADA DI WORK_DATA
-                    if (out_city) { // JIKA NIK ADA DI OUTCITY_DATA
-                        if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
-                            var workhtml = work_html(nik, data);
-                            $("#" + data.group + "").append(workhtml);
-                            work_data[nik] = data;
-                            delete outcity_data[nik];
-                            // REINIT ===============================
-                            reinit_carousel(data.width)
-                            $('.permit-carousel').slick('slickRemove');
-                            $("." + nik + "-permit").remove();
-                            $('.permit-carousel').slick('slickAdd');
-                            reinit_carousel('permit')
-                            // END REINIT ===========================
-                            dom_ammount_outcity();
-                            alert_success_scan(data);
-                        } else { // JIKA SCAN SESUDAH JAM PULANG
-                            notwork_data[nik] = data;
-                            delete outcity_data[nik];
-                            var notworkhtml = notwork_html(nik, data);
-                            $(".footer-carousel").append(notworkhtml);
-                            // REINIT ===============================
-                            reinit_carousel('footer');
-                            $('.permit-carousel').slick('slickRemove');
-                            $("." + nik + "-permit").remove();
-                            $('.permit-carousel').slick('slickAdd');
-                            reinit_carousel('permit')
-                            // END REINIT ===========================
-                            dom_ammount_outcity();
-                            alert_success_scan_home(data);
-                        }
-                    } else if (sick) { // JIKA NIK ADA DI SICK DATA
-                        if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
-                            var workhtml = work_html(nik, data);
-                            $("#" + data.group + "").append(workhtml);
-                            work_data[nik] = data;
-                            delete sick_data[nik];
-                            // REINIT ===============================
-                            reinit_carousel(data.width)
-                            $('.permit-carousel').slick('slickRemove');
-                            $("." + nik + "-permit").remove();
-                            $('.permit-carousel').slick('slickAdd');
-                            reinit_carousel('permit')
-                            // END REINIT ===========================
-                            dom_ammount_sickpermit();
-                            alert_success_scan(data);
-                        } else { // JIKA SCAN SESUDAH JAM PULANG
-                            notwork_data[nik] = data;
-                            delete sick_data[nik];
-                            var notworkhtml = notwork_html(nik, data);
-                            $(".footer-carousel").append(notworkhtml);
-                            // REINIT ===============================
-                            reinit_carousel('footer');
-                            $('.permit-carousel').slick('slickRemove');
-                            $("." + nik + "-permit").remove();
-                            $('.permit-carousel').slick('slickAdd');
-                            reinit_carousel('permit')
-                            // END REINIT ===========================
-                            dom_ammount_sickpermit();
-                            alert_success_scan_home(data);
-                        }
-                    } else if (_permit) { // JIKA NIK ADA DI PERMIT DATA
-                        if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
-                            var workhtml = work_html(nik, data);
-                            $("#" + data.group + "").append(workhtml);
-                            work_data[nik] = data;
-                            delete permit_data[nik];
-                            // REINIT ===============================
-                            reinit_carousel(data.width)
-                            $('.permit-split-carousel').slick('slickRemove');
-                            $("." + nik + "-permit").remove();
-                            $('.permit-split-carousel').slick('slickAdd');
-                            reinit_carousel('permit-split')
-                            // END REINIT ===========================
-                            dom_ammount_permit();
-                            alert_success_scan(data);
-                        } else { // JIKA SCAN SESUDAH JAM PULANG
-                            notwork_data[nik] = data;
-                            delete permit_data[nik];
-                            var notworkhtml = notwork_html(nik, data);
-                            $(".footer-carousel").append(notworkhtml);
-                            // REINIT ===============================
-                            reinit_carousel('footer');
-                            $('.permit-split-carousel').slick('slickRemove');
-                            $("." + nik + "-permit").remove();
-                            $('.permit-split-carousel').slick('slickAdd');
-                            reinit_carousel('permit-split')
-                            // END REINIT ===========================
-                            dom_ammount_permit();
-                            alert_success_scan_home(data);
-                        }
-                    } else if (_cuti) { // JIKA NIK ADA DI PERMIT DATA
-                        if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
-                            var workhtml = work_html(nik, data);
-                            $("#" + data.group + "").append(workhtml);
-                            work_data[nik] = data;
-                            delete cuti_data[nik];
-                            // REINIT ===============================
-                            reinit_carousel(data.width)
-                            $('.permit-split-carousel').slick('slickRemove');
-                            $("." + nik + "-permit").remove();
-                            $('.permit-split-carousel').slick('slickAdd');
-                            reinit_carousel('permit-split')
-                            // END REINIT ===========================
-                            dom_ammount_cuti();
-                            alert_success_scan(data);
-                        } else { // JIKA SCAN SESUDAH JAM PULANG
-                            notwork_data[nik] = data;
-                            delete cuti_data[nik];
-                            var notworkhtml = notwork_html(nik, data);
-                            $(".footer-carousel").append(notworkhtml);
-                            // REINIT ===============================
-                            reinit_carousel('footer');
-                            $('.permit-split-carousel').slick('slickRemove');
-                            $("." + nik + "-permit").remove();
-                            $('.permit-split-carousel').slick('slickAdd');
-                            reinit_carousel('permit-split')
-                            // END REINIT ===========================
-                            dom_ammount_cuti();
-                            alert_success_scan_home(data);
-                        }
-                    } else { // JIKA NIK TIDAK ADA DI OUTCITY_DATA & SICK_DATA & WORK_DATA
-                        var workhtml = work_html(nik, data);
-                        $("#" + data.group + "").append(workhtml);
-                        work_data[nik] = data;
-                        delete notwork_data[nik];
-                        reinit_carousel(data.width)
-                        $('.footer-carousel').slick('slickRemove');
-                        $("." + nik + "-notwork").remove();
-                        $('.footer-carousel').slick('slickAdd');
-                        reinit_carousel('footer')
-                        alert_success_scan(data);
-                    }
+                } else {
+                    alert_failed_scan(data);
                 }
                 dom_ammount_work();
                 dom_count_team(data.group);
@@ -661,17 +666,17 @@ class dashboard_absensi extends _page
             var settimer = 0;
             setInterval(function() {
                 if (settimer === 1) {
-                    $('.birthday').show(1000);
-                    $('#announcement-title').show(1000);
-                    $('#announ-info').hide(1000);
+                    $('#announcement-title').hide(1000);
+                    $('.birthday').slideUp(1000);
+                    $('#announ-info').slideDown(1000);
                     settimer = 0;
                 } else {
-                    $('#announcement-title').hide(1000);
-                    $('.birthday').hide(1000);
-                    $('#announ-info').show(1000);
+                    $('#announcement-title').show(1000);
+                    $('.birthday').slideDown(1000);
+                    $('#announ-info').slideUp(1000);
                     settimer = 1;
                 }
-            }, 5000);
+            }, 10000);
         </script>
 <?php
         $contents = ob_get_clean();
