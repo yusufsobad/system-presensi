@@ -366,6 +366,27 @@ class model_absensi
                 'name'  => 'Lintang',
                 'image' => 'lintang-min.png',
             ],
+            [
+                'name'  => 'Naufal',
+                'image' => '176. Naufal.png',
+            ],
+            [
+                'name'  => 'Naufal',
+                'image' => '176. Naufal.png',
+            ],
+            [
+                'name'  => 'Naufal',
+                'image' => '176. Naufal.png',
+            ],
+            [
+                'name'  => 'Naufal',
+                'image' => '176. Naufal.png',
+            ],
+            [
+                'name'  => 'Naufal',
+                'image' => '176. Naufal.png',
+            ],
+
         ];
         return $data;
     }
