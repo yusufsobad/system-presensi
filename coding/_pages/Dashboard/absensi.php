@@ -950,7 +950,7 @@ class dashboard_absensi extends _page
         return $contents;
     }
 
-    private function base_url()
+    private static function base_url()
     {
         return SITE . '://' . HOSTNAME . '/' . URL . '/theme/' . _theme_folder . '/assets/';
     }
