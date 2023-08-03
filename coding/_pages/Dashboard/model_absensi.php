@@ -399,7 +399,7 @@ class model_absensi
         return 0;
     }
 
-    private function _get_width($group = [], $id = 0)
+    private static function _get_width($group = [], $id = 0)
     {
         $width = [];
 
@@ -407,7 +407,7 @@ class model_absensi
         }
     }
 
-    private function conversion_capacity($capacity)
+    private static function conversion_capacity($capacity)
     {
         switch ($capacity) {
             case 1:
