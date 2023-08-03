@@ -9,26 +9,29 @@ class dashboard_absensi extends _page
 
     public static function index()
     {
-        $notwork_data = model_absensi::_dummy_data();
-        $work_data = model_absensi::_dummy_data_work();
+        $data = model_absensi::presensi_data();
+
         $birthday_data = model_absensi::_dummy_data_birthday();
         $announcement_data = model_absensi::_dummy_data_announcement();
         $args = [
-            'notwork_data'      => $notwork_data,
-            'work_data'         => $work_data,
-            'outcity_data'      => [],
-            'permit_data'       => [],
-            'cuti_data'         => [],
-            'sick_data'         => [],
+            'notwork_data'      => $data['notwork_data'],
+            'work_data'         => $data['work_data'],
+            'outcity_data'      => $data['outcity_data'],
+            'permit_data'       => $data['permit_data'],
+            'cuti_data'         => $data['permit_data'],
+            'sick_data'         => $data['sick_data'],
             'birthday_data'     => $birthday_data,
             'announcement_data' => $announcement_data,
+            'count_tugas'       => self::_tugas(),
+            'count_employes'    => self::_employees(),
+            'count_internship'  => self::_internship(),
         ];
         self::scan();
         $title = '
                     <h2 class="bold grey">This is</h2>
                     <h1 class="bold black">Our Teams</h1>
         ';
-        $grid_config = self::grid();
+        $grid_config = self::grid($data);
 
         $config = [
             'title'     => $title,
@@ -40,16 +43,15 @@ class dashboard_absensi extends _page
         return $config;
     }
 
-    public static function grid()
+    public static function grid($data = [])
     {
-        $data = [];
         $permision_information =  self::_loadView('employe_information', $data);
         $birthday_information = self::_loadView('birthday_information', $data);
         $employe_information = self::_loadView('permit_information', $data);
 
-        $sag_content = self::sobad_group_content();
-        $sobad_content = self::sobad_content();
-        $kmi_content = self::kmi_content();
+        $sag_content = self::sobad_group_content($data);
+        $sobad_content = self::sobad_content($data);
+        $kmi_content = self::kmi_content($data);
         $carousel_user = [];
 
         $config = [
@@ -99,18 +101,23 @@ class dashboard_absensi extends _page
         return $config;
     }
 
-    public static function sobad_group_content()
+    public static function sobad_group_content($data = [])
     {
         $base_url = self::base_url();
         $base_url = $base_url .  "image/icon/";
 
-        $data_company = model_absensi::_dummy_data_company();
-        $data_company = $data_company[0];
-
-        $data_department = model_absensi::_dummy_data_dpartment()[0];
+        $data_company = $data['company'][0];
+        $company_id = $data_company['ID'];
+        $_data_depart = [];
+        $data_department = $data['group'];
+        foreach ($data_department as $val) {
+            if ($val['reff'] == $company_id) {
+                $_data_depart[] = $val;
+            }
+        }
 
         $data = [
-            'department'    => $data_department,
+            'department'    => $_data_depart,
         ];
         $content = self::_loadView('sobad_group/content', $data);
 
@@ -127,17 +134,23 @@ class dashboard_absensi extends _page
         return $config;
     }
 
-    public static function sobad_content()
+    public static function sobad_content($data = [])
     {
         $base_url = self::base_url();
         $base_url = $base_url .  "image/icon/";
 
-        $data_company = model_absensi::_dummy_data_company();
-        $data_company = $data_company[1];
+        $data_company = $data['company'][1];
+        $company_id = $data_company['ID'];
+        $_data_depart = [];
+        $data_department = $data['group'];
+        foreach ($data_department as $val) {
+            if ($val['reff'] == $company_id) {
+                $_data_depart[] = $val;
+            }
+        }
 
-        $data_department = model_absensi::_dummy_data_dpartment()[1];
         $data = [
-            'department'    => $data_department,
+            'department'    => $_data_depart,
         ];
         $content = self::_loadView('sobad/content', $data);
 
@@ -154,18 +167,23 @@ class dashboard_absensi extends _page
         return $config;
     }
 
-    public static function kmi_content()
+    public static function kmi_content($data = [])
     {
         $base_url = self::base_url();
         $base_url = $base_url .  "image/icon/";
 
-        $data_company = model_absensi::_dummy_data_company();
-        $data_company = $data_company[2];
-
-        $data_department = model_absensi::_dummy_data_dpartment()[2];
+        $data_company = $data['company'][2];
+        $company_id = $data_company['ID'];
+        $_data_depart = [];
+        $data_department = $data['group'];
+        foreach ($data_department as $val) {
+            if ($val['reff'] == $company_id) {
+                $_data_depart[] = $val;
+            }
+        }
 
         $data = [
-            'department'    => $data_department,
+            'department'    => $_data_depart,
         ];
         $content = self::_loadView('kmi/content', $data);
 
@@ -204,28 +222,98 @@ class dashboard_absensi extends _page
 
     public static function _check_scan()
     {
-        $nik = $_POST['nik'];
-        $args = json_decode($_POST['args'], true);
+        $no_rfid = $_POST['no_rfid'];
+        $date = date('Y-m-d');
+        $day = date('w');
         $time_now =  date("H:i:s");
         $time_in = date("H:i");
         $time_default = "08:00:00";
-        $data_args = model_absensi::_dummy_data();
+        $data_args = model_absensi::presensi_data();
+        $data_args = $data_args['notwork_data'];
+        // =======================================================
+        $check_user = sobad_api::_check_noInduk($no_rfid);
 
-        // CEK ADA APAKAH ADA NIK 
-        if (isset($data_args[$nik])) {
-            $data = $data_args[$nik];
-            // CEK APAKAH TELAT ABSEN
-            if ($time_now >= $time_default) {
-                $data['type'] = 1;
-            } else {
-                $data['type'] = 0;
+        if (isset($check_user['ID'])) {
+            $data = $data_args[$check_user['no_induk']];
+            $nik = $check_user['no_induk'];
+            $whr = "AND no_induk='$nik'";
+            $users = sobad_api::user_get_all(array('ID', 'divisi', 'status', 'work_time'), $whr . " AND status!='0'");
+
+            $worktime = $users[0]['work_time'];
+
+            $work = array();
+            $group = array();
+
+            $check = array_filter($users);
+            if (!empty($check)) {
+                //Check Setting Auto Shift
+                $_userid = $users[0]['ID'];
+                $worktime = $users[0]['work_time'];
+                $shift = sobad_api::permit_get_all(array('user', 'note'), "AND ( (user='$_userid' AND type='9') OR (user='0' AND note LIKE '" . $worktime . ":%') ) AND start_date<='$date' AND range_date>='$date'");
+
+                $check = array_filter($shift);
+                if (!empty($check)) {
+                    if ($shift[0]['user'] == 0) {
+                        $_nt = explode(':', $shift[0]['note']);
+                        $worktime = $_nt[1];
+                    } else {
+                        $worktime = $shift[0]['note'];
+                    }
+                }
+
+                $work = sobad_api::work_get_id($worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
+                $group = sobad_api::_get_group($users[0]['divisi'], $users[0]['status']); // ARRAY KOSONG
             }
-        }
-        $data['time'] = $time_in;
 
+            $check = array_filter($group);
+            $check = array_filter($work);
+            if (empty($check)) {
+                $work = array(
+                    'time_in'    => '08:00:00',
+                    'time_out'    => '16:00:00'
+                );
+            } else {
+                $work = $work[0];
+            }
+
+            $punish = 0;
+            if ($work['status']) {
+                if ($time_now >= $work['time_in']) {
+                    $punish = 1;
+                }
+            }
+
+            //check group
+            $grp_punish = sobad_api::_statusGroup($group['status']);
+            $grp_punish = $grp_punish['punish'];
+            if ($grp_punish == 0) {
+                $punish = 0;
+            }
+
+            $group_id = explode('-', $data['group']);
+            $group_id = $group_id[1];
+            // INSERT DATA 
+            // sobad_db::_insert_table(
+            //     'abs-user-log',
+            //     array(
+            //         'user'      => $users[0]['ID'],
+            //         'type'      => 1,
+            //         'shift'     => $worktime,
+            //         '_inserted' => $date,
+            //         'time_in'   => $time_now,
+            //         'time_out'  => '00:00:00',
+            //         'note'      => serialize(array('pos_user' => $users[0]['ID'], 'pos_group' => $group_id)),
+            //         'punish'    => $punish,
+            //         'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
+            //     )
+            // );
+        }
+
+        $data['type'] = $punish;
+        $data['time'] = $time_in;
         $data = [
             'data' => $data,
-            'nik'   => $nik,
+            'nik'   => $check_user['no_induk'],
         ];
 
         return $data;
@@ -233,9 +321,32 @@ class dashboard_absensi extends _page
 
     public static function _go_out_city()
     {
-        $nik = $_POST['nik'];
-        $data_args = model_absensi::_dummy_data();
-        $data = $data_args[$nik];
+        $no_rfid = $_POST['no_rfid'];
+        $date = date('Y-m-d');
+        $times = date('H:i:s');
+        $data_args = model_absensi::presensi_data();
+        $data_args = $data_args['work_data'];
+        $type = 0; // ? 
+
+        $check_user = sobad_api::_check_noInduk($no_rfid);
+        $data = $data_args[$check_user['no_induk']];
+        $nik = $check_user['no_induk'];
+        $_whr = "AND no_induk='$nik'";
+        $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
+        $idx = $user[0]['id_join'];
+        $_id = $user[0]['ID'];
+        $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
+        // Luar Kota
+        sobad_api::_insert_table('abs-permit', array(
+            'user'          => $_id,
+            'start_date'    => date('Y-m-d'),
+            'range_date'    => date('Y-m-d'),
+            'num_day'       => 1,
+            'type_date'     => 1,
+            'type'          => 5,
+        ));
+
+        sobad_db::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
             'data' => $data,
@@ -246,9 +357,31 @@ class dashboard_absensi extends _page
 
     public static function _permit()
     {
-        $nik = $_POST['nik'];
-        $data_args = model_absensi::_dummy_data();
-        $data = $data_args[$nik];
+        $no_rfid = $_POST['no_rfid'];
+        $date = date('Y-m-d');
+        $data_args = model_absensi::presensi_data();
+        $data_args = $data_args['work_data'];
+
+        $check_user = sobad_api::_check_noInduk($no_rfid);
+        $data = $data_args[$check_user['no_induk']];
+        $nik = $check_user['no_induk'];
+        $_whr = "AND no_induk='$nik'";
+        $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
+        $_id = $user[0]['ID'];
+        // Insert Permit
+        // Check
+        $_permit = sobad_permit::get_all(array('ID'), "AND user='$_id' AND start_date='$date'");
+        $check = array_filter($_permit);
+        if (empty($check)) {
+            sobad_api::_insert_table('abs-permit', array(
+                'user'          => $_id,
+                'start_date'    => $date,
+                'range_date'    => $date,
+                'num_day'       => 1,
+                'type'          => 4,
+                'note'          => 'Izin Keluar Sebentar'
+            ));
+        }
 
         $data = [
             'data' => $data,
@@ -259,9 +392,29 @@ class dashboard_absensi extends _page
 
     public static function _sick_permit()
     {
-        $nik = $_POST['nik'];
-        $data_args = model_absensi::_dummy_data();
-        $data = $data_args[$nik];
+        $no_rfid = $_POST['no_rfid'];
+        $date = date('Y-m-d');
+        $data_args = model_absensi::presensi_data();
+        $data_args = $data_args['work_data'];
+
+        $check_user = sobad_api::_check_noInduk($no_rfid);
+        $data = $data_args[$check_user['no_induk']];
+        $nik = $check_user['no_induk'];
+        $_whr = "AND no_induk='$nik'";
+        $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
+        $_id = $user[0]['ID'];
+        $idx = $user[0]['id_join'];
+
+        $_args['type'] = 8;
+        $type = 8;
+        sobad_api::_insert_table('abs-permit', array(
+            'user'          => $_id,
+            'start_date'    => date('Y-m-d'),
+            'range_date'    => '00:00:00',
+            'type'          => $type,
+        ));
+
+        sobad_db::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
             'data' => $data,
@@ -272,9 +425,29 @@ class dashboard_absensi extends _page
 
     public static function _cuti()
     {
-        $nik = $_POST['nik'];
-        $data_args = model_absensi::_dummy_data();
-        $data = $data_args[$nik];
+        $no_rfid = $_POST['no_rfid'];
+        $date = date('Y-m-d');
+        $data_args = model_absensi::presensi_data();
+        $data_args = $data_args['work_data'];
+
+        $check_user = sobad_api::_check_noInduk($no_rfid);
+        $data = $data_args[$check_user['no_induk']];
+        $nik = $check_user['no_induk'];
+        $_whr = "AND no_induk='$nik'";
+        $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
+        $_id = $user[0]['ID'];
+        $idx = $user[0]['id_join'];
+
+        $_args['type'] = 8;
+        $type = 8;
+        sobad_api::_insert_table('abs-permit', array(
+            'user'          => $_id,
+            'start_date'    => date('Y-m-d'),
+            'range_date'    => '00:00:00',
+            'type'          => $type,
+        ));
+
+        sobad_db::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
             'data' => $data,
@@ -285,15 +458,108 @@ class dashboard_absensi extends _page
 
     public static function _permit_change_time()
     {
-        $nik = $_POST['nik'];
-        $data_args = model_absensi::_dummy_data();
-        $data = $data_args[$nik];
+        $date = date('Y-m-d');
+        $no_rfid = $_POST['no_rfid'];
+        $times = date('H:i:s');
+        $data_args = model_absensi::presensi_data();
+        $data_args = $data_args['work_data'];
+        $day = date('w');
+
+        $check_user = sobad_api::_check_noInduk($no_rfid);
+        $data = $data_args[$check_user['no_induk']];
+        $nik = $check_user['no_induk'];
+        $_whr = "AND no_induk='$nik'";
+        $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
+        $_worktime = $user[0]['work_time'];
+        $work = sobad_api::work_get_id($_worktime, array('time_out'), "AND days='$day'");
+        $work = $work[0]['time_out'];
+        $_args['type'] = 2;
+        $idx = $user[0]['id_join'];
+
+        $type = 2;
+        $ganti = get_rule_absen($times, $work, $_worktime, $day);
+        if ($ganti['type'] != 0) {
+            sobad_api::_insert_table('abs-log-detail', array(
+                'log_id'        => $idx,
+                'date_schedule' => date('Y-m-d'),
+                'times'         => $ganti['time'],
+                'type_log'      => 2
+            ));
+        }
 
         $data = [
             'data' => $data,
             'nik'   => $nik,
         ];
         return $data;
+    }
+
+    public static function _employees()
+    {
+        $work = sobad_api::user_count("status NOT IN ('0','7')");
+        return $work;
+    }
+
+    public static function _internship()
+    {
+        $work = sobad_api::user_count("status IN ('7')");
+        return $work;
+    }
+
+    public static function _inWork()
+    {
+        $date = date('Y-m-d');
+        $work = sobad_api::go_work(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return count($work);
+    }
+
+    public static function _outWork()
+    {
+        $date = date('Y-m-d');
+        $work = sobad_api::go_home(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return count($work);
+    }
+
+    public static function _permitWork()
+    {
+        $date = date('Y-m-d');
+        $work = sobad_api::go_permit(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return count($work);
+    }
+
+    public static function _holidayWork()
+    {
+        $date = date('Y-m-d');
+        $work = sobad_api::go_holiday(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return count($work);
+    }
+
+    public static function _outCity()
+    {
+        $date = date('Y-m-d');
+        $work = sobad_api::go_outCity(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return count($work);
+    }
+
+    public static function _sick()
+    {
+        $date = date('Y-m-d');
+        $work = sobad_api::go_sick(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return count($work);
+    }
+
+    public static function _tugas()
+    {
+        $date = date('Y-m-d');
+        $work = sobad_api::go_tugas(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return count($work);
+    }
+
+    public static function _holiday()
+    {
+        $date = date('Y-m-d');
+        $work = sobad_api::go_holiwork(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return count($work);
     }
 
     public static function script()
@@ -304,13 +570,12 @@ class dashboard_absensi extends _page
         <script>
             // SCAN DATA MASUK
             function scan(data) {
-                var _nik = $('#nik').val();
+                var _no_rfid = $('#nik').val();
                 var ajx = '_check_scan';
                 var id = '';
-                var nik = _nik;
-                var args = JSON.stringify(notwork_data);
+                var no_rfid = _no_rfid;
                 var object = 'dashboard_absensi';
-                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik + "&args=" + args;
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_scan_work, false);
             }
 
@@ -318,15 +583,17 @@ class dashboard_absensi extends _page
             function _dom_scan_work(args) {
                 var data = args.data;
                 var nik = args.nik;
+
                 _notwork = nik in notwork_data
                 in_work = nik in work_data;
                 out_city = nik in outcity_data;
                 sick = nik in sick_data;
                 _permit = nik in permit_data;
                 _cuti = nik in cuti_data;
-                time_work = "08.00";
-                time_go_home = "16.00";
+                time_work = data.shift.time_in;
+                time_go_home = data.shift.time_out;
 
+                // CHECK NIK ADA ATAU TIDAK 
                 if (_notwork || in_work || out_city || sick || _permit || _cuti) {
                     if (in_work) { // JIKA NIK ADA DI WORK_DATA
                         if (data.time >= time_work) { // JIKA SCAN LEBIH DARI JAM MASUK
@@ -493,13 +760,13 @@ class dashboard_absensi extends _page
 
             // ACTION KETIKA USER MEMILIH LUAR KOTA
             function go_out_city(data) {
-                nik = $('#alert_data').val();
+                _no_rfid = $('#alert_data').val();
                 $('#alert_global').fadeOut();
                 var ajx = '_go_out_city';
                 var id = '';
-                var nik = nik;
+                var no_rfid = _no_rfid;
                 var object = 'dashboard_absensi';
-                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_out_city, false);
             }
 
@@ -529,13 +796,13 @@ class dashboard_absensi extends _page
 
             // ACTION KETIKA USER MEMILIH IZIN
             function permit(data) {
-                nik = $('#alert_data').val();
+                _no_rfid = $('#alert_data').val();
                 $('#alert_global').fadeOut();
                 var ajx = '_permit';
                 var id = '';
-                var nik = nik;
+                var no_rfid = _no_rfid;
                 var object = 'dashboard_absensi';
-                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_permit, false);
             }
 
@@ -577,7 +844,7 @@ class dashboard_absensi extends _page
                 var id = '';
                 var nik = nik;
                 var object = 'dashboard_absensi';
-                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + nik;
                 sobad_ajax(id, data, _dom_sick_permit, false);
             }
 
@@ -609,7 +876,7 @@ class dashboard_absensi extends _page
                 var id = '';
                 var nik = nik;
                 var object = 'dashboard_absensi';
-                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + nik;
                 sobad_ajax(id, data, _dom_cuti, false);
             }
 
@@ -641,7 +908,7 @@ class dashboard_absensi extends _page
                 var id = '';
                 var nik = nik;
                 var object = 'dashboard_absensi';
-                data = "ajax=" + ajx + "&object=" + object + "&nik=" + nik;
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + nik;
                 sobad_ajax(id, data, _dom_permit_changetime, false);
             }
 

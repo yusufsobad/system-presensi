@@ -21,14 +21,14 @@ foreach ($data['department'] as $key => $val) {
             $color = 'other';
             break;
         default:
-            $color = 'apd';
+            $color = 'grey';
     }
 
     $config[] = [
-        'id'        => $val['meta_reff'] . '-' . $val['ID'],
-        'class'     => $val['meta_reff'] . '-' . $val['ID'],
-        'width'     => $val['meta_note'],
-        'title'     => $val['meta_value'],
+        'id'        => $val['reff'] . '-' . $val['ID'],
+        'class'     => $val['reff'] . '-' . $val['ID'],
+        'width'     => $val['capacity'],
+        'title'     => $val['name'],
         'qty'       => 0,
         'qty_in'    => '',
         'color'     => $color,

@@ -24,10 +24,10 @@ foreach ($data['department'] as $key => $val) {
     }
 
     $config[] = [
-        'id'        => '91' . '-' . $val['ID'],
-        'class'     => '91' . '-' . $val['ID'],
-        'width'     => $val['meta_note'],
-        'title'     => $val['meta_value'],
+        'id'        => $val['reff'] . '-' . $val['ID'],
+        'class'     => $val['reff'] . '-' . $val['ID'],
+        'width'     => $val['capacity'],
+        'title'     => $val['name'],
         'qty'       => 0,
         'qty_in'    => '',
         'color'     => $color,

@@ -91,7 +91,7 @@ $config = [
                                                     <img width="90%" src="' . $base_url . 'ic-employe.png" alt="">
                                                 </div>
                                                 <div class="col-xs-7 text-center space">
-                                                    <h2 class="purple bold">0</h2>
+                                                    <h2 id="ammount-employe" class="purple bold">0</h2>
                                                 </div>
                                             </div>'
                     ]
@@ -111,7 +111,7 @@ $config = [
                                                     <img width="90%" src="' . $base_url . 'ic-internship.png" alt="">
                                                 </div>
                                                 <div class="col-xs-7 text-center space">
-                                                    <h2 class="purple bold">0</h2>
+                                                    <h2 id="ammount-internship" class="purple bold">0</h2>
                                                 </div>
                                             </div>'
                     ]
