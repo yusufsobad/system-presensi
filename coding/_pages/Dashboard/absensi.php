@@ -9,9 +9,15 @@ class dashboard_absensi extends _page
 
     public static function index()
     {
-        $data = model_absensi::presensi_data();
+        // $user = sobad_api::user_get_all(['ID', 'username'], "", "");
+        // $no = 0;
+        // foreach ($user as $val) {
+        //     $no = ++$no;
+        //     sobad_api::_update_single($val['ID'], 'abs-user', ['no_rfid' => $no]);
+        // }
 
-        $birthday_data = model_absensi::_dummy_data_birthday();
+        $data = model_absensi::presensi_data();
+        $birthday_data =  sobad_api::_get_birthdays();
         $announcement_data = model_absensi::_dummy_data_announcement();
         $args = [
             'notwork_data'      => $data['notwork_data'],
@@ -111,7 +117,7 @@ class dashboard_absensi extends _page
         $_data_depart = [];
         $data_department = $data['group'];
         foreach ($data_department as $val) {
-            if ($val['reff'] == $company_id) {
+            if ($val['company'] == $company_id) {
                 $_data_depart[] = $val;
             }
         }
@@ -144,7 +150,7 @@ class dashboard_absensi extends _page
         $_data_depart = [];
         $data_department = $data['group'];
         foreach ($data_department as $val) {
-            if ($val['reff'] == $company_id) {
+            if ($val['company'] == $company_id) {
                 $_data_depart[] = $val;
             }
         }
@@ -177,7 +183,7 @@ class dashboard_absensi extends _page
         $_data_depart = [];
         $data_department = $data['group'];
         foreach ($data_department as $val) {
-            if ($val['reff'] == $company_id) {
+            if ($val['company'] == $company_id) {
                 $_data_depart[] = $val;
             }
         }
@@ -346,7 +352,7 @@ class dashboard_absensi extends _page
             'type'          => 5,
         ));
 
-        sobad_db::_update_single($idx, 'abs-user-log', $_args);
+        sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
             'data' => $data,
@@ -368,9 +374,10 @@ class dashboard_absensi extends _page
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_id = $user[0]['ID'];
+        $_userid = 0;
         // Insert Permit
         // Check
-        $_permit = sobad_permit::get_all(array('ID'), "AND user='$_id' AND start_date='$date'");
+        $_permit = sobad_api::permit_get_all(array('ID'), "AND user='$_id' AND start_date='$date'");
         $check = array_filter($_permit);
         if (empty($check)) {
             sobad_api::_insert_table('abs-permit', array(
@@ -381,6 +388,16 @@ class dashboard_absensi extends _page
                 'type'          => 4,
                 'note'          => 'Izin Keluar Sebentar'
             ));
+        }
+
+        //Check Permit
+        $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
+
+        $check = array_filter($permit);
+        if (!empty($check)) {
+            $pDate = strtotime($date);
+            $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
+            sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
         }
 
         $data = [
@@ -414,7 +431,7 @@ class dashboard_absensi extends _page
             'type'          => $type,
         ));
 
-        sobad_db::_update_single($idx, 'abs-user-log', $_args);
+        sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
             'data' => $data,
@@ -447,7 +464,7 @@ class dashboard_absensi extends _page
             'type'          => $type,
         ));
 
-        sobad_db::_update_single($idx, 'abs-user-log', $_args);
+        sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
             'data' => $data,
@@ -616,6 +633,7 @@ class dashboard_absensi extends _page
                         } else {
                             alert_already_scan(data);
                         }
+
                     } else { //JIKA NIK TIDAK ADA DI WORK_DATA
                         if (out_city) { // JIKA NIK ADA DI OUTCITY_DATA
                             if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
@@ -738,16 +756,20 @@ class dashboard_absensi extends _page
                                 alert_success_scan(data);
                             }
                         } else { // JIKA NIK TIDAK ADA DI OUTCITY_DATA & SICK_DATA & WORK_DATA
-                            var workhtml = work_html(nik, data);
-                            $("#" + data.group + "").append(workhtml);
-                            work_data[nik] = data;
-                            delete notwork_data[nik];
-                            reinit_carousel(data.width)
-                            $('.footer-carousel').slick('slickRemove');
-                            $("." + nik + "-notwork").remove();
-                            $('.footer-carousel').slick('slickAdd');
-                            reinit_carousel('footer')
-                            alert_success_scan(data);
+                            if (data.time >= time_go_home) { // JIKA ABSEN SESUDAH JAM Pulang
+                                sasi_alert('Sudah Jam Pulang', 'danger_scan');
+                            } else {
+                                var workhtml = work_html(nik, data);
+                                $("#" + data.group + "").append(workhtml);
+                                work_data[nik] = data;
+                                delete notwork_data[nik];
+                                reinit_carousel(data.width)
+                                $('.footer-carousel').slick('slickRemove');
+                                $("." + nik + "-notwork").remove();
+                                $('.footer-carousel').slick('slickAdd');
+                                reinit_carousel('footer')
+                                alert_success_scan(data);
+                            }
                         }
                     }
                 } else {

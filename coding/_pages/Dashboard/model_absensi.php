@@ -6,41 +6,7 @@ class model_absensi
 
     private static $_company = array();
 
-    public static function _dummy_data_birthday()
-    {
-        $data = [
-            [
-                'name'  => 'Ammri',
-                'image' => 'AMRI.png',
-            ],
-            [
-                'name'  => 'Lintang',
-                'image' => 'lintang-min.png',
-            ],
-            [
-                'name'  => 'Naufal',
-                'image' => '176. Naufal.png',
-            ],
-            [
-                'name'  => 'Naufal',
-                'image' => '176. Naufal.png',
-            ],
-            [
-                'name'  => 'Naufal',
-                'image' => '176. Naufal.png',
-            ],
-            [
-                'name'  => 'Naufal',
-                'image' => '176. Naufal.png',
-            ],
-            [
-                'name'  => 'Naufal',
-                'image' => '176. Naufal.png',
-            ],
 
-        ];
-        return $data;
-    }
 
     public static function _dummy_data_announcement()
     {
@@ -62,21 +28,24 @@ class model_absensi
 
         $permit = sobad_api::_get_users(array('user', 'type'), "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
 
-        $group = sobad_api::_gets('group', array('`abs-module`.ID', '`abs-module`.meta_value', '`abs-module`.meta_note', '`abs-module`.meta_reff', '`abs-module`.meta_user'));
+        // $group = sobad_api::_gets('group', array('`abs-module`.ID', '`abs-module`.meta_value', '`abs-module`.meta_note', '`abs-module`.meta_reff', '`abs-module`.meta_user'));
+        $group = sobad_api::_get_groups();
 
         $company = sobad_api::_gets('company', array('ID', 'meta_value', 'meta_note'));
 
         $_group = array();
         foreach ($group as $key => $val) {
-            $data = unserialize($val['meta_note']);
-            $group[$key]['meta_note'] = $data;
+            $data = $val['data'];
+            $group[$key]['meta_note'] = $val['data'];
 
-            if (isset($data['data'])) {
-                foreach ($data['data'] as $ky => $vl) {
+            if (isset($val['data'][0])) {
+                foreach ($data as $vl) {
                     array_push($_group, $vl);
                 }
             }
         }
+
+        self::$_group = $group;
 
         $_permit = array(0 => 0);
         foreach ($permit as $key => $val) {
@@ -173,8 +142,8 @@ class model_absensi
         $day = date('w');
         $args = self::employe_data();
 
-        $_group = array();
-        $group = array();
+        // $_group = array();
+        $group = $args['group'];
         $work = array();
         $notwork = array();
         $outcity = array();
@@ -184,54 +153,51 @@ class model_absensi
         $tugas = array();
         $libur = array();
         $wfh = array();
-
-        $group[0]['ID'] = "0";
-        $group[0]['name'] = 'Internship';
-        $group[0]['group'] = 2;
-        $group[0]['capacity'] = 100;
-        $group[0]['reff'] = 128;
-        $group[0]['punish'] = 1;
-        $_group[0] = array(0);
-
         self::$_company = $args['company'];
+        // $group[0]['ID'] = "0";
+        // $group[0]['name'] = 'Internship';
+        // $group[0]['group'] = 2;
+        // $group[0]['capacity'] = 100;
+        // $group[0]['reff'] = 128;
+        // $group[0]['punish'] = 1;
+        // $_group[0] = array(0);
 
 
-        foreach ($args['group'] as $key => $val) {
-            $data = $val['meta_note'];
-            $capacity = isset($data['capacity']) ? $data['capacity'] : '100';
 
-            if (isset($data['data'])) {
-                $group[$val['ID']] = array(
-                    'ID'        => $val['ID'],
-                    'name'      => $val['meta_value'],
-                    'capacity'  => self::conversion_capacity($capacity),
-                    'reff'      => $val['meta_user'],
-                );
-                $_group[$val['ID']] = $data['data'];
-            }
 
-            if (isset($data['status'])) {
-                if (in_array(2, $data['status'])) {
-                    $group[$val['ID']]['group'] = 2;
-                } else {
-                    $group[$val['ID']]['group'] = 1;
-                }
+        // foreach ($args['group'] as $key => $val) {
 
-                if (in_array(3, $data['status'])) {
-                    $group[$val['ID']]['punish'] = 1;
-                } else {
-                    $group[$val['ID']]['punish'] = 0;
-                }
-            }
-        }
 
-        self::$_group = $_group;
+
+        // $group[$val['ID']] = array(
+        // 'ID'        => $val['ID'],
+        // 'name'      => $val['meta_value'],
+        // 'capacity'  => self::conversion_capacity($capacity),
+        // 'reff'      => $val['meta_user'],
+        // );
+
+
+
+        // if (isset($data['status'])) {
+        //     if (in_array(2, $data['status'])) {
+        //         $group[$val['ID']]['group'] = 2;
+        //     } else {
+        //         $group[$val['ID']]['group'] = 1;
+        //     }
+
+        //     if (in_array(3, $data['status'])) {
+        //         $group[$val['ID']]['punish'] = 1;
+        //     } else {
+        //         $group[$val['ID']]['punish'] = 0;
+        //     }
+        // }
+        // }
 
         $pos = 0;
+
         foreach ($args['user'] as $key => $val) {
             $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));
             $divisi_group = self::_get_group($val['divisi']);
-
             if (empty($val['type']) || $val['type'] == 2) {
                 $notwork[$val['no_induk']] = array(
                     'group'     => $val['company'] . '-' . $divisi_group,
@@ -244,10 +210,11 @@ class model_absensi
                 );
             }
 
+
             if ($val['type'] == 1) {
                 $punish_type = sobad_api::_check_punish($val['ID'], date('Y-m-d'));
                 $_worktime = empty($val['shift']) ? $val['work_time'] : $val['shift'];
-                $_work = sobad_work::get_id($_worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
+                $_work = sobad_api::work_get_id($_worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
                 $grp = $divisi_group;
 
                 $check = array_filter($_work);
@@ -391,6 +358,7 @@ class model_absensi
     private static function _get_group($divisi = 0)
     {
         $group = self::$_group;
+
         foreach ($group as $key => $val) {
             if (in_array($divisi, $val)) {
                 return $key;

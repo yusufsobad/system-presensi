@@ -39,12 +39,12 @@ class sobad_api extends _class
         return self::send_curl($data);
     }
 
-    public static function _get_groups($args = array(), $limit = '', $type = '')
+    public static function _get_groups()
     {
         $data = array(
             'object'    => 'abs_module',
             'func'      => '_get_groups',
-            'data'      => array($args, $limit, $type)
+            'data'      => array()
         );
         return self::send_curl($data);
     }
@@ -109,10 +109,21 @@ class sobad_api extends _class
         return self::send_curl($data);
     }
 
+    public static function _get_birthdays()
+    {
+        $data = array(
+            'object'    => 'abs_user',
+            'func'      => '_get_birthdays',
+            'data'      => array()
+        );
+        return self::send_curl($data);
+    }
+
     // API INSERT DATA ================================================================
     public static function _insert_table($table = '', $args = array())
     {
         $data = array(
+            'database'  => 'absen2020',
             'object'    => 'sobad_db',
             'func'      => '_insert_table',
             'data'      => array($table, $args)
@@ -121,12 +132,13 @@ class sobad_api extends _class
     }
 
     // API UPDATE DATA =================================================================
-    public static function _update_single($id, $args = array(), $limit = '', $type = '')
+    public static function _update_single($id = '', $table = '', $args = [])
     {
         $data = array(
+            'database'  => 'absen2020',
             'object'    => 'sobad_db',
             'func'      => '_update_single',
-            'data'      => array($id, $args, $limit, $type)
+            'data'      => array($id, $table, $args)
         );
         return self::send_curl($data);
     }

@@ -25,8 +25,8 @@ foreach ($data['department'] as $key => $val) {
     }
 
     $config[] = [
-        'id'        => $val['reff'] . '-' . $val['ID'],
-        'class'     => $val['reff'] . '-' . $val['ID'],
+        'id'        => $val['company'] . '-' . $val['ID'],
+        'class'     => $val['company'] . '-' . $val['ID'],
         'width'     => $val['capacity'],
         'title'     => $val['name'],
         'qty'       => 0,
