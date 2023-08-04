@@ -3,27 +3,10 @@
 $config = [];
 
 foreach ($data['department'] as $key => $val) {
-
-    switch ($val['ID']) {
-        case 94:
-            $color = 'ppic';
-            break;
-        case 95:
-            $color = 'enginer';
-            break;
-        case 96:
-            $color = 'teknisi';
-            break;
-        case 97:
-            $color = 'marketing';
-            break;
-        case 98:
-            $color = 'production';
-            break;
-        default:
-            $color = 'deep-grey';
+    $color = '#7c7c7c';
+    if (isset($val['meta_note'])) {
+        $color = empty($val['meta_note']) ? $color : $val['meta_note'];
     }
-
     $config[] = [
         'id'        => $val['company'] . '-' . $val['ID'],
         'class'     => $val['company'] . '-' . $val['ID'],

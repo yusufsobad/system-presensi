@@ -371,14 +371,6 @@ class model_absensi
         return 0;
     }
 
-    private static function _get_width($group = [], $id = 0)
-    {
-        $width = [];
-
-        foreach ($group as $val) {
-        }
-    }
-
     public static function conversion_capacity($capacity)
     {
         switch ($capacity) {
