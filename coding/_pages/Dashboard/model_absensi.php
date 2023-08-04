@@ -6,8 +6,6 @@ class model_absensi
 
     private static $_company = array();
 
-
-
     public static function _dummy_data_announcement()
     {
         $data = [

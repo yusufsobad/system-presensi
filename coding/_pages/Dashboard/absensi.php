@@ -139,8 +139,6 @@ class dashboard_absensi extends _page
 
     public static function sobad_content($data = [])
     {
-
-
         $data_company = $data['company'][1];
         $company_id = $data_company['ID'];
         $_data_depart = [];
