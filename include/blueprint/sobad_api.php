@@ -295,4 +295,14 @@ class sobad_api extends _class
         );
         return self::send_curl($data);
     }
+
+    public static function get_rule_absen($timeA = '', $timeB = '', $worktime = '', $day = '')
+    {
+        $data = array(
+            'object'    => 'request_curl',
+            'func'      => 'get_rule_absen',
+            'data'      => array($timeA, $timeB, $worktime, $day)
+        );
+        return self::send_curl($data);
+    }
 }

@@ -487,7 +487,7 @@ class dashboard_absensi extends _page
         $idx = $user[0]['id_join'];
 
         $type = 2;
-        $ganti = get_rule_absen($times, $work, $_worktime, $day);
+        $ganti = sobad_api::get_rule_absen($times, $work, $_worktime, $day);
         if ($ganti['type'] != 0) {
             sobad_api::_insert_table('abs-log-detail', array(
                 'log_id'        => $idx,
