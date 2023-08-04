@@ -31,7 +31,7 @@ class model_absensi
         // $group = sobad_api::_gets('group', array('`abs-module`.ID', '`abs-module`.meta_value', '`abs-module`.meta_note', '`abs-module`.meta_reff', '`abs-module`.meta_user'));
         $group = sobad_api::_get_groups();
 
-        $company = sobad_api::_gets('company', array('ID', 'meta_value', 'meta_note'));
+        $company = sobad_api::_gets('company', array('ID', 'meta_value', 'meta_note', 'meta_reff'));
 
         $_group = array();
         foreach ($group as $key => $val) {

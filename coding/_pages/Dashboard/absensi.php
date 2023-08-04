@@ -109,9 +109,6 @@ class dashboard_absensi extends _page
 
     public static function sobad_group_content($data = [])
     {
-        $base_url = self::base_url();
-        $base_url = $base_url .  "image/icon/";
-
         $data_company = $data['company'][0];
         $company_id = $data_company['ID'];
         $_data_depart = [];
@@ -128,11 +125,11 @@ class dashboard_absensi extends _page
         $content = self::_loadView('sobad_group/content', $data);
 
         $base_url = self::base_url();
-        $base_url = $base_url .  "image/icon/";
+        $base_url = $base_url .  "img/upload/";
         $config = [
             'color' => 'light',
             'title' => $data_company['meta_value'],
-            'logo'  => $base_url . $data_company['meta_note'],
+            'logo'  => $base_url . $data_company['notes_meta'],
             'count' => 0,
             'func'  => 'card_divisi',
             'data'  => $content
@@ -142,8 +139,7 @@ class dashboard_absensi extends _page
 
     public static function sobad_content($data = [])
     {
-        $base_url = self::base_url();
-        $base_url = $base_url .  "image/icon/";
+
 
         $data_company = $data['company'][1];
         $company_id = $data_company['ID'];
@@ -161,11 +157,11 @@ class dashboard_absensi extends _page
         $content = self::_loadView('sobad/content', $data);
 
         $base_url = self::base_url();
-        $base_url = $base_url .  "image/icon/";
+        $base_url = $base_url .  "img/upload/";
         $config = [
             'color' => 'light',
             'title' => $data_company['meta_value'],
-            'logo'  => $base_url . $data_company['meta_note'],
+            'logo'  => $base_url . $data_company['notes_meta'],
             'count' => 0,
             'func'  => 'card_divisi',
             'data'  => $content
@@ -175,9 +171,6 @@ class dashboard_absensi extends _page
 
     public static function kmi_content($data = [])
     {
-        $base_url = self::base_url();
-        $base_url = $base_url .  "image/icon/";
-
         $data_company = $data['company'][2];
         $company_id = $data_company['ID'];
         $_data_depart = [];
@@ -194,11 +187,11 @@ class dashboard_absensi extends _page
         $content = self::_loadView('kmi/content', $data);
 
         $base_url = self::base_url();
-        $base_url = $base_url .  "image/icon/";
+        $base_url = $base_url .  "img/upload/";
         $config = [
             'color'     => 'light',
             'title'     => $data_company['meta_value'],
-            'logo'      => $base_url . $data_company['meta_note'],
+            'logo'      => $base_url . $data_company['notes_meta'],
             'count'     => 0,
             'func'      => 'card_divisi',
             'size_logo' => '123px',
@@ -974,6 +967,7 @@ class dashboard_absensi extends _page
 
     private static function base_url()
     {
-        return SITE . '://' . HOSTNAME . '/' . URL . '/theme/' . _theme_folder . '/assets/';
+        // return SITE . '://' . HOSTNAME . '/' . URL . '/theme/' . _theme_folder . '/assets/';
+        return "http://soloabadi-server.ddns.net/system-sobad-group/asset/";
     }
 }
