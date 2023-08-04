@@ -106,7 +106,7 @@ class model_absensi
             }
 
             if (array_key_exists($idx, $_permit)) {
-                $_libur = holiday_absen::_check_holiday();
+                $_libur = sobad_api::_check_holiday();
                 if (!$_libur) {
                     $log[0]['type'] = $_permit[$idx];
                 }
@@ -198,13 +198,15 @@ class model_absensi
         foreach ($args['user'] as $key => $val) {
             $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));
             $divisi_group = self::_get_group($val['divisi']);
+            $capacity = self::conversion_capacity($group[$divisi_group]['capacity']);
+
             if (empty($val['type']) || $val['type'] == 2) {
                 $notwork[$val['no_induk']] = array(
                     'group'     => $val['company'] . '-' . $divisi_group,
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $group[$divisi_group]['capacity'],
+                    'width'     => $capacity,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00']
                 );
@@ -249,7 +251,7 @@ class model_absensi
                     'position'  => $pos,
                     'group'     => $val['company'] . '-' . $divisi_group,
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $group[$divisi_group]['capacity'],
+                    'width'     => $capacity,
                     'type'      => $punish_type,
                 );
 
@@ -262,7 +264,7 @@ class model_absensi
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $group[$divisi_group]['capacity'],
+                    'width'     => $capacity,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00']
                 );
@@ -274,7 +276,7 @@ class model_absensi
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $group[$divisi_group]['capacity'],
+                    'width'     => $capacity,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00']
                 );
@@ -286,7 +288,7 @@ class model_absensi
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $group[$divisi_group]['capacity'],
+                    'width'     => $capacity,
                     'time'      => '',
                     'shift'     => $shift,
                 );
@@ -298,7 +300,7 @@ class model_absensi
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $group[$divisi_group]['capacity'],
+                    'width'     => $capacity,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00']
                 );
@@ -319,7 +321,7 @@ class model_absensi
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $group[$divisi_group]['capacity'],
+                    'width'     => $capacity,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00']
                 );
@@ -331,7 +333,7 @@ class model_absensi
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $group[$divisi_group]['capacity'],
+                    'width'     => $capacity,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00']
                 );
@@ -375,7 +377,7 @@ class model_absensi
         }
     }
 
-    private static function conversion_capacity($capacity)
+    public static function conversion_capacity($capacity)
     {
         switch ($capacity) {
             case 1:
