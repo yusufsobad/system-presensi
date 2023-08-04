@@ -122,6 +122,8 @@ class dashboard_absensi extends _page
             }
         }
 
+
+
         $data = [
             'department'    => $_data_depart,
         ];

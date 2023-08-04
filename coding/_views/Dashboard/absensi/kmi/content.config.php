@@ -3,6 +3,7 @@
 $config = [];
 
 foreach ($data['department'] as $key => $val) {
+
     switch ($val['ID']) {
         case 94:
             $color = 'ppic';
@@ -28,7 +29,7 @@ foreach ($data['department'] as $key => $val) {
         'class'     => $val['company'] . '-' . $val['ID'],
         'width'     => $val['capacity'],
         'title'     => $val['name'],
-        'qty'       => 0,
+        'qty'       => $val['qty_user'],
         'qty_in'    => '',
         'color'     => $color,
         'content'   => []
