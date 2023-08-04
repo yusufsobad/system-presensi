@@ -299,20 +299,20 @@ class dashboard_absensi extends _page
             $group_id = explode('-', $data['group']);
             $group_id = $group_id[1];
             // INSERT DATA 
-            // sobad_db::_insert_table(
-            //     'abs-user-log',
-            //     array(
-            //         'user'      => $users[0]['ID'],
-            //         'type'      => 1,
-            //         'shift'     => $worktime,
-            //         '_inserted' => $date,
-            //         'time_in'   => $time_now,
-            //         'time_out'  => '00:00:00',
-            //         'note'      => serialize(array('pos_user' => $users[0]['ID'], 'pos_group' => $group_id)),
-            //         'punish'    => $punish,
-            //         'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
-            //     )
-            // );
+            sobad_db::_insert_table(
+                'abs-user-log',
+                array(
+                    'user'      => $users[0]['ID'],
+                    'type'      => 1,
+                    'shift'     => $worktime,
+                    '_inserted' => $date,
+                    'time_in'   => $time_now,
+                    'time_out'  => '00:00:00',
+                    'note'      => serialize(array('pos_user' => $users[0]['ID'], 'pos_group' => $group_id)),
+                    'punish'    => $punish,
+                    'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
+                )
+            );
         }
 
         $data['type'] = $punish;

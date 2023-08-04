@@ -362,8 +362,10 @@ class model_absensi
         $group = self::$_group;
 
         foreach ($group as $key => $val) {
-            if (in_array($divisi, $val)) {
-                return $key;
+            if (isset($val['data'][0])) {
+                if (in_array($divisi, $val['data'])) {
+                    return $key;
+                }
             }
         }
         return 0;
