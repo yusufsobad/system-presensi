@@ -26,7 +26,6 @@ class model_absensi
 
         $permit = sobad_api::_get_users(array('user', 'type'), "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
 
-        // $group = sobad_api::_gets('group', array('`abs-module`.ID', '`abs-module`.meta_value', '`abs-module`.meta_note', '`abs-module`.meta_reff', '`abs-module`.meta_user'));
         $group = sobad_api::_get_groups();
 
         $company = sobad_api::_gets('company', array('ID', 'meta_value', 'meta_note', 'meta_reff'));
@@ -62,6 +61,8 @@ class model_absensi
                 }
             }
 
+
+
             if ($val['status'] != 7) {
                 if (!in_array($val['divisi'], $_group)) {
                     unset($user[$key]);
@@ -71,7 +72,6 @@ class model_absensi
                 $_date = date($val['inserted']);
                 $user[$key]['no_induk'] = sobad_api::_nik_internship($val['ID']);
                 $user[$key]['divisi'] = 0;
-
                 if (isset($val['_resign_date'])) {
                     if ($date > $val['_resign_date']) {
                         sobad_api::_update_single($val['ID'], 'abs-user', array('ID' => $val['ID'], 'status' => 0, 'end_status' => 7));
@@ -80,6 +80,7 @@ class model_absensi
                     }
                 }
             }
+
 
             $idx = $val['ID'];
             $log = sobad_api::user_get_all(array('type', 'id_join', 'shift', 'time_in', 'time_out', 'note'), "AND `abs-user`.ID='$idx' AND `abs-user-log`._inserted='$date'");
@@ -198,7 +199,7 @@ class model_absensi
             $divisi_group = self::_get_group($val['divisi']);
             $capacity = self::conversion_capacity($group[$divisi_group]['capacity']);
 
-            if (empty($val['type']) || $val['type'] == 2) {
+            if ($val['type'] == null || $val['type'] == 2) {
                 $notwork[$val['no_induk']] = array(
                     'group'     => $val['company'] . '-' . $divisi_group,
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],

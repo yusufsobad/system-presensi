@@ -290,7 +290,7 @@ class dashboard_absensi extends _page
             $group_id = explode('-', $data['group']);
             $group_id = $group_id[1];
             // INSERT DATA 
-            sobad_db::_insert_table(
+            sobad_api::_insert_table(
                 'abs-user-log',
                 array(
                     'user'      => $users[0]['ID'],
