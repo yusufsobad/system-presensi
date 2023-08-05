@@ -22,7 +22,7 @@ class model_absensi
     {
         $date = date('Y-m-d');
         $whr = "AND `abs-user`.status!=0";
-        $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date'], $whr);
+        $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'no_rfid'], $whr);
 
         $permit = sobad_api::_get_users(array('user', 'type'), "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
 
@@ -213,7 +213,7 @@ class model_absensi
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
-                    'status'    => $val['status']
+                    'no_rfid'   => $val['no_rfid'],
                 );
             }
 
@@ -259,6 +259,7 @@ class model_absensi
                     'type'      => $punish_type,
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
+                    'no_rfid'   => $val['no_rfid'],
                 );
 
 
@@ -275,6 +276,7 @@ class model_absensi
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
+                    'no_rfid'   => $val['no_rfid'],
                 );
             }
 
@@ -288,6 +290,7 @@ class model_absensi
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
+                    'no_rfid'   => $val['no_rfid'],
                 );
             }
 
@@ -301,6 +304,7 @@ class model_absensi
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
+                    'no_rfid'   => $val['no_rfid'],
                 );
             }
 
@@ -314,6 +318,7 @@ class model_absensi
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
+                    'no_rfid'   => $val['no_rfid'],
                 );
             }
 
@@ -336,6 +341,7 @@ class model_absensi
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
+                    'no_rfid'   => $val['no_rfid'],
                 );
             }
 
@@ -349,9 +355,11 @@ class model_absensi
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
+                    'no_rfid'   => $val['no_rfid'],
                 );
             }
         }
+
 
         $data = [
             'company'       => $args['company'],

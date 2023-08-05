@@ -670,7 +670,7 @@ class dashboard_absensi extends _page
                                 // END REINIT ===========================
                                 alert_success_scan(data);
                             } else { // JIKA SCAN SEBELUM JAM PULANG
-                                alert_scan(rfid, work_data[nik]);
+                                alert_scan(nik, work_data[nik]);
                             }
                         } else {
                             alert_already_scan(data);
@@ -824,11 +824,13 @@ class dashboard_absensi extends _page
 
             // ACTION KETIKA USER MEMILIH LUAR KOTA
             function go_out_city(data) {
-                _no_rfid = $('#alert_data').val();
+                nik = $('#alert_data').val();
+                args = work_data[nik]
+
                 $('#alert_global').fadeOut();
                 var ajx = '_go_out_city';
                 var id = '';
-                var no_rfid = _no_rfid;
+                var no_rfid = args.no_rfid;
                 var object = 'dashboard_absensi';
                 data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_out_city, false);
@@ -860,11 +862,12 @@ class dashboard_absensi extends _page
 
             // ACTION KETIKA USER MEMILIH IZIN
             function permit(data) {
-                _no_rfid = $('#alert_data').val();
+                nik = $('#alert_data').val();
+                args = work_data[nik]
                 $('#alert_global').fadeOut();
                 var ajx = '_permit';
                 var id = '';
-                var no_rfid = _no_rfid;
+                var no_rfid = args.no_rfid;
                 var object = 'dashboard_absensi';
                 data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_permit, false);
@@ -894,23 +897,24 @@ class dashboard_absensi extends _page
             }
 
             function home_permit(args) {
-                rfid = $('#alert_data').val();
+                nik = $('#alert_data').val();
                 check_nik = nik in work_data;
                 if (check_nik) {
                     $('#alert_global').fadeOut();
-                    second_alert_scan(rfid, work_data[nik]);
-                    console.log(rfid)
+                    second_alert_scan(nik, work_data[nik]);
                 }
             }
 
             function sick_permit() {
                 nik = $('#alert_data').val();
+                args = work_data[nik]
+                console.log(args)
                 $('#alert_global').fadeOut();
                 var ajx = '_sick_permit';
                 var id = '';
-                var nik = nik;
+                var no_rfid = args.no_rfid;
                 var object = 'dashboard_absensi';
-                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + nik;
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_sick_permit, false);
             }
 
@@ -937,12 +941,13 @@ class dashboard_absensi extends _page
 
             function cuti() {
                 nik = $('#alert_data').val();
+                args = work_data[nik]
                 $('#alert_global').fadeOut();
                 var ajx = '_cuti';
                 var id = '';
-                var nik = nik;
+                var no_rfid = args.no_rfid;
                 var object = 'dashboard_absensi';
-                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + nik;
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_cuti, false);
             }
 
@@ -969,10 +974,11 @@ class dashboard_absensi extends _page
 
             function permit_change_time() {
                 nik = $('#alert_data').val();
+                args = work_data[nik]
                 $('#alert_global').fadeOut();
                 var ajx = '_permit_change_time';
                 var id = '';
-                var nik = nik;
+                var nik = args.no_rfid;;
                 var object = 'dashboard_absensi';
                 data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + nik;
                 sobad_ajax(id, data, _dom_permit_changetime, false);
