@@ -305,4 +305,14 @@ class sobad_api extends _class
         );
         return self::send_curl($data);
     }
+
+    public static function count_company($id = 0)
+    {
+        $data = array(
+            'object'    => 'abs_user',
+            'func'      => 'count_company',
+            'data'      => array($id)
+        );
+        return self::send_curl($data);
+    }
 }
