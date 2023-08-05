@@ -656,26 +656,24 @@ class dashboard_absensi extends _page
                 if (_notwork || in_work || out_city || sick || _permit || _cuti) {
                     if (in_work) { // JIKA NIK ADA DI WORK_DATA
                         if (data.time >= time_work) { // JIKA SCAN LEBIH DARI JAM MASUK
-                            if (data.time <= space_time) {
-                                if (data.time >= time_go_home) { // JIKA SCAN SESUDAH JAM PULANG
-                                    notwork_data[nik] = data;
-                                    delete work_data[nik];
-                                    var notworkhtml = notwork_html(nik, data);
-                                    $(".footer-carousel").append(notworkhtml);
-                                    // REINIT ===============================
-                                    reinit_carousel('footer')
-                                    $('.' + data.width + '-carousel').slick('slickRemove');
-                                    $("." + nik + "-work").remove()
-                                    $('.' + data.width + '-carousel').slick('slickAdd');
-                                    reinit_carousel(data.width)
-                                    // END REINIT ===========================
-                                    alert_success_scan(data);
-                                } else { // JIKA SCAN SEBELUM JAM PULANG
-                                    alert_scan(rfid, work_data[nik]);
-                                }
-                            } else {
-                                alert_already_scan(data);
+                            if (data.time >= time_go_home) { // JIKA SCAN SESUDAH JAM PULANG
+                                notwork_data[nik] = data;
+                                delete work_data[nik];
+                                var notworkhtml = notwork_html(nik, data);
+                                $(".footer-carousel").append(notworkhtml);
+                                // REINIT ===============================
+                                reinit_carousel('footer')
+                                $('.' + data.width + '-carousel').slick('slickRemove');
+                                $("." + nik + "-work").remove()
+                                $('.' + data.width + '-carousel').slick('slickAdd');
+                                reinit_carousel(data.width)
+                                // END REINIT ===========================
+                                alert_success_scan(data);
+                            } else { // JIKA SCAN SEBELUM JAM PULANG
+                                alert_scan(rfid, work_data[nik]);
                             }
+                        } else {
+                            alert_already_scan(data);
                         }
 
                     } else { //JIKA NIK TIDAK ADA DI WORK_DATA
@@ -896,11 +894,12 @@ class dashboard_absensi extends _page
             }
 
             function home_permit(args) {
-                nik = $('#alert_data').val();
+                rfid = $('#alert_data').val();
                 check_nik = nik in work_data;
                 if (check_nik) {
                     $('#alert_global').fadeOut();
                     second_alert_scan(rfid, work_data[nik]);
+                    console.log(rfid)
                 }
             }
 
