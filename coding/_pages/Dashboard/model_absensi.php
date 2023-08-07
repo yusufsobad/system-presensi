@@ -23,11 +23,8 @@ class model_absensi
         $date = date('Y-m-d');
         $whr = "AND `abs-user`.status!=0";
         $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'no_rfid'], $whr);
-
         $permit = sobad_api::_get_users(array('user', 'type'), "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
-
         $group = sobad_api::_get_groups();
-
         $company = sobad_api::_gets('company', array('ID', 'meta_value', 'meta_note', 'meta_reff'));
 
         $_group = array();
@@ -49,7 +46,6 @@ class model_absensi
             if (!in_array($val['type'], array(3, 5, 6, 7, 8, 10))) {
                 $val['type'] = 4;
             }
-
             $_permit[$val['user']] = $val['type'];
         }
 
@@ -129,8 +125,6 @@ class model_absensi
             $user[$key] = array_merge($user[$key], $log[0]);
         }
 
-
-
         return array('user' => $user, 'group' => $group, 'company' => $company);
     }
 
@@ -160,14 +154,13 @@ class model_absensi
             $punish_type = sobad_api::_check_punish($val['ID'], date('Y-m-d'));
 
             $sts = isset($val['status']) ? $val['status'] : 0;
-            // //check group
+            //check group
             $_grp = sobad_api::_get_group($val['divisi'], $sts);
             $_grp_sts = isset($_grp['status']) ? $_grp : 0;
             $grp = sobad_api::_statusGroup($_grp_sts['status']);
 
             $grp_exclude = $grp['group'];
             $grp_punish = $grp['punish'];
-
 
             if ($grp_punish == 0) {
                 $punish = 0;
@@ -179,9 +172,7 @@ class model_absensi
                 $exclude = 1;
             }
 
-
             if (empty($val['type']) || $val['type'] == 2) {
-
                 $notwork[$val['no_induk']] = array(
                     'group'     => $val['company'] . '-' . $divisi_group,
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
@@ -201,7 +192,6 @@ class model_absensi
                 $_worktime = empty($val['shift']) ? $val['work_time'] : $val['shift'];
                 $_work = sobad_api::work_get_id($_worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
                 $grp = $divisi_group;
-
                 $check = array_filter($_work);
                 if (empty($check)) {
                     $_work = array(
@@ -211,10 +201,6 @@ class model_absensi
                 } else {
                     $_work = $_work[0];
                 }
-
-                // if (!isset($work[$grp])) {
-                //     $work[$grp] = array();
-                // }
 
                 $time = substr($val['time_in'], 0, 5);
                 $waktu = $time;
