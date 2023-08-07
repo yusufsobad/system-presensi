@@ -902,6 +902,8 @@ class dashboard_absensi extends _page
                     $("." + nik + "-work").remove();
                     $('.' + data.width + '-carousel').slick('slickAdd');
                     reinit_carousel(data.width)
+
+                    alert_success_scan(data);
                 }
                 dom_ammount_work();
                 dom_ammount_permit();
@@ -944,6 +946,8 @@ class dashboard_absensi extends _page
                     $("." + nik + "-work").remove();
                     $('.' + data.width + '-carousel').slick('slickAdd');
                     reinit_carousel(data.width)
+
+                    alert_success_scan(data);
                 }
                 dom_ammount_work();
                 dom_ammount_sickpermit();
@@ -977,6 +981,8 @@ class dashboard_absensi extends _page
                     $("." + nik + "-work").remove();
                     $('.' + data.width + '-carousel').slick('slickAdd');
                     reinit_carousel(data.width)
+
+                    alert_success_scan(data);
                 }
                 dom_ammount_work();
                 dom_ammount_cuti();
@@ -1009,6 +1015,8 @@ class dashboard_absensi extends _page
                 $("." + nik + "-work").remove();
                 $('.' + data.width + '-carousel').slick('slickAdd');
                 reinit_carousel(data.width)
+
+                alert_success_scan(data);
                 dom_ammount_work();
                 dom_count_team(data.group);
             }
