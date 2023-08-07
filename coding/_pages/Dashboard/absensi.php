@@ -10,7 +10,7 @@ class dashboard_absensi extends _page
     public static function index()
     {
         $data = model_absensi::presensi_data();
-        $birthday_now_data =  sobad_api::_get_birthdays();
+        $birthday_data =  sobad_api::_get_birthdays();
         $announcement_data = model_absensi::_dummy_data_announcement();
         $args = [
             'notwork_data'      => $data['notwork_data'],
@@ -19,8 +19,7 @@ class dashboard_absensi extends _page
             'permit_data'       => $data['permit_data'],
             'cuti_data'         => $data['cuti_data'],
             'sick_data'         => $data['sick_data'],
-            'birthday_now_data' => $birthday_now_data,
-            'birthday_next_data' => [],
+            'birthday_data'     => $birthday_data,
             'announcement_data' => $announcement_data,
             'count_tugas'       => self::_tugas(),
             'count_employes'    => self::_employees(),
