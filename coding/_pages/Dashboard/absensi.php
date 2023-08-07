@@ -17,7 +17,7 @@ class dashboard_absensi extends _page
             'work_data'         => $data['work_data'],
             'outcity_data'      => $data['outcity_data'],
             'permit_data'       => $data['permit_data'],
-            'cuti_data'         => $data['permit_data'],
+            'cuti_data'         => $data['cuti_data'],
             'sick_data'         => $data['sick_data'],
             'birthday_data'     => $birthday_data,
             'announcement_data' => $announcement_data,
