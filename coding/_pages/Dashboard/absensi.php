@@ -262,8 +262,6 @@ class dashboard_absensi extends _page
             $users = sobad_api::user_get_all(array('ID', 'divisi', 'status', 'work_time'), $whr . " AND status!='0'");
             $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $whr . " AND `abs-user-log`._inserted='$date'");
             $worktime = $users[0]['work_time'];
-            $_id = $user[0]['ID'];
-            $idx = $user[0]['id_join'];
 
             $work = array();
             $group = array();
@@ -306,19 +304,26 @@ class dashboard_absensi extends _page
                     $punish = 1;
                 }
             }
-
             //check group
-            $grp_punish = sobad_api::_statusGroup($group['status']);
-            $grp_punish = $grp_punish['punish'];
+            $grp = sobad_api::_statusGroup($group['status']);
+            $grp_exclude = $grp['status'];
+            $grp_punish = $grp['punish'];
+            $data['exclude'] = 0;
             if ($grp_punish == 0) {
                 $punish = 0;
             }
 
+            if ($grp_exclude == 1) {
+                $data['exclude'] = 1;
+            }
+            $data['punish'] = $punish;
+
             $group_id = explode('-', $data['group']);
             $group_id = $group_id[1];
+
             if ($data['type'] == 0) {
                 // INSERT DATA 
-                sobad_api::_insert_table(
+                $q = sobad_api::_insert_table(
                     'abs-user-log',
                     array(
                         'user'      => $users[0]['ID'],
@@ -332,7 +337,18 @@ class dashboard_absensi extends _page
                         'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
                     )
                 );
+
+                if ($work['status'] == 0) {
+                    // Update Lembur
+                    sobad_db::_insert_table('abs-log-detail', array(
+                        'log_id'        => $q,
+                        'date_schedule' => $date,
+                        'type_log'      => 3,
+                        'status'        => 2
+                    ));
+                }
             } else {
+                $idx = $user[0]['id_join'];
                 if ($time_now <= $data['shift']['time_out']) {
                     $_args['type'] = 1;
                     sobad_api::_update_single($idx, 'abs-user-log', $_args);
@@ -343,7 +359,7 @@ class dashboard_absensi extends _page
             }
         }
 
-        $data['punish'] = $punish;
+
         $data['time'] = $time_in;
         $data = [
             'data'  => $data,
@@ -380,7 +396,6 @@ class dashboard_absensi extends _page
             'type_date'     => 1,
             'type'          => 5,
         ));
-
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
@@ -542,6 +557,8 @@ class dashboard_absensi extends _page
                 'type_log'      => 2
             ));
         }
+
+        sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
             'data' => $data,

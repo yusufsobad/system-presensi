@@ -69,12 +69,12 @@ class sobad_api extends _class
         return self::send_curl($data);
     }
 
-    public static function get_absen($id)
+    public static function get_absen($args = array(), $date = '', $limit = '')
     {
         $data = array(
             'object'    => 'abs_user',
             'func'      => 'get_absen',
-            'data'      => array($id)
+            'data'      => array($args, $date, $limit)
         );
         return self::send_curl($data);
     }
