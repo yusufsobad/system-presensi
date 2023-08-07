@@ -925,7 +925,6 @@ class dashboard_absensi extends _page
             function sick_permit() {
                 nik = $('#alert_data').val();
                 args = work_data[nik]
-                console.log(args)
                 $('#alert_global').fadeOut();
                 var ajx = '_sick_permit';
                 var id = '';
