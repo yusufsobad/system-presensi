@@ -9,13 +9,6 @@ class dashboard_absensi extends _page
 
     public static function index()
     {
-        // $user = sobad_api::user_get_all(['ID', 'username'], "", "");
-        // $no = 0;
-        // foreach ($user as $val) {
-        //     $no = ++$no;
-        //     sobad_api::_update_single($val['ID'], 'abs-user', ['no_rfid' => $no]);
-        // }
-
         $data = model_absensi::presensi_data();
         $birthday_data =  sobad_api::_get_birthdays();
         $announcement_data = model_absensi::_dummy_data_announcement();
@@ -114,7 +107,7 @@ class dashboard_absensi extends _page
         $_data_depart = [];
         $data_department = $data['group'];
         foreach ($data_department as $val) {
-            if ($val['company'] == $company_id) {
+            if ($val['company'] == $company_id && $val['status']['status'] == 1) {
                 $_data_depart[] = $val;
             }
         }
@@ -145,7 +138,7 @@ class dashboard_absensi extends _page
         $_data_depart = [];
         $data_department = $data['group'];
         foreach ($data_department as $val) {
-            if ($val['company'] == $company_id) {
+            if ($val['company'] == $company_id && $val['status']['status'] == 1) {
                 $_data_depart[] = $val;
             }
         }
@@ -176,7 +169,7 @@ class dashboard_absensi extends _page
         $_data_depart = [];
         $data_department = $data['group'];
         foreach ($data_department as $val) {
-            if ($val['company'] == $company_id) {
+            if ($val['company'] == $company_id && $val['status']['status'] == 1) {
                 $_data_depart[] = $val;
             }
         }
@@ -260,6 +253,7 @@ class dashboard_absensi extends _page
             $nik = $check_user['no_induk'];
             $whr = "AND no_induk='$nik'";
             $users = sobad_api::user_get_all(array('ID', 'divisi', 'status', 'work_time'), $whr . " AND status!='0'");
+
             $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $whr . " AND `abs-user-log`._inserted='$date'");
             $worktime = $users[0]['work_time'];
 
@@ -306,9 +300,10 @@ class dashboard_absensi extends _page
             }
             //check group
             $grp = sobad_api::_statusGroup($group['status']);
-            $grp_exclude = $grp['status'];
+            $grp_exclude = $grp['group'];
             $grp_punish = $grp['punish'];
             $data['exclude'] = 0;
+
             if ($grp_punish == 0) {
                 $punish = 0;
             }

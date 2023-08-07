@@ -159,6 +159,27 @@ class model_absensi
             $capacity = self::conversion_capacity($group[$divisi_group]['capacity']);
             $punish_type = sobad_api::_check_punish($val['ID'], date('Y-m-d'));
 
+            $sts = isset($val['status']) ? $val['status'] : 0;
+            // //check group
+            $_grp = sobad_api::_get_group($val['divisi'], $sts);
+            $_grp_sts = isset($_grp['status']) ? $_grp : 0;
+            $grp = sobad_api::_statusGroup($_grp_sts['status']);
+
+            $grp_exclude = $grp['group'];
+            $grp_punish = $grp['punish'];
+
+
+            if ($grp_punish == 0) {
+                $punish = 0;
+            } else {
+                $punish = 1;
+            }
+            $exclude = 0;
+            if ($grp_exclude == 1) {
+                $exclude = 1;
+            }
+
+
             if (empty($val['type']) || $val['type'] == 2) {
 
                 $notwork[$val['no_induk']] = array(
@@ -167,7 +188,8 @@ class model_absensi
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
                     'width'     => $capacity,
-                    'punish'    => $punish_type,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
@@ -213,7 +235,8 @@ class model_absensi
                     'group'     => $val['company'] . '-' . $divisi_group,
                     'divisi'    => $val['meta_value_divi'],
                     'width'     => $capacity,
-                    'punish'    => $punish_type,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
@@ -223,13 +246,15 @@ class model_absensi
                 $group[$grp]['position'] = isset($val['note']['pos_group']) ? $val['note']['pos_group'] : 1;
             }
 
+
             if ($val['type'] == 3) {
                 $dayoff[$val['no_induk']] = array(
                     'group'     => $val['company'] . '-' . $divisi_group,
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'punish'    => $punish_type,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
                     'width'     => $capacity,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
@@ -245,7 +270,8 @@ class model_absensi
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
                     'width'     => $capacity,
-                    'punish'    => $punish_type,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
@@ -260,7 +286,8 @@ class model_absensi
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
                     'width'     => $capacity,
-                    'punish'    => $punish_type,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
@@ -275,7 +302,8 @@ class model_absensi
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
                     'width'     => $capacity,
-                    'punish'    => $punish_type,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
@@ -298,8 +326,8 @@ class model_absensi
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
-                    'width'     => $capacity,
-                    'punish'    => $punish_type,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
@@ -314,7 +342,8 @@ class model_absensi
                     'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
                     'divisi'    => $val['meta_value_divi'],
                     'width'     => $capacity,
-                    'punish'    => $punish_type,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
                     'time'      => '',
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
