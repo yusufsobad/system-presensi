@@ -67,7 +67,7 @@ $config = [
                         'class' => 'pt-xs pb-xs text-center',
                         'func'  => 'free_html',
                         'data'  => ' <p class="black">Tugas Luar</p>
-                                            <h2 class="purple">0</h2>'
+                                            <h2 id="ammount-workout" class="purple">0</h2>'
                     ]
                 ],
             ]
