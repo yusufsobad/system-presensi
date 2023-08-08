@@ -503,8 +503,8 @@ class dashboard_absensi extends _page
         $_id = $user[0]['ID'];
         $idx = $user[0]['id_join'];
 
-        $_args['type'] = 8;
-        $type = 8;
+        $_args['type'] = 3;
+        $type = 3;
         sobad_api::_insert_table('abs-permit', array(
             'user'          => $_id,
             'start_date'    => date('Y-m-d'),
