@@ -257,6 +257,9 @@ class dashboard_absensi extends _page
             $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $whr . " AND `abs-user-log`._inserted='$date'");
             $worktime = $users[0]['work_time'];
 
+            $user_log = sobad_api::get_absen(array('_nickname', 'id_join', 'type', 'time_in', 'time_out', 'history'), $date, $whr);
+
+
             $work = array();
             $group = array();
 
@@ -332,7 +335,6 @@ class dashboard_absensi extends _page
                         'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
                     )
                 );
-
                 if ($work['status'] == 0) {
                     // Update Lembur
                     sobad_db::_insert_table('abs-log-detail', array(
@@ -348,12 +350,18 @@ class dashboard_absensi extends _page
                     $_args['type'] = 1;
                     sobad_api::_update_single($idx, 'abs-user-log', $_args);
                 } else {
-                    $_args['type'] = 0;
+                    $history = unserialize($user_log[0]['history']);
+                    $history['logs'][] = array('type' => 2, 'time' => $time_now);
+                    $history = serialize($history);
+                    $_args = [
+                        'type'      => 2,
+                        'time_out'  => $time_now,
+                        'history'   => $history
+                    ];
                     sobad_api::_update_single($idx, 'abs-user-log', $_args);
                 }
             }
         }
-
 
         $data['time'] = $time_in;
         $data = [
@@ -867,9 +875,10 @@ class dashboard_absensi extends _page
                     reinit_carousel(data.width)
                     alert_success_scan(data);
                 }
+                dom_count_team(data.group);
                 dom_ammount_work();
                 dom_ammount_outcity();
-                dom_count_team(data.group);
+
             }
 
             // ACTION KETIKA USER MEMILIH IZIN
