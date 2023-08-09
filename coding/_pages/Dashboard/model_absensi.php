@@ -151,7 +151,6 @@ class model_absensi
             $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));
             $divisi_group = self::_get_group($val['divisi']);
             $capacity = self::conversion_capacity($group[$divisi_group]['capacity']);
-            $punish_type = sobad_api::_check_punish($val['ID'], date('Y-m-d'));
 
             $sts = isset($val['status']) ? $val['status'] : 0;
             //check group
