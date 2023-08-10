@@ -196,19 +196,8 @@ class dashboard_absensi extends _page
 
     public static function scan()
     {
-?>
-        <form>
-            <div class="row m-sm">
-                <div class="col-xs-3">
-                    <div class="input-group">
-                        <input id="nik" type="text" class="form-control" placeholder="Insert NIK">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" onclick="scan(this)">Submit</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
+    ?>
+        <input id="qrscanner" type="text" style="opacity:0;position: absolute;">
     <?php
     }
 
@@ -646,15 +635,32 @@ class dashboard_absensi extends _page
     ?>
         <script>
             // SCAN DATA MASUK
-            function scan(data) {
-                var _no_rfid = $('#nik').val();
+            function scan(val) {
+                var _no_rfid = $(val).val();
                 var ajx = '_check_scan';
                 var id = '';
                 var no_rfid = _no_rfid;
                 var object = 'dashboard_absensi';
+
+                if(_no_rfid==''){
+                    alert_failed_scan('Scan ID kosong!!!');
+                }
+
+                $(val).val('');
                 data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_scan_work, false);
             }
+
+            jQuery(document).ready(function() { 
+                $("#qrscanner").focus();
+                $("#qrscanner").on('change',function(){
+                    scan(this);
+                });
+            });
+
+            $('body.dashboard').on('click',function(){
+                $("#qrscanner").focus();
+            });
 
             // DOM SCAN MASUK
             function _dom_scan_work(args) {

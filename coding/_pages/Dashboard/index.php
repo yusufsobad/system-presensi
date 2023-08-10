@@ -18,8 +18,14 @@ class dashboard
 
     private function _script()
     {
+        $script = new vendor_script();
+        
         $css = new theme_css();
         $js = new theme_js();
+
+        // url script jQuery - Vendor
+        $get_jquery = $script->_get_('_js_core',array('jquery-core'));
+        $head[0] = '<script src="'.$get_jquery['jquery-core'].'"></script>';
 
         // url script css ----->
         $css = array_merge(
@@ -37,6 +43,7 @@ class dashboard
 
         );
 
+        reg_hook("reg_script_head",$head);
         reg_hook("reg_script_css", $css);
         reg_hook("reg_script_js", $js);
     }
