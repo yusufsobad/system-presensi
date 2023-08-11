@@ -879,7 +879,6 @@ class dashboard_absensi extends _page
                     }
                 } else {
                     alert_failed_scan(data);
-                    console.log('Failed');
                 }
                 dom_ammount_work();
                 dom_count_team(data.group);
