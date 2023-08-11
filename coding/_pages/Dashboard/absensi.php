@@ -106,9 +106,13 @@ class dashboard_absensi extends _page
         $company_id = $data_company['ID'];
         $_data_depart = [];
         $data_department = $data['group'];
+
+
         foreach ($data_department as $val) {
-            if ($val['company'] == $company_id && $val['status']['status'] == 1) {
-                $_data_depart[] = $val;
+            if (isset($val['company'])) {
+                if ($val['company'] == $company_id && $val['status']['status'] == 1) {
+                    $_data_depart[] = $val;
+                }
             }
         }
 
@@ -138,8 +142,10 @@ class dashboard_absensi extends _page
         $_data_depart = [];
         $data_department = $data['group'];
         foreach ($data_department as $val) {
-            if ($val['company'] == $company_id && $val['status']['status'] == 1) {
-                $_data_depart[] = $val;
+            if (isset($val['company'])) {
+                if ($val['company'] == $company_id && $val['status']['status'] == 1) {
+                    $_data_depart[] = $val;
+                }
             }
         }
 
@@ -169,8 +175,10 @@ class dashboard_absensi extends _page
         $_data_depart = [];
         $data_department = $data['group'];
         foreach ($data_department as $val) {
-            if ($val['company'] == $company_id && $val['status']['status'] == 1) {
-                $_data_depart[] = $val;
+            if (isset($val['company'])) {
+                if ($val['company'] == $company_id && $val['status']['status'] == 1) {
+                    $_data_depart[] = $val;
+                }
             }
         }
 
@@ -196,7 +204,7 @@ class dashboard_absensi extends _page
 
     public static function scan()
     {
-    ?>
+?>
         <input id="qrscanner" type="text" style="opacity:0;position: absolute;">
     <?php
     }
@@ -213,8 +221,6 @@ class dashboard_absensi extends _page
 
         // =======================================================
         $check_user = sobad_api::_check_noInduk($no_rfid);
-
-
 
         if (isset($check_user['ID'])) {
 
@@ -642,7 +648,7 @@ class dashboard_absensi extends _page
                 var no_rfid = _no_rfid;
                 var object = 'dashboard_absensi';
 
-                if(_no_rfid==''){
+                if (_no_rfid == '') {
                     alert_failed_scan('Scan ID kosong!!!');
                 }
 
@@ -651,14 +657,14 @@ class dashboard_absensi extends _page
                 sobad_ajax(id, data, _dom_scan_work, false);
             }
 
-            jQuery(document).ready(function() { 
+            jQuery(document).ready(function() {
                 $("#qrscanner").focus();
-                $("#qrscanner").on('change',function(){
+                $("#qrscanner").on('change', function() {
                     scan(this);
                 });
             });
 
-            $('body.dashboard').on('click',function(){
+            $('body.dashboard').on('click', function() {
                 $("#qrscanner").focus();
             });
 

@@ -149,12 +149,14 @@ class model_absensi
 
         foreach ($args['user'] as $key => $val) {
             $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));
-            $divisi_group = self::_get_group($val['divisi']);
-            $capacity = self::conversion_capacity($group[$divisi_group]['capacity']);
 
             $sts = isset($val['status']) ? $val['status'] : 0;
             //check group
             $_grp = sobad_api::_get_group($val['divisi'], $sts);
+            $divisons = isset($_grp['data']) ? $_grp['data'] : [];
+            $divisi_group = in_array($val['divisi'], $divisons) ? $_grp['ID'] : 0;
+            $_capacity = isset($_grp['capacity']) ? $_grp['capacity'] : 0;
+            $capacity = self::conversion_capacity($_capacity);
             $_grp_sts = isset($_grp['status']) ? $_grp : 0;
             $grp = sobad_api::_statusGroup($_grp_sts['status']);
 
@@ -352,20 +354,6 @@ class model_absensi
         ];
 
         return $data;
-    }
-
-    public static function _get_group($divisi = 0)
-    {
-        $group = self::$_group;
-
-        foreach ($group as $key => $val) {
-            if (isset($val['data'][0])) {
-                if (in_array($divisi, $val['data'])) {
-                    return $key;
-                }
-            }
-        }
-        return 0;
     }
 
     public static function conversion_capacity($capacity)
