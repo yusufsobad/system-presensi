@@ -2,7 +2,7 @@
 
 class model_absensi
 {
-    private static $_group = array();
+    private static $_groups = array();
 
     private static $_company = array();
 
@@ -39,7 +39,7 @@ class model_absensi
             }
         }
 
-        self::$_group = $group;
+        self::$_groups = $group;
 
         $_permit = array(0 => 0);
         foreach ($permit as $key => $val) {
@@ -133,7 +133,6 @@ class model_absensi
         $day = date('w');
         $args = self::employe_data();
 
-        // $_group = array();
         $group = $args['group'];
         $work = array();
         $notwork = array();
@@ -149,19 +148,18 @@ class model_absensi
 
         foreach ($args['user'] as $key => $val) {
             $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));
-
             $sts = isset($val['status']) ? $val['status'] : 0;
             //check group
-            $_grp = sobad_api::_get_group($val['divisi'], $sts);
-            $divisons = isset($_grp['data']) ? $_grp['data'] : [];
-            $divisi_group = in_array($val['divisi'], $divisons) ? $_grp['ID'] : 0;
-            $_capacity = isset($_grp['capacity']) ? $_grp['capacity'] : 0;
-            $capacity = self::conversion_capacity($_capacity);
-            $_grp_sts = isset($_grp['status']) ? $_grp : 0;
-            $grp = sobad_api::_statusGroup($_grp_sts['status']);
+            $_group = self::_get_group(intval($val['divisi']));
+            $_group = isset($_group[0]) ? $_group[0] : [];
 
-            $grp_exclude = $grp['group'];
-            $grp_punish = $grp['punish'];
+            $divisi_group = isset($_group['ID']) ? $_group['ID'] : 0;
+            $_capacity = isset($_group['capacity']) ? $_group['capacity'] : 0;
+            $capacity = self::conversion_capacity($_capacity);
+            $status_group = isset($_group['status']) ? $_group['status'] : 0;
+
+            $grp_exclude = $status_group['group'];
+            $grp_punish = $status_group['punish'];
 
             if ($grp_punish == 0) {
                 $punish = 0;
@@ -186,6 +184,7 @@ class model_absensi
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
             }
 
@@ -227,6 +226,7 @@ class model_absensi
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
 
 
@@ -247,6 +247,7 @@ class model_absensi
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
             }
 
@@ -263,6 +264,7 @@ class model_absensi
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
             }
 
@@ -279,6 +281,7 @@ class model_absensi
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
             }
 
@@ -295,6 +298,7 @@ class model_absensi
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
             }
 
@@ -319,6 +323,7 @@ class model_absensi
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
             }
 
@@ -335,9 +340,11 @@ class model_absensi
                     'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
             }
         }
+
 
         $data = [
             'company'       => $args['company'],
@@ -354,6 +361,24 @@ class model_absensi
         ];
 
         return $data;
+    }
+
+    public static function _get_group($divisi = 0)
+    {
+        $_group = [];
+        $group = self::$_groups;
+        foreach ($group as $key => $val) {
+            if (isset($val['ID']) && isset($val['data'])) {
+                if (is_array($val['data']) && $val['data'] !== 0) {
+                    if (in_array($divisi, $val['data'])) {
+                        $_group[] = $val;
+                    }
+                } else {
+                    $_group[] = $val;
+                }
+            }
+        }
+        return $_group;
     }
 
     public static function conversion_capacity($capacity)

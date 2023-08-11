@@ -153,7 +153,6 @@ class dashboard_absensi extends _page
             'department'    => $_data_depart,
         ];
         $content = self::_loadView('sobad/content', $data);
-
         $count_employe = sobad_api::count_company($data_company['ID']);
         $base_url = self::base_url();
         $base_url = $base_url .  "img/upload/";
@@ -216,11 +215,14 @@ class dashboard_absensi extends _page
         $day = date('w');
         $time_now =  date("H:i:s");
         $time_in = date("H:i");
-        $time_default = "08:00:00";
         $data_args = model_absensi::presensi_data();
 
         // =======================================================
         $check_user = sobad_api::_check_noInduk($no_rfid);
+        $nik = $check_user['no_induk'];
+        if ($check_user['status'] == 7) {
+            $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
+        }
 
         if (isset($check_user['ID'])) {
 
@@ -247,17 +249,14 @@ class dashboard_absensi extends _page
                 $data = $data_args[$check_user['no_induk']];
             }
 
-            $nik = $check_user['no_induk'];
+
             $whr = "AND no_induk='$nik'";
             $users = sobad_api::user_get_all(array('ID', 'divisi', 'status', 'work_time'), $whr . " AND status!='0'");
-
             $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $whr . " AND `abs-user-log`._inserted='$date'");
             $worktime = $users[0]['work_time'];
-
             $user_log = sobad_api::get_absen(array('_nickname', 'id_join', 'type', 'time_in', 'time_out', 'history'), $date, $whr);
 
             $work = array();
-            $group = array();
 
             $check = array_filter($users);
             if (!empty($check)) {
@@ -277,10 +276,10 @@ class dashboard_absensi extends _page
                 }
 
                 $work = sobad_api::work_get_id($worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
-                $group = sobad_api::_get_group($users[0]['divisi'], $users[0]['status']); // ARRAY KOSONG
             }
+            $group = model_absensi::_get_group($data['id_divi']);
+            $group = isset($group[0]) ? $group[0] : [];
 
-            $check = array_filter($group);
             $check = array_filter($work);
             if (empty($check)) {
                 $work = array(
@@ -297,7 +296,7 @@ class dashboard_absensi extends _page
             }
 
             //check group
-            $grp = sobad_api::_statusGroup($group['status']);
+            $grp = $group['status'];
             $grp_exclude = $grp['group'];
             $grp_punish = $grp['punish'];
             $data['exclude'] = 0;
@@ -316,6 +315,15 @@ class dashboard_absensi extends _page
 
             if ($data['type'] == 0) {
                 // INSERT DATA 
+                //Check Permit
+                $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
+
+                $check = array_filter($permit);
+                if (!empty($check)) {
+                    $pDate = strtotime($date);
+                    $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
+                    sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
+                }
                 $q = sobad_api::_insert_table(
                     'abs-user-log',
                     array(
@@ -378,8 +386,13 @@ class dashboard_absensi extends _page
         $type = 5; // ? 
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
-        $data = $data_args[$check_user['no_induk']];
         $nik = $check_user['no_induk'];
+
+        if ($check_user['status'] == 7) {
+            $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
+        }
+
+        $data = $data_args[$check_user['no_induk']];
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $idx = $user[0]['id_join'];
@@ -398,7 +411,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data' => $data,
-            'nik'   => $nik,
+            'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
         return $data;
@@ -414,8 +427,12 @@ class dashboard_absensi extends _page
         $type = 4; // ? 
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
-        $data = $data_args[$check_user['no_induk']];
         $nik = $check_user['no_induk'];
+        if ($check_user['status'] == 7) {
+            $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
+        }
+
+        $data = $data_args[$check_user['no_induk']];
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_id = $user[0]['ID'];
@@ -451,7 +468,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data' => $data,
-            'nik'   => $nik,
+            'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
         return $data;
@@ -465,8 +482,13 @@ class dashboard_absensi extends _page
         $data_args = $data_args['work_data'];
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
-        $data = $data_args[$check_user['no_induk']];
+
+
         $nik = $check_user['no_induk'];
+        if ($check_user['status'] == 7) {
+            $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
+        }
+        $data = $data_args[$check_user['no_induk']];
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_id = $user[0]['ID'];
@@ -485,7 +507,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data' => $data,
-            'nik'   => $nik,
+            'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
         return $data;
@@ -499,8 +521,12 @@ class dashboard_absensi extends _page
         $data_args = $data_args['work_data'];
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
-        $data = $data_args[$check_user['no_induk']];
         $nik = $check_user['no_induk'];
+        if ($check_user['status'] == 7) {
+            $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
+        }
+        $data = $data_args[$check_user['no_induk']];
+
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_id = $user[0]['ID'];
@@ -519,7 +545,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data' => $data,
-            'nik'   => $nik,
+            'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
         return $data;
@@ -535,8 +561,11 @@ class dashboard_absensi extends _page
         $day = date('w');
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
-        $data = $data_args[$check_user['no_induk']];
         $nik = $check_user['no_induk'];
+        if ($check_user['status'] == 7) {
+            $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
+        }
+        $data = $data_args[$check_user['no_induk']];
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_worktime = $user[0]['work_time'];
@@ -560,7 +589,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data' => $data,
-            'nik'   => $nik,
+            'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
         return $data;

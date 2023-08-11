@@ -3,8 +3,6 @@
 $config = [];
 
 foreach ($data['department'] as $key => $val) {
-    $id = implode(',', $val['data']);
-
     $color = '#7c7c7c';
     if (isset($val['color'])) {
         $color = empty($val['color']) ? $color : $val['color'];
