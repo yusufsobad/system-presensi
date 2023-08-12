@@ -277,6 +277,8 @@ class dashboard_absensi extends _page
 
                 $work = sobad_api::work_get_id($worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
             }
+
+
             $group = model_absensi::_get_group($data['id_divi']);
             $group = isset($group[0]) ? $group[0] : [];
 
@@ -289,6 +291,9 @@ class dashboard_absensi extends _page
             } else {
                 $work = $work[0];
             }
+
+            $data['shift'] = $work;
+
 
             $punish = 0;
             if ($time_now >= $work['time_in']) {
