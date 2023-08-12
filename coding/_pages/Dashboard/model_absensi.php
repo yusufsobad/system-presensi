@@ -23,7 +23,9 @@ class model_absensi
         $date = date('Y-m-d');
         $whr = "AND `abs-user`.status!=0";
         $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'no_rfid'], $whr);
-        $permit = sobad_api::_get_users(array('user', 'type'), "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
+        // $permit = sobad_api::_get_users();
+        $whr = "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'";
+        $permit = sobad_api::permit_get_all(['user,type'], $whr);
         $group = sobad_api::_get_groups();
         $company = sobad_api::_gets('company', array('ID', 'meta_value', 'meta_note', 'meta_reff'));
 
@@ -40,7 +42,6 @@ class model_absensi
         }
 
         self::$_groups = $group;
-
         $_permit = array(0 => 0);
         foreach ($permit as $key => $val) {
             if (!in_array($val['type'], array(3, 5, 6, 7, 8, 10))) {
@@ -95,7 +96,6 @@ class model_absensi
             } else {
                 $log[0]['note'] = unserialize($log[0]['note']);
             }
-
             if (array_key_exists($idx, $_permit)) {
                 $_libur = sobad_api::_check_holiday();
                 if (!$_libur) {
@@ -110,13 +110,16 @@ class model_absensi
                     //	);
                 } else {
                     if (!$_libur) {
+                        echo '<pre>';
+                        var_dump($idx);
+                        echo '</pre>';
                         sobad_api::_insert_table(
                             'abs-user-log',
                             array(
-                                'user'         => $idx,
+                                'user'      => $idx,
                                 'shift'     => $val['work_time'],
-                                'type'        => $_permit[$idx],
-                                '_inserted'    => $date,
+                                'type'      => $_permit[$idx],
+                                '_inserted' => $date,
                             )
                         );
                     }

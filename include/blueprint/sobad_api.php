@@ -29,12 +29,12 @@ class sobad_api extends _class
         return self::send_curl($data);
     }
 
-    public static function _get_users($args = [], $limit = '', $type = '')
+    public static function _get_users()
     {
         $data = array(
             'object'    => 'abs_permit',
             'func'      => '_get_users',
-            'data'      => array($args, $limit, $type)
+            'data'      => array()
         );
         return self::send_curl($data);
     }
