@@ -23,6 +23,7 @@ class model_absensi
         $date = date('Y-m-d');
         $whr = "AND `abs-user`.status!=0";
         $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'no_rfid'], $whr);
+
         // $permit = sobad_api::_get_users();
         $whr = "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'";
         $permit = sobad_api::permit_get_all(['user,type'], $whr);
@@ -110,9 +111,6 @@ class model_absensi
                     //	);
                 } else {
                     if (!$_libur) {
-                        echo '<pre>';
-                        var_dump($idx);
-                        echo '</pre>';
                         sobad_api::_insert_table(
                             'abs-user-log',
                             array(
@@ -148,6 +146,7 @@ class model_absensi
         $wfh = array();
         self::$_company = $args['company'];
         $pos = 0;
+
 
         foreach ($args['user'] as $key => $val) {
             $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));

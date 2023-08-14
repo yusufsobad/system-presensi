@@ -355,8 +355,23 @@ class dashboard_absensi extends _page
             } else {
                 $idx = $user[0]['id_join'];
                 if ($time_now <= $data['shift']['time_out']) {
-                    $_args['type'] = 1;
+                    $history = unserialize($user_log[0]['history']);
+                    $history['logs'][] = array('type' => 2, 'time' => $time_now);
+                    $history = serialize($history);
+                    $_args = [
+                        'type'      => 1,
+                        'time_in'   => $time_now,
+                        'history'   => $history
+                    ];
                     sobad_api::_update_single($idx, 'abs-user-log', $_args);
+
+                    $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
+                    $check = array_filter($permit);
+                    if (!empty($check)) {
+                        $pDate = strtotime($date);
+                        $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
+                        sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
+                    }
                 } else {
                     $history = unserialize($user_log[0]['history']);
                     $history['logs'][] = array('type' => 2, 'time' => $time_now);
