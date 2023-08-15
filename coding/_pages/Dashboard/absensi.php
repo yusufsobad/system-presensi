@@ -17,11 +17,13 @@ class dashboard_absensi extends _page
             'work_data'         => $data['work_data'],
             'outcity_data'      => $data['outcity_data'],
             'workout_data'      => $data['workout_data'],
+            'tugas_data'        => $data['tugas_data'],
             'permit_data'       => $data['permit_data'],
             'cuti_data'         => $data['cuti_data'],
             'sick_data'         => $data['sick_data'],
             'birthday_data'     => $birthday_data,
             'announcement_data' => $announcement_data,
+
             'count_tugas'       => self::_tugas(),
             'count_employes'    => self::_employees(),
             'count_internship'  => self::_internship(),
@@ -218,8 +220,10 @@ class dashboard_absensi extends _page
         $time_in = date("H:i");
         $data_args = model_absensi::presensi_data();
 
+
         // =======================================================
         $check_user = sobad_api::_check_noInduk($no_rfid);
+
         $nik = $check_user['no_induk'];
         if ($check_user['status'] == 7) {
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
@@ -233,9 +237,6 @@ class dashboard_absensi extends _page
             } else if (isset($data_args['work_data'][$check_user['no_induk']])) {
                 $data_args = $data_args['work_data'];
                 $data = $data_args[$check_user['no_induk']];
-            } elseif (isset($data_args['outcity_data'][$check_user['no_induk']])) {
-                $data_args = $data_args['outcity_data'];
-                $data = $data_args[$check_user['no_induk']];
             } elseif (isset($data_args['cuti_data'][$check_user['no_induk']])) {
                 $data_args = $data_args['cuti_data'];
                 $data = $data_args[$check_user['no_induk']];
@@ -248,8 +249,10 @@ class dashboard_absensi extends _page
             } elseif (isset($data_args['outside_work'][$check_user['no_induk']])) {
                 $data_args = $data_args['outside_work'];
                 $data = $data_args[$check_user['no_induk']];
+            } elseif (isset($data_args['workout_data'][$check_user['no_induk']])) {
+                $data_args = $data_args['workout_data'];
+                $data = $data_args[$check_user['no_induk']];
             }
-
 
             $whr = "AND no_induk='$nik'";
             $users = sobad_api::user_get_all(array('ID', 'divisi', 'status', 'work_time'), $whr . " AND status!='0'");
@@ -399,6 +402,7 @@ class dashboard_absensi extends _page
 
     public static function _go_out_city()
     {
+
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
         $times = date('H:i:s');
@@ -429,6 +433,50 @@ class dashboard_absensi extends _page
             'type'          => 5,
         ));
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
+
+        $data['count'] = self::_outCity();
+
+        $data = [
+            'data' => $data,
+            'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
+            'rfid'  =>  $no_rfid
+        ];
+        return $data;
+    }
+
+    public static function _workout()
+    {
+        $no_rfid = $_POST['no_rfid'];
+        $date = date('Y-m-d');
+        $times = date('H:i:s');
+        $data_args = model_absensi::presensi_data();
+        $data_args = $data_args['work_data'];
+        $type = 7; // ? 
+
+        $check_user = sobad_api::_check_noInduk($no_rfid);
+        $nik = $check_user['no_induk'];
+
+        if ($check_user['status'] == 7) {
+            $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
+        }
+
+        $data = $data_args[$check_user['no_induk']];
+        $_whr = "AND no_induk='$nik'";
+        $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
+        $idx = $user[0]['id_join'];
+        $_id = $user[0]['ID'];
+        $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
+        sobad_api::_update_single($idx, 'abs-user-log', $_args);
+
+        sobad_api::_insert_table('abs-permit', array(
+            'user'          => $_id,
+            'start_date'    => date('Y-m-d'),
+            'range_date'    => date('Y-m-d'),
+            'num_day'       => 1,
+            'type_date'     => 1,
+            'type'          => $type,
+        ));
+
 
         $data = [
             'data' => $data,
@@ -659,8 +707,8 @@ class dashboard_absensi extends _page
     public static function _outCity()
     {
         $date = date('Y-m-d');
-        $work = sobad_api::go_outCity(array('id_join'), "AND `abs-user-log`._inserted='$date'");
-        return count($work);
+        $work = sobad_api::count_outCity(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return $work;
     }
 
     public static function _sick()
@@ -673,8 +721,8 @@ class dashboard_absensi extends _page
     public static function _tugas()
     {
         $date = date('Y-m-d');
-        $work = sobad_api::go_tugas(array('id_join'), "AND `abs-user-log`._inserted='$date'");
-        return count($work);
+        $work = sobad_api::count_tugas(array('id_join'), "AND `abs-user-log`._inserted='$date'");
+        return $work;
     }
 
     public static function _holiday()
@@ -726,14 +774,14 @@ class dashboard_absensi extends _page
 
                 _notwork = nik in notwork_data
                 in_work = nik in work_data;
-                out_city = nik in outcity_data;
                 sick = nik in sick_data;
                 _permit = nik in permit_data;
                 _cuti = nik in cuti_data;
+                _workout = nik in workout_data;
 
 
                 // CHECK NIK ADA ATAU TIDAK 
-                if (_notwork || in_work || out_city || sick || _permit || _cuti) {
+                if (_notwork || in_work || sick || _permit || _cuti || _workout) {
 
                     time_work = data.shift.time_in;
                     time_go_home = data.shift.time_out;
@@ -759,14 +807,15 @@ class dashboard_absensi extends _page
                         } else {
                             alert_already_scan(data);
                         }
-
                     } else { //JIKA NIK TIDAK ADA DI WORK_DATA
-                        if (out_city) { // JIKA NIK ADA DI OUTCITY_DATA
+                        if (_workout) { // JIKA NIK ADA DI OUTCITY_DATA
                             if (data.time <= time_go_home) { // JIKA SCAN SEBELUM JAM PULANG
                                 var workhtml = work_html(nik, data);
                                 $("#" + data.group + "").append(workhtml);
                                 work_data[nik] = data;
+                                delete workout_data[nik];
                                 delete outcity_data[nik];
+                                delete tugas_data[nik];
                                 // REINIT ===============================
                                 reinit_carousel(data.width)
                                 $('.permit-carousel').slick('slickRemove');
@@ -775,10 +824,13 @@ class dashboard_absensi extends _page
                                 reinit_carousel('permit')
                                 // END REINIT ===========================
                                 dom_ammount_outcity();
+                                dom_ammount_workout();
                                 alert_success_scan(data);
                             } else { // JIKA SCAN SESUDAH JAM PULANG
                                 notwork_data[nik] = data;
+                                delete workout_data[nik];
                                 delete outcity_data[nik];
+                                delete tugas_data[nik];
                                 var notworkhtml = notwork_html(nik, data);
                                 $(".footer-carousel").append(notworkhtml);
                                 // REINIT ===============================
@@ -789,6 +841,7 @@ class dashboard_absensi extends _page
                                 reinit_carousel('permit')
                                 // END REINIT ===========================
                                 dom_ammount_outcity();
+                                dom_ammount_workout();
                                 alert_success_scan(data);
                             }
                         } else if (sick) { // JIKA NIK ADA DI SICK DATA
@@ -906,6 +959,15 @@ class dashboard_absensi extends _page
 
             }
 
+            function out(args) {
+                nik = $('#alert_data').val();
+                check_nik = nik in work_data;
+                if (check_nik) {
+                    $('#alert_global').fadeOut();
+                    out_alert_scan(nik, work_data[nik]);
+                }
+            }
+
             // ACTION KETIKA USER MEMILIH LUAR KOTA
             function go_out_city(data) {
                 nik = $('#alert_data').val();
@@ -927,12 +989,13 @@ class dashboard_absensi extends _page
 
                 check_nik = nik in work_data;
                 if (check_nik) {
+                    workout_data[nik] = data
                     outcity_data[nik] = data
                     var data = work_data[nik];
-                    $("#out_city_content").append(outcity_html(nik, data));
+                    $("#workout_content").append(workout_html(nik, data));
                     delete work_data[nik];
                     // RE INIT CAROUSEL
-                    reinit_carousel('permit-split')
+                    reinit_carousel('permit')
                     $('.' + data.width + '-carousel').slick('slickRemove');
                     $("." + nik + "-work").remove();
                     $('.' + data.width + '-carousel').slick('slickAdd');
@@ -941,8 +1004,46 @@ class dashboard_absensi extends _page
                 }
                 dom_count_team(data.group);
                 dom_ammount_work();
-                dom_ammount_outcity();
+                dom_ammount_outcity(data.count);
 
+            }
+
+            // ACTION KETIKA USER MEMILIH Tugas Luar
+            function workout(data) {
+                nik = $('#alert_data').val();
+                args = work_data[nik]
+
+                $('#alert_global').fadeOut();
+                var ajx = '_workout';
+                var id = '';
+                var no_rfid = args.no_rfid;
+                var object = 'dashboard_absensi';
+                data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
+                sobad_ajax(id, data, _dom_workout, false);
+            }
+
+            function _dom_workout(args) {
+                var data = args.data;
+                var nik = args.nik;
+
+                check_nik = nik in work_data;
+                if (check_nik) {
+                    workout_data[nik] = data;
+                    tugas_data[nik] = data;
+                    var data = work_data[nik];
+                    $("#workout_content").append(workout_html(nik, data));
+                    delete work_data[nik];
+                    // RE INIT CAROUSEL
+                    reinit_carousel('permit')
+                    $('.' + data.width + '-carousel').slick('slickRemove');
+                    $("." + nik + "-work").remove();
+                    $('.' + data.width + '-carousel').slick('slickAdd');
+                    reinit_carousel(data.width)
+                    alert_success_scan(data);
+                }
+                dom_count_team(data.group);
+                dom_ammount_work();
+                dom_ammount_workout();
             }
 
             // ACTION KETIKA USER MEMILIH IZIN

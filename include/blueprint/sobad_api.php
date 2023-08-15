@@ -256,11 +256,11 @@ class sobad_api extends _class
         return self::send_curl($data);
     }
 
-    public static function go_outCity($data)
+    public static function count_outCity($data)
     {
         $data = array(
             'object'    => 'abs_user',
-            'func'      => 'go_outCity',
+            'func'      => 'count_outCity',
             'data'      => array($data)
         );
         return self::send_curl($data);
@@ -276,11 +276,11 @@ class sobad_api extends _class
         return self::send_curl($data);
     }
 
-    public static function go_tugas($data)
+    public static function count_tugas($data)
     {
         $data = array(
             'object'    => 'abs_user',
-            'func'      => 'go_tugas',
+            'func'      => 'count_tugas',
             'data'      => array($data)
         );
         return self::send_curl($data);
