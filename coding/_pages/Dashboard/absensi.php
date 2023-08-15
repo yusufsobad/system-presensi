@@ -259,7 +259,7 @@ class dashboard_absensi extends _page
             $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $whr . " AND `abs-user-log`._inserted='$date'");
             $worktime = $users[0]['work_time'];
             $user_log = sobad_api::get_absen(array('_nickname', 'id_join', 'type', 'time_in', 'time_out', 'history'), $date, $whr);
-
+            $log_history = str_replace(["\n", "\r"], '', $user_log[0]['history']);
             $work = array();
 
             $check = array_filter($users);
@@ -359,7 +359,7 @@ class dashboard_absensi extends _page
             } else {
                 $idx = $user[0]['id_join'];
                 if ($time_now <= $data['shift']['time_out']) {
-                    $history = unserialize($user_log[0]['history']);
+                    $history = unserialize($log_history);
                     $history['logs'][] = array('type' => 2, 'time' => $time_now);
                     $history = serialize($history);
                     $_args = [
@@ -377,7 +377,7 @@ class dashboard_absensi extends _page
                         sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
                     }
                 } else {
-                    $history = unserialize($user_log[0]['history']);
+                    $history = unserialize($log_history);
                     $history['logs'][] = array('type' => 2, 'time' => $time_now);
                     $history = serialize($history);
                     $_args = [
