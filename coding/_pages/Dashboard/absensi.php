@@ -16,6 +16,7 @@ class dashboard_absensi extends _page
             'notwork_data'      => $data['notwork_data'],
             'work_data'         => $data['work_data'],
             'outcity_data'      => $data['outcity_data'],
+            'workout_data'      => $data['workout_data'],
             'permit_data'       => $data['permit_data'],
             'cuti_data'         => $data['cuti_data'],
             'sick_data'         => $data['sick_data'],
@@ -931,7 +932,7 @@ class dashboard_absensi extends _page
                     $("#out_city_content").append(outcity_html(nik, data));
                     delete work_data[nik];
                     // RE INIT CAROUSEL
-                    reinit_carousel('permit')
+                    reinit_carousel('permit-split')
                     $('.' + data.width + '-carousel').slick('slickRemove');
                     $("." + nik + "-work").remove();
                     $('.' + data.width + '-carousel').slick('slickAdd');

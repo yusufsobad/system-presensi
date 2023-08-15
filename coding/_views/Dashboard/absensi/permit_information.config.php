@@ -42,7 +42,7 @@ $config = [
             ]
         ],
         [
-            'col'   => '12',
+            'col'   => '6',
             'func'  => 'sobad_grid',
             'data'  => [
                 [
@@ -52,7 +52,25 @@ $config = [
                 ],
                 [
                     'id'    => 'out_city_content',
-                    'class' => 'permit_content permit-carousel',
+                    'class' => 'permit_content permit-split-carousel',
+                    'col'   => '12',
+                    'func'  => 'user_card',
+                    'data'  => []
+                ],
+            ]
+        ],
+        [
+            'col'   => '6',
+            'func'  => 'sobad_grid',
+            'data'  => [
+                [
+                    'col'   => '12',
+                    'func'  => 'free_html',
+                    'data'  => '<div class="w-fit bg-light-grey radius-xs space">Tugas Luar</div>'
+                ],
+                [
+                    'id'    => 'work_out_content',
+                    'class' => 'permit_content permit-split-carousel',
                     'col'   => '12',
                     'func'  => 'user_card',
                     'data'  => []

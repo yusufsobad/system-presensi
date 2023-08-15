@@ -51,6 +51,8 @@ class model_absensi
             $_permit[$val['user']] = $val['type'];
         }
 
+
+
         foreach ($user as $key => $val) {
             if (isset($val['_entry_date'])) {
                 if ($date < $val['_entry_date']) {
@@ -306,10 +308,18 @@ class model_absensi
 
             if ($val['type'] == 7) {
                 $tugas[$val['no_induk']] = array(
-                    'name'    => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
-                    'image'    => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
-                    'group'    => $divisi_group,
-                    'class'    => 'col-md-6'
+                    'group'     => $val['company'] . '-' . $divisi_group,
+                    'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
+                    'image'     => !empty($val['notes_pict']) ? $val['notes_pict'] : 'no-profile.jpg',
+                    'divisi'    => $val['meta_value_divi'],
+                    'width'     => $capacity,
+                    'punish'    => $punish,
+                    'exclude'   => $exclude,
+                    'time'      => '',
+                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'type'      => $val['type'],
+                    'no_rfid'   => $val['no_rfid'],
+                    'id_divi'   => $val['divisi'],
                 );
             }
 
@@ -347,17 +357,16 @@ class model_absensi
             }
         }
 
-
         $data = [
             'company'       => $args['company'],
             'group'         => $group,
             'notwork_data'  => $notwork,
             'work_data'     => $work,
             'outcity_data'  => $outcity,
+            'workout_data'  => $tugas,
             'cuti_data'     => $dayoff,
             'permit_data'   => $permit,
             'sick_data'     => $sick,
-            'outside_work'  => $tugas,
             'wfh'           => $wfh,
             'libur'         => $libur,
         ];
