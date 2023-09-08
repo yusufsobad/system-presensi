@@ -298,20 +298,21 @@ class dashboard_absensi extends _page
 
             $data['shift'] = $work;
 
-
-            $punish = 0;
-            if ($time_now >= $work['time_in']) {
-                $punish = 1;
-            }
-
             //check group
             $grp = $group['status'];
             $grp_exclude = $grp['group'];
             $grp_punish = $grp['punish'];
             $data['exclude'] = 0;
 
+            $punish = 0;
+            if ($time_now >= $work['time_in']) {
+                $punish = 1;
+            }
+
             if ($grp_punish == 0) {
                 $punish = 0;
+            } else {
+                $punish = $punish;
             }
 
             if ($grp_exclude == 1) {
@@ -333,6 +334,7 @@ class dashboard_absensi extends _page
                     $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
                     sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
                 }
+                var_dump($punish);
                 $q = sobad_api::_insert_table(
                     'abs-user-log',
                     array(

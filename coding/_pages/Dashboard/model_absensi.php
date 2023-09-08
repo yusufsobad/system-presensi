@@ -22,7 +22,7 @@ class model_absensi
     {
         $date = date('Y-m-d');
         $whr = "AND `abs-user`.status!=0";
-        $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'no_rfid'], $whr);
+        $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'punish', 'no_rfid'], $whr);
 
         // $permit = sobad_api::_get_users();
         $whr = "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'";
@@ -50,8 +50,6 @@ class model_absensi
             }
             $_permit[$val['user']] = $val['type'];
         }
-
-
 
         foreach ($user as $key => $val) {
             if (isset($val['_entry_date'])) {
@@ -133,6 +131,7 @@ class model_absensi
 
     public static function presensi_data()
     {
+        $date = date('Y-m-d');
         $day = date('w');
         $args = self::employe_data();
 
@@ -151,7 +150,10 @@ class model_absensi
 
 
         foreach ($args['user'] as $key => $val) {
+
             $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));
+            $check_punish = sobad_api::_check_punish($val['ID'], $date);
+
             $sts = isset($val['status']) ? $val['status'] : 0;
             //check group
             $_group = self::_get_group(intval($val['divisi']));
@@ -165,11 +167,17 @@ class model_absensi
             $grp_exclude = $status_group['group'];
             $grp_punish = $status_group['punish'];
 
-            if ($grp_punish == 0) {
-                $punish = 0;
+            if ($check_punish == "1") {
+                if ($grp_punish == 0) {
+                    $punish = 0;
+                } else {
+                    $punish = 1;
+                }
             } else {
-                $punish = 1;
+                $punish = $check_punish;
             }
+
+
             $exclude = 0;
             if ($grp_exclude == 1) {
                 $exclude = 1;
@@ -397,57 +405,58 @@ class model_absensi
     {
         switch ($capacity) {
             case 1:
-                $_capacity = '20';
-                break;
             case 2:
-                $_capacity = '20';
-                break;
             case 3:
                 $_capacity = '20';
                 break;
             case 4:
-                $_capacity = '20';
+                $_capacity = '26';
                 break;
             case 5:
-                $_capacity = '30';
+                $_capacity = '33';
                 break;
             case 6:
-                $_capacity = '30';
-                break;
-            case 7:
                 $_capacity = '40';
                 break;
+            case 7:
+                $_capacity = '46';
+                break;
             case 8:
-                $_capacity = '50';
+                $_capacity = '53';
                 break;
             case 9:
-                $_capacity = '50';
+                $_capacity = '60';
                 break;
             case 10:
-                $_capacity = '50';
+                $_capacity = '66';
                 break;
             case 11:
-                $_capacity = '60';
+                $_capacity = '73';
                 break;
             case 12:
-                $_capacity = '60';
+                $_capacity = '80';
                 break;
             case 13:
-                $_capacity = '60';
+                $_capacity = '86';
                 break;
             case 14:
-                $_capacity = '70';
+                $_capacity = '93';
                 break;
             case 15:
-                $_capacity = '70';
+                $_capacity = '100';
                 break;
-            case 16:
-                $_capacity = '70';
-                break;
-            case $capacity >= 17:
+
+            default:
                 $_capacity = '100';
                 break;
         }
+
+        if ($capacity >= 15) {
+            $_capacity = '100';
+        }
+
+
+
         return $_capacity;
     }
 }
