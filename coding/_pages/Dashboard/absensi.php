@@ -298,7 +298,7 @@ class dashboard_absensi extends _page
                             '_inserted' => $date,
                             'time_in'   => $time_now,
                             'time_out'  => '00:00:00',
-                            'note'      => '',
+                            'note'      => serialize(array('pos_user' => $users[0]['ID'], 'pos_group' => $_group['ID'])),
                             'punish'    => $punish,
                             'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
                         )
