@@ -222,22 +222,24 @@ class dashboard_absensi extends _page
         $check_user = sobad_api::_check_noInduk($no_rfid);
         $_userid = $check_user['ID'];
 
+
         $nik = $check_user['no_induk'];
         if ($check_user['status'] == 7) {
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
         }
 
-        if (isset($check_user['ID'])) {
+        if (isset($check_user['ID']) && $check_user['ID'] != 17) {
             $whr = "AND no_induk='$nik'";
             $users = sobad_api::user_get_all(array('ID', 'divisi', 'status', 'work_time'), $whr . " AND status!='0'");
             $user_log = sobad_api::get_absen(array('_nickname', 'id_join', 'type', 'time_in', 'time_out', 'history'), $date, $whr);
             $user_log = isset($user_log[0]) ? $user_log[0] : [];
+            $_group = sobad_api::_get_group($check_user['divisi']);
+
             $check = array_filter($users);
             if (!empty($check)) {
                 //Check Setting Auto Shift
                 $_userid = $users[0]['ID'];
                 $worktime = $users[0]['work_time'];
-
                 $shift = sobad_api::permit_get_all(array('user', 'note'), "AND ( (user='$_userid' AND type='9') OR (user='0' AND note LIKE '" . $worktime . ":%') ) AND start_date<='$date' AND range_date>='$date'");
 
                 $check = array_filter($shift);
@@ -249,10 +251,8 @@ class dashboard_absensi extends _page
                         $worktime = $shift[0]['note'];
                     }
                 }
-
                 $work = sobad_api::work_get_id($worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
             }
-
 
             $check = array_filter($work);
             if (empty($check)) {
@@ -263,51 +263,61 @@ class dashboard_absensi extends _page
             } else {
                 $work = $work[0];
             }
-
             if ($time_now >= $work['time_in']) {
                 $punish = 1;
             }
+            $grp = $_group['status'];
+            $grp_punish = $grp[0];
 
-            if ($user_log['type'] == 0) {
-                // INSERT DATA 
-                //Check Permit
-                $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
+            if ($grp_punish == '0') {
+                $punish = 0;
+            } else {
+                $punish = $punish;
+            }
 
-                $check = array_filter($permit);
-                if (!empty($check)) {
-                    $pDate = strtotime($date);
-                    $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
-                    sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
+            $check = array_filter($user_log);
+            if (empty($check)) {
+                if ($time_now >= $work['time_out']) {
+                } else {
+                    // INSERT DATA 
+                    //Check Permit
+                    $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
+
+                    $check = array_filter($permit);
+                    if (!empty($check)) {
+                        $pDate = strtotime($date);
+                        $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
+                        sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
+                    }
+                    sobad_api::_insert_table(
+                        'abs-user-log',
+                        array(
+                            'user'      => $_userid,
+                            'type'      => 1,
+                            'shift'     => $users[0]['work_time'],
+                            '_inserted' => $date,
+                            'time_in'   => $time_now,
+                            'time_out'  => '00:00:00',
+                            'note'      => '',
+                            'punish'    => $punish,
+                            'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
+                        )
+                    );
                 }
-                $q = sobad_api::_insert_table(
-                    'abs-user-log',
-                    array(
-                        'user'      => $_userid,
-                        'type'      => 1,
-                        'shift'     => $users[0]['work_time'],
-                        '_inserted' => $date,
-                        'time_in'   => $time_now,
-                        'time_out'  => '00:00:00',
-                        'note'      => '',
-                        'punish'    => $punish,
-                        'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
-                    )
-                );
             } else {
                 $log_history = str_replace(["\n", "\r"], '', $user_log['history']);
                 $idx = $user_log['id_join'];
+                $history = unserialize($log_history);
+                $history['logs'][] = array('type' => 2, 'time' => $time_now);
+                $history = serialize($history);
                 if ($time_now <= $work['time_out']) {
-                    if ($user_log['type'] != 1) {
-                        $history = unserialize($log_history);
-                        $history['logs'][] = array('type' => 2, 'time' => $time_now);
-                        $history = serialize($history);
+                    if ($user_log['type'] != '1') {
                         $_args = [
                             'type'      => 1,
                             'time_in'   => $time_now,
                             'history'   => $history
                         ];
                         sobad_api::_update_single($idx, 'abs-user-log', $_args);
-
                         $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
                         $check = array_filter($permit);
                         if (!empty($check)) {
@@ -316,12 +326,9 @@ class dashboard_absensi extends _page
                             sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
                         }
                     }
-                } else {
-                    if ($user_log['type'] !== 2) {
-                        if ($user_log['time_in'] == '00:00') {
-                            $history = unserialize($log_history);
-                            $history['logs'][] = array('type' => 2, 'time' => $time_now);
-                            $history = serialize($history);
+                } else { // SCAN PULANG
+                    if ($user_log['type'] !== '2') {
+                        if ($user_log['time_in'] == "00:00:00") {
                             $_args = [
                                 'type'      => 2,
                                 'time_in'   => $work['time_in'],
@@ -330,9 +337,6 @@ class dashboard_absensi extends _page
                             ];
                             sobad_api::_update_single($idx, 'abs-user-log', $_args);
                         } else {
-                            $history = unserialize($log_history);
-                            $history['logs'][] = array('type' => 2, 'time' => $time_now);
-                            $history = serialize($history);
                             $_args = [
                                 'type'      => 2,
                                 'time_out'  => $time_now,
@@ -346,7 +350,10 @@ class dashboard_absensi extends _page
         }
 
         $data = [
-            'data'  => ['time' => $time_now],
+            'data'  => [
+                'time'      => $time_now,
+                'punish'    => isset($punish) ? $punish : 0,
+            ],
             'nik'   => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
@@ -358,12 +365,9 @@ class dashboard_absensi extends _page
 
     public static function _go_out_city()
     {
-
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
         $times = date('H:i:s');
-        $data_args = model_absensi::presensi_data();
-        $data_args = $data_args['work_data'];
         $type = 5; // ? 
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
@@ -373,7 +377,6 @@ class dashboard_absensi extends _page
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
         }
 
-        $data = $data_args[$check_user['no_induk']];
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $idx = $user[0]['id_join'];
@@ -393,7 +396,9 @@ class dashboard_absensi extends _page
         $data['count'] = self::_outCity();
 
         $data = [
-            'data' => $data,
+            'data'  => [
+                'time'      => $times,
+            ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
@@ -405,8 +410,6 @@ class dashboard_absensi extends _page
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
         $times = date('H:i:s');
-        $data_args = model_absensi::presensi_data();
-        $data_args = $data_args['work_data'];
         $type = 7; // ? 
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
@@ -416,7 +419,6 @@ class dashboard_absensi extends _page
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
         }
 
-        $data = $data_args[$check_user['no_induk']];
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $idx = $user[0]['id_join'];
@@ -435,7 +437,9 @@ class dashboard_absensi extends _page
 
 
         $data = [
-            'data' => $data,
+            'data'  => [
+                'time'      => $times,
+            ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
@@ -446,9 +450,7 @@ class dashboard_absensi extends _page
     {
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
-        $data_args = model_absensi::presensi_data();
         $times = date('H:i:s');
-        $data_args = $data_args['work_data'];
         $type = 4; // ? 
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
@@ -457,7 +459,6 @@ class dashboard_absensi extends _page
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
         }
 
-        $data = $data_args[$check_user['no_induk']];
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_id = $user[0]['ID'];
@@ -492,7 +493,9 @@ class dashboard_absensi extends _page
         }
 
         $data = [
-            'data' => $data,
+            'data'  => [
+                'time'      => $times,
+            ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
@@ -503,17 +506,13 @@ class dashboard_absensi extends _page
     {
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
-        $data_args = model_absensi::presensi_data();
-        $data_args = $data_args['work_data'];
-
         $check_user = sobad_api::_check_noInduk($no_rfid);
-
+        $times = date('H:i:s');
 
         $nik = $check_user['no_induk'];
         if ($check_user['status'] == 7) {
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
         }
-        $data = $data_args[$check_user['no_induk']];
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_id = $user[0]['ID'];
@@ -531,7 +530,9 @@ class dashboard_absensi extends _page
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
-            'data' => $data,
+            'data'  => [
+                'time'      => $times,
+            ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
@@ -542,16 +543,13 @@ class dashboard_absensi extends _page
     {
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
-        $data_args = model_absensi::presensi_data();
-        $data_args = $data_args['work_data'];
-
         $check_user = sobad_api::_check_noInduk($no_rfid);
+        $times = date('H:i:s');
         $nik = $check_user['no_induk'];
+
         if ($check_user['status'] == 7) {
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
         }
-
-        $data = $data_args[$check_user['no_induk']];
 
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
@@ -570,7 +568,9 @@ class dashboard_absensi extends _page
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
-            'data' => $data,
+            'data'  => [
+                'time'      => $times,
+            ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
@@ -582,8 +582,7 @@ class dashboard_absensi extends _page
         $date = date('Y-m-d');
         $no_rfid = $_POST['no_rfid'];
         $times = date('H:i:s');
-        $data_args = model_absensi::presensi_data();
-        $data_args = $data_args['work_data'];
+
         $day = date('w');
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
@@ -591,7 +590,7 @@ class dashboard_absensi extends _page
         if ($check_user['status'] == 7) {
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
         }
-        $data = $data_args[$check_user['no_induk']];
+
         $_whr = "AND no_induk='$nik'";
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_worktime = $user[0]['work_time'];
@@ -614,7 +613,9 @@ class dashboard_absensi extends _page
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
-            'data' => $data,
+            'data'  => [
+                'time'      => $times,
+            ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
@@ -726,6 +727,7 @@ class dashboard_absensi extends _page
             // DOM SCAN MASUK
             function _dom_scan_work(args) {
                 var time_scan = args.data.time;
+                var punish = args.data.punish;
                 var nik = args.nik;
                 var rfid = args.rfid;
 
@@ -743,6 +745,9 @@ class dashboard_absensi extends _page
                     time_work = data.shift.time_in;
                     time_go_home = data.shift.time_out;
                     data.time = time_scan;
+                    if (punish !== null) {
+                        data.punish = punish
+                    }
                     if (in_work) { // JIKA NIK ADA DI WORK_DATA
                         if (data.time >= time_work) { // JIKA SCAN LEBIH DARI JAM MASUK
                             if (data.time >= time_go_home) { // JIKA SCAN SESUDAH JAM PULANG
