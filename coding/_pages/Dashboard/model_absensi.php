@@ -22,8 +22,7 @@ class model_absensi
     {
         $date = date('Y-m-d');
         $whr = "AND `abs-user`.status!=0";
-        $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'punish', 'no_rfid'], $whr);
-
+        $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'punish', 'no_rfid', 'id_join'], $whr);
         // $permit = sobad_api::_get_users();
         $whr = "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'";
         $permit = sobad_api::permit_get_all(['user,type'], $whr);
@@ -152,6 +151,7 @@ class model_absensi
         foreach ($args['user'] as $key => $val) {
 
             $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));
+            $work_sift = sobad_api::work_get_id($val['work_time'], array('time_in', 'time_out', 'status'), "AND days='$day'");
             $check_punish = sobad_api::_check_punish($val['ID'], $date);
 
             $sts = isset($val['status']) ? $val['status'] : 0;
@@ -193,10 +193,12 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
             }
 
@@ -235,10 +237,12 @@ class model_absensi
                     'width'     => $capacity,
                     'punish'    => $punish,
                     'exclude'   => $exclude,
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
 
 
@@ -256,10 +260,12 @@ class model_absensi
                     'exclude'   => $exclude,
                     'width'     => $capacity,
                     'time'      => '',
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
             }
 
@@ -273,10 +279,12 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
             }
 
@@ -290,10 +298,12 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
             }
 
@@ -307,10 +317,12 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
             }
 
@@ -324,10 +336,12 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
             }
 
@@ -340,10 +354,12 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
             }
 
@@ -357,10 +373,12 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($shift['time_in']) ? $shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00'],
+                    'shift'     => isset($work_shift['time_in']) ? $work_shift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
+                    'work_time' => $val['work_time'],
+                    'id_join'   => $val['id_join'],
                 );
             }
         }
