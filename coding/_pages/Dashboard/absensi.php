@@ -218,10 +218,7 @@ class dashboard_absensi extends _page
         $day = date('w');
         $time_now =  date("H:i:s");
         $time_in = date("H:i");
-        $data_args = model_absensi::presensi_data();
 
-
-        // =======================================================
         $check_user = sobad_api::_check_noInduk($no_rfid);
         $_userid = $check_user['ID'];
 
@@ -231,58 +228,47 @@ class dashboard_absensi extends _page
         }
 
         if (isset($check_user['ID'])) {
-            if (isset($data_args['notwork_data'][$check_user['no_induk']])) {
-                $data_args = $data_args['notwork_data'];
-                $data = $data_args[$check_user['no_induk']];
-            } else if (isset($data_args['work_data'][$check_user['no_induk']])) {
-                $data_args = $data_args['work_data'];
-                $data = $data_args[$check_user['no_induk']];
-            } elseif (isset($data_args['cuti_data'][$check_user['no_induk']])) {
-                $data_args = $data_args['cuti_data'];
-                $data = $data_args[$check_user['no_induk']];
-            } elseif (isset($data_args['permit_data'][$check_user['no_induk']])) {
-                $data_args = $data_args['permit_data'];
-                $data = $data_args[$check_user['no_induk']];
-            } elseif (isset($data_args['sick_data'][$check_user['no_induk']])) {
-                $data_args = $data_args['sick_data'];
-                $data = $data_args[$check_user['no_induk']];
-            } elseif (isset($data_args['outside_work'][$check_user['no_induk']])) {
-                $data_args = $data_args['outside_work'];
-                $data = $data_args[$check_user['no_induk']];
-            } elseif (isset($data_args['workout_data'][$check_user['no_induk']])) {
-                $data_args = $data_args['workout_data'];
-                $data = $data_args[$check_user['no_induk']];
+            $whr = "AND no_induk='$nik'";
+            $users = sobad_api::user_get_all(array('ID', 'divisi', 'status', 'work_time'), $whr . " AND status!='0'");
+            $user_log = sobad_api::get_absen(array('_nickname', 'id_join', 'type', 'time_in', 'time_out', 'history'), $date, $whr);
+            $user_log = isset($user_log[0]) ? $user_log[0] : [];
+            $check = array_filter($users);
+            if (!empty($check)) {
+                //Check Setting Auto Shift
+                $_userid = $users[0]['ID'];
+                $worktime = $users[0]['work_time'];
+
+                $shift = sobad_api::permit_get_all(array('user', 'note'), "AND ( (user='$_userid' AND type='9') OR (user='0' AND note LIKE '" . $worktime . ":%') ) AND start_date<='$date' AND range_date>='$date'");
+
+                $check = array_filter($shift);
+                if (!empty($check)) {
+                    if ($shift[0]['user'] == 0) {
+                        $_nt = explode(':', $shift[0]['note']);
+                        $worktime = $_nt[1];
+                    } else {
+                        $worktime = $shift[0]['note'];
+                    }
+                }
+
+                $work = sobad_api::work_get_id($worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
             }
 
-            $group = model_absensi::_get_group($data['id_divi']);
-            $group = isset($group[0]) ? $group[0] : [];
 
-            //check group
-            $grp = $group['status'];
-            $grp_exclude = $grp['group'];
-            $grp_punish = $grp['punish'];
-            $data['exclude'] = 0;
+            $check = array_filter($work);
+            if (empty($check)) {
+                $work = array(
+                    'time_in'    => '08:00:00',
+                    'time_out'    => '16:00:00'
+                );
+            } else {
+                $work = $work[0];
+            }
 
-            $punish = 0;
-            if ($time_now >= $data['shift']['time_in']) {
+            if ($time_now >= $work['time_in']) {
                 $punish = 1;
             }
 
-            if ($grp_punish == 0) {
-                $punish = 0;
-            } else {
-                $punish = $punish;
-            }
-
-            if ($grp_exclude == 1) {
-                $data['exclude'] = 1;
-            }
-            $data['punish'] = $punish;
-
-            $group_id = explode('-', $data['group']);
-            $group_id = $group_id[1];
-
-            if ($data['type'] == 0) {
+            if ($user_log['type'] == 0) {
                 // INSERT DATA 
                 //Check Permit
                 $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
@@ -298,71 +284,77 @@ class dashboard_absensi extends _page
                     array(
                         'user'      => $_userid,
                         'type'      => 1,
-                        'shift'     => $data['work_time'],
+                        'shift'     => $users[0]['work_time'],
                         '_inserted' => $date,
                         'time_in'   => $time_now,
                         'time_out'  => '00:00:00',
-                        'note'      => serialize(array('pos_user' => $_userid, 'pos_group' => $group_id)),
+                        'note'      => '',
                         'punish'    => $punish,
                         'history'   => serialize(array('logs' => array(0 => array('type' => 1, 'time' => $time_in))))
                     )
                 );
-                if ($data['shift']['status'] == 0) {
-                    // Update Lembur
-                    sobad_api::_insert_table('abs-log-detail', array(
-                        'log_id'        => $q,
-                        'date_schedule' => $date,
-                        'type_log'      => 3,
-                        'status'        => 2
-                    ));
-                }
             } else {
-                $whr = "AND no_induk='$nik'";
-                $user_log = sobad_api::get_absen(array('_nickname', 'id_join', 'type', 'time_in', 'time_out', 'history'), $date, $whr);
-                $log_history = str_replace(["\n", "\r"], '', $user_log[0]['history']);
+                $log_history = str_replace(["\n", "\r"], '', $user_log['history']);
+                $idx = $user_log['id_join'];
+                if ($time_now <= $work['time_out']) {
+                    if ($user_log['type'] != 1) {
+                        $history = unserialize($log_history);
+                        $history['logs'][] = array('type' => 2, 'time' => $time_now);
+                        $history = serialize($history);
+                        $_args = [
+                            'type'      => 1,
+                            'time_in'   => $time_now,
+                            'history'   => $history
+                        ];
+                        sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
-                $idx = $data['id_join'];
-                if ($time_now <= $data['shift']['time_out']) {
-                    $history = unserialize($log_history);
-                    $history['logs'][] = array('type' => 2, 'time' => $time_now);
-                    $history = serialize($history);
-                    $_args = [
-                        'type'      => 1,
-                        'time_in'   => $time_now,
-                        'history'   => $history
-                    ];
-                    sobad_api::_update_single($idx, 'abs-user-log', $_args);
-
-                    $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
-                    $check = array_filter($permit);
-                    if (!empty($check)) {
-                        $pDate = strtotime($date);
-                        $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
-                        sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
+                        $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
+                        $check = array_filter($permit);
+                        if (!empty($check)) {
+                            $pDate = strtotime($date);
+                            $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
+                            sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
+                        }
                     }
                 } else {
-                    $history = unserialize($log_history);
-                    $history['logs'][] = array('type' => 2, 'time' => $time_now);
-                    $history = serialize($history);
-                    $_args = [
-                        'type'      => 2,
-                        'time_out'  => $time_now,
-                        'history'   => $history
-                    ];
-                    sobad_api::_update_single($idx, 'abs-user-log', $_args);
+                    if ($user_log['type'] !== 2) {
+                        if ($user_log['time_in'] == '00:00') {
+                            $history = unserialize($log_history);
+                            $history['logs'][] = array('type' => 2, 'time' => $time_now);
+                            $history = serialize($history);
+                            $_args = [
+                                'type'      => 2,
+                                'time_in'   => $work['time_in'],
+                                'time_out'  => $time_now,
+                                'history'   => $history
+                            ];
+                            sobad_api::_update_single($idx, 'abs-user-log', $_args);
+                        } else {
+                            $history = unserialize($log_history);
+                            $history['logs'][] = array('type' => 2, 'time' => $time_now);
+                            $history = serialize($history);
+                            $_args = [
+                                'type'      => 2,
+                                'time_out'  => $time_now,
+                                'history'   => $history
+                            ];
+                            sobad_api::_update_single($idx, 'abs-user-log', $_args);
+                        }
+                    }
                 }
             }
         }
 
-        $data['time'] = $time_in;
         $data = [
-            'data'  => $data,
+            'data'  => ['time' => $time_now],
             'nik'   => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
         ];
 
         return $data;
     }
+
+
 
     public static function _go_out_city()
     {
@@ -558,6 +550,7 @@ class dashboard_absensi extends _page
         if ($check_user['status'] == 7) {
             $check_user['no_induk'] = sobad_api::_nik_internship($check_user['ID']);
         }
+
         $data = $data_args[$check_user['no_induk']];
 
         $_whr = "AND no_induk='$nik'";
@@ -732,7 +725,7 @@ class dashboard_absensi extends _page
 
             // DOM SCAN MASUK
             function _dom_scan_work(args) {
-                var data = args.data;
+                var time_scan = args.data.time;
                 var nik = args.nik;
                 var rfid = args.rfid;
 
@@ -746,10 +739,10 @@ class dashboard_absensi extends _page
 
                 // CHECK NIK ADA ATAU TIDAK 
                 if (_notwork || in_work || sick || _permit || _cuti || _workout) {
-
+                    var data = notwork_data[nik] || work_data[nik] || sick_data[nik] || permit_data[nik] || cuti_data[nik] || workout_data[nik];
                     time_work = data.shift.time_in;
                     time_go_home = data.shift.time_out;
-
+                    data.time = time_scan;
                     if (in_work) { // JIKA NIK ADA DI WORK_DATA
                         if (data.time >= time_work) { // JIKA SCAN LEBIH DARI JAM MASUK
                             if (data.time >= time_go_home) { // JIKA SCAN SESUDAH JAM PULANG
