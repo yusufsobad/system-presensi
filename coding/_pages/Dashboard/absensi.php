@@ -351,7 +351,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data'  => [
-                'time'      => $time_now,
+                'time'      => $time_in,
                 'punish'    => isset($punish) ? $punish : 0,
             ],
             'nik'   => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
@@ -368,6 +368,7 @@ class dashboard_absensi extends _page
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
         $times = date('H:i:s');
+        $time_in = date("H:i");
         $type = 5; // ? 
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
@@ -397,7 +398,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data'  => [
-                'time'      => $times,
+                'time'      => $time_in,
             ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
@@ -410,6 +411,7 @@ class dashboard_absensi extends _page
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
         $times = date('H:i:s');
+        $time_in = date("H:i");
         $type = 7; // ? 
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
@@ -438,7 +440,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data'  => [
-                'time'      => $times,
+                'time'      => $time_in,
             ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
@@ -451,6 +453,7 @@ class dashboard_absensi extends _page
         $no_rfid = $_POST['no_rfid'];
         $date = date('Y-m-d');
         $times = date('H:i:s');
+        $time_in = date("H:i");
         $type = 4; // ? 
 
         $check_user = sobad_api::_check_noInduk($no_rfid);
@@ -494,7 +497,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data'  => [
-                'time'      => $times,
+                'time'      => $time_in,
             ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
@@ -508,6 +511,7 @@ class dashboard_absensi extends _page
         $date = date('Y-m-d');
         $check_user = sobad_api::_check_noInduk($no_rfid);
         $times = date('H:i:s');
+        $time_in = date("H:i");
 
         $nik = $check_user['no_induk'];
         if ($check_user['status'] == 7) {
@@ -531,7 +535,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data'  => [
-                'time'      => $times,
+                'time'      => $time_in,
             ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
@@ -545,6 +549,7 @@ class dashboard_absensi extends _page
         $date = date('Y-m-d');
         $check_user = sobad_api::_check_noInduk($no_rfid);
         $times = date('H:i:s');
+        $time_in = date("H:i");
         $nik = $check_user['no_induk'];
 
         if ($check_user['status'] == 7) {
@@ -569,7 +574,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data'  => [
-                'time'      => $times,
+                'time'      => $time_in,
             ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
@@ -582,9 +587,9 @@ class dashboard_absensi extends _page
         $date = date('Y-m-d');
         $no_rfid = $_POST['no_rfid'];
         $times = date('H:i:s');
+        $time_in = date("H:i");
 
         $day = date('w');
-
         $check_user = sobad_api::_check_noInduk($no_rfid);
         $nik = $check_user['no_induk'];
         if ($check_user['status'] == 7) {
@@ -614,7 +619,7 @@ class dashboard_absensi extends _page
 
         $data = [
             'data'  => [
-                'time'      => $times,
+                'time'      => $time_in,
             ],
             'nik' => isset($check_user['no_induk']) ? $check_user['no_induk'] : 0,
             'rfid'  =>  $no_rfid
