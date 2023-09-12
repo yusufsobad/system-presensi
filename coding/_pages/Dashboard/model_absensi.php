@@ -150,11 +150,34 @@ class model_absensi
 
         foreach ($args['user'] as $key => $val) {
 
-            $shift = sobad_api::_check_shift($val['ID'], $val['work_time'], date('Y-m-d'));
-            $work_sift = sobad_api::work_get_id($val['work_time'], array('time_in', 'time_out', 'status'), "AND days='$day'");
+            //Check Setting Auto Shift
+            $_userid = $val['ID'];
+            $worktime = $val['work_time'];
+            $shift = sobad_api::permit_get_all(array('user', 'note'), "AND ( (user='$_userid' AND type='9') OR (user='0' AND note LIKE '" . $worktime . ":%') ) AND start_date<='$date' AND range_date>='$date'");
+
+            $check = array_filter($shift);
+            if (!empty($check)) {
+                if ($shift[0]['user'] == 0) {
+                    $_nt = explode(':', $shift[0]['note']);
+                    $worktime = $_nt[1];
+                } else {
+                    $worktime = $shift[0]['note'];
+                }
+            }
+            $work = sobad_api::work_get_id($worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
+
+            $check = array_filter($work);
+            if (empty($check)) {
+                $work = array(
+                    'time_in'    => '08:00:00',
+                    'time_out'    => '16:00:00'
+                );
+            } else {
+                $work = $work[0];
+            }
+
             $check_punish = sobad_api::_check_punish($val['ID'], $date);
 
-            $sts = isset($val['status']) ? $val['status'] : 0;
             //check group
             $_group = self::_get_group(intval($val['divisi']));
             $_group = isset($_group[0]) ? $_group[0] : [];
@@ -193,7 +216,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -237,7 +260,7 @@ class model_absensi
                     'width'     => $capacity,
                     'punish'    => $punish,
                     'exclude'   => $exclude,
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -260,7 +283,7 @@ class model_absensi
                     'exclude'   => $exclude,
                     'width'     => $capacity,
                     'time'      => '',
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -279,7 +302,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -298,7 +321,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -317,7 +340,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -336,7 +359,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -354,7 +377,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -373,7 +396,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => isset($work_sift['time_in']) ? $work_sift : ['time_in'    => '08:00:00', 'time_out'    => '16:00:00', 'status' => '1'],
+                    'shift'     => $work,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
