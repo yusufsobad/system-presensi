@@ -149,7 +149,6 @@ class model_absensi
 
 
         foreach ($args['user'] as $key => $val) {
-
             //Check Setting Auto Shift
             $_userid = $val['ID'];
             $worktime = $val['work_time'];
@@ -164,16 +163,16 @@ class model_absensi
                     $worktime = $shift[0]['note'];
                 }
             }
-            $work = sobad_api::work_get_id($worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
+            $_work_time = sobad_api::work_get_id($worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
 
-            $check = array_filter($work);
+            $check = array_filter($_work_time);
             if (empty($check)) {
-                $work = array(
+                $_work_time = array(
                     'time_in'    => '08:00:00',
                     'time_out'    => '16:00:00'
                 );
             } else {
-                $work = $work[0];
+                $_work_time = $_work_time[0];
             }
 
             $check_punish = sobad_api::_check_punish($val['ID'], $date);
@@ -216,7 +215,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -225,7 +224,8 @@ class model_absensi
                 );
             }
 
-            if ($val['type'] == 1) {
+
+            if ($val['type'] == '1') {
                 $_worktime = empty($val['shift']) ? $val['work_time'] : $val['shift'];
                 $_work = sobad_api::work_get_id($_worktime, array('time_in', 'time_out', 'status'), "AND days='$day'");
                 $grp = $divisi_group;
@@ -244,11 +244,6 @@ class model_absensi
 
                 $pos = $val['note']['pos_user'];
 
-                if ($_work['status']) {
-                    if ($val['time_in'] >= $_work['time_in']) {
-                        $waktu = '<span style="color:red;">' . $time . '</span>';
-                    }
-                }
 
                 $work[$val['no_induk']] = array(
                     'name'      => empty($val['_nickname']) ? 'no name' : $val['_nickname'],
@@ -260,7 +255,7 @@ class model_absensi
                     'width'     => $capacity,
                     'punish'    => $punish,
                     'exclude'   => $exclude,
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -283,7 +278,7 @@ class model_absensi
                     'exclude'   => $exclude,
                     'width'     => $capacity,
                     'time'      => '',
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -302,7 +297,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -321,7 +316,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -340,7 +335,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -359,7 +354,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -377,7 +372,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
@@ -396,7 +391,7 @@ class model_absensi
                     'punish'    => $punish,
                     'exclude'   => $exclude,
                     'time'      => '',
-                    'shift'     => $work,
+                    'shift'     => $_work_time,
                     'type'      => $val['type'],
                     'no_rfid'   => $val['no_rfid'],
                     'id_divi'   => $val['divisi'],
