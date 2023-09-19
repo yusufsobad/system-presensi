@@ -9,11 +9,11 @@ class model_absensi
     public static function _dummy_data_announcement()
     {
         $data = [
-            'title'     => 'Speak Training Bulan Juli',
-            'date'      => 'Sabtu, 29 Juli 2023',
+            'title'     => 'Speak Training',
+            'date'      => 'Sabtu, 23 Sept 2023',
             'start'     => '12:00',
             'end'       => '13:00',
-            'location'  => 'Unit 2'
+            'location'  => 'Unit 4'
         ];
         return $data;
     }
