@@ -334,7 +334,7 @@ class dashboard_absensi extends _page
                                 if ($user_log['time_out'] != '00:00:00') {
                                     $timeB = $time_now;
                                     if ($work['status']) {
-                                        if ($time_now >= $work['time_out']) {
+                                        if ($time_in >= $work['time_out']) {
                                             $timeB = $work['time_out'];
                                         }
                                     }
