@@ -97,7 +97,7 @@ class model_absensi
                 $log[0]['note'] = unserialize($log[0]['note']);
             }
             if (array_key_exists($idx, $_permit)) {
-                $_libur = sobad_api::_check_holiday();
+                $_libur = sobad_api::_check_holiday($date);
                 if (!$_libur) {
                     $log[0]['type'] = $_permit[$idx];
                 }
@@ -117,6 +117,8 @@ class model_absensi
                                 'shift'     => $val['work_time'],
                                 'type'      => $_permit[$idx],
                                 '_inserted' => $date,
+                                'time_in'   => '00:00:00',
+                                'time_out'  => '00:00:00',
                             )
                         );
                     }
