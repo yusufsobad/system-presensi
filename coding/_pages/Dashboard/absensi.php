@@ -275,6 +275,12 @@ class dashboard_absensi extends _page
                 $punish = $punish;
             }
 
+            $_libur = sobad_api::_check_holiday($date);
+
+            if ($_libur) {
+                $punish = 0;
+            }
+
 
             $check = array_filter($user_log);
             if (empty($check)) {
