@@ -266,13 +266,11 @@ class dashboard_absensi extends _page
             if ($time_now >= $work['time_in']) {
                 $punish = 1;
             }
-            $grp = $_group['status'];
-            $grp_punish = $grp[0];
+            $grp = sobad_api::_statusGroup($_group['status']);
+            $grp_punish = $grp['punish'];
 
-            if ($grp_punish == '0') {
+            if ($grp_punish == 0) {
                 $punish = 0;
-            } else {
-                $punish = $punish;
             }
 
             $check = array_filter($user_log);
