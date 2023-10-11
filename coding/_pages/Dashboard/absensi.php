@@ -290,8 +290,7 @@ class dashboard_absensi extends _page
 
                     $check = array_filter($permit);
                     if (!empty($check)) {
-                        $pDate = strtotime($date);
-                        $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
+                        $pDate = sobad_api::_get_end_permit($pDate);
                         sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
                     }
                     sobad_api::_insert_table(
@@ -316,7 +315,7 @@ class dashboard_absensi extends _page
                 $history['logs'][] = array('type' => 1, 'time' => $time_now);
                 $history = serialize($history['logs']);
                 if ($time_now <= $work['time_out']) {
-                    if ($user_log['type'] != '1') {
+                    if ($user_log['type'] != 1) {
                         $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
                         $check = array_filter($permit);
                         if (!empty($check)) {
@@ -333,8 +332,8 @@ class dashboard_absensi extends _page
                         ];
                         sobad_api::_update_single($idx, 'abs-user-log', $_args);
                         switch ($user_log['type']) {
-                            case '3':
-                            case '4':
+                            case 3:
+                            case 4:
                                 if ($user_log['time_out'] != '00:00:00') {
                                     $timeB = $time_now;
                                     if ($work['status']) {
@@ -354,11 +353,11 @@ class dashboard_absensi extends _page
                                     }
                                 }
                                 break;
-                            case '5':
-                            case '6':
-                            case '7':
-                            case '8':
-                            case '10':
+                            case 5:
+                            case 6:
+                            case 7:
+                            case 8:
+                            case 10:
                                 $type = 1;
                                 if ($work['status']) {
                                     if ($time_in >= $work['time_out']) {
@@ -372,8 +371,7 @@ class dashboard_absensi extends _page
                                 $history = serialize($history);
 
                                 $_args = array('type' => $type, 'history' => $history);
-                                if (empty($user['history'])) {
-                                    $_args['time_in'] = $time_now;
+                                if($user_log['time_in']=='00:00:00'){
                                     if ($time_now >= $work['time_in']) {
                                         $_args['punish'] = 1;
                                     }

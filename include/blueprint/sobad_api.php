@@ -119,6 +119,16 @@ class sobad_api extends _class
         return self::send_curl($data);
     }
 
+    public static function _get_end_permit($date)
+    {
+        $data = array(
+            'object'    => 'request_curl',
+            'func'      => '_get_end_permit',
+            'data'      => array($date)
+        );
+        return self::send_curl($data);
+    }
+
     // API INSERT DATA ================================================================
     public static function _insert_table($table = '', $args = array())
     {
