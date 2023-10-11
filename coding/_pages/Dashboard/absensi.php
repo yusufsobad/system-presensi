@@ -273,6 +273,13 @@ class dashboard_absensi extends _page
                 $punish = 0;
             }
 
+            $_libur = sobad_api::_check_holiday($date);
+
+            if ($_libur) {
+                $punish = 0;
+            }
+
+
             $check = array_filter($user_log);
             if (empty($check)) {
                 if ($time_now >= $work['time_out']) {
@@ -303,25 +310,77 @@ class dashboard_absensi extends _page
                     );
                 }
             } else {
-                $log_history = str_replace(["\n", "\r"], '', $user_log['history']);
+
                 $idx = $user_log['id_join'];
-                $history = unserialize($log_history);
-                $history['logs'][] = array('type' => 2, 'time' => $time_now);
-                $history = serialize($history);
+                $history = unserialize($user_log['history']);
+                $history['logs'][] = array('type' => 1, 'time' => $time_now);
+                $history = serialize($history['logs']);
                 if ($time_now <= $work['time_out']) {
                     if ($user_log['type'] != '1') {
-                        $_args = [
-                            'type'      => 1,
-                            'time_in'   => $time_now,
-                            'history'   => $history
-                        ];
-                        sobad_api::_update_single($idx, 'abs-user-log', $_args);
                         $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
                         $check = array_filter($permit);
                         if (!empty($check)) {
                             $pDate = strtotime($date);
                             $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
                             sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
+                        }
+
+                        $_args = [
+                            'type'      => 1,
+                            'punish'    => $punish,
+                            'time_in'   => $time_now,
+                            'history'   => $history
+                        ];
+                        sobad_api::_update_single($idx, 'abs-user-log', $_args);
+                        switch ($user_log['type']) {
+                            case '3':
+                            case '4':
+                                if ($user_log['time_out'] != '00:00:00') {
+                                    $timeB = $time_now;
+                                    if ($work['status']) {
+                                        if ($time_in >= $work['time_out']) {
+                                            $timeB = $work['time_out'];
+                                        }
+                                    }
+                                    $timeA = $user_log['time_out'];
+                                    $ganti = sobad_api::get_rule_absen($timeA, $timeB, $worktime, $day);
+                                    if ($ganti['type'] != 0) {
+                                        sobad_db::_insert_table('abs-log-detail', array(
+                                            'log_id'        => $user_log['id_join'],
+                                            'date_schedule' => date('Y-m-d'),
+                                            'times'         => $ganti['time'],
+                                            'type_log'      => 2
+                                        ));
+                                    }
+                                }
+                                break;
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                            case '10':
+                                $type = 1;
+                                if ($work['status']) {
+                                    if ($time_in >= $work['time_out']) {
+                                        $type = 2;
+                                        $_label = 'time_out';
+                                    }
+                                }
+
+                                $history = unserialize($user_log['history']);
+                                $history['logs'][] = array('type' => $type, 'time' => $time_now);
+                                $history = serialize($history);
+
+                                $_args = array('type' => $type, 'history' => $history);
+                                if (empty($user['history'])) {
+                                    $_args['time_in'] = $time_now;
+                                    if ($time_now >= $work['time_in']) {
+                                        $_args['punish'] = 1;
+                                    }
+                                }
+
+                                sobad_db::_update_single($user_log['id_join'], 'abs-user-log', $_args);
+                                break;
                         }
                     }
                 } else { // SCAN PULANG
@@ -380,6 +439,9 @@ class dashboard_absensi extends _page
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $idx = $user[0]['id_join'];
         $_id = $user[0]['ID'];
+
+        $user = unserialize($user[0]['history']);
+        $user['logs'][] = array('type' => $type, 'time' => $times);
         $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
         // Luar Kota
         sobad_api::_insert_table('abs-permit', array(
@@ -423,8 +485,6 @@ class dashboard_absensi extends _page
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $idx = $user[0]['id_join'];
         $_id = $user[0]['ID'];
-        $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
-        sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         sobad_api::_insert_table('abs-permit', array(
             'user'          => $_id,
@@ -435,6 +495,11 @@ class dashboard_absensi extends _page
             'type'          => $type,
         ));
 
+        $user = unserialize($user[0]['history']);
+        $user['logs'][] = array('type' => $type, 'time' => $times);
+
+        $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
+        sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
             'data'  => [
@@ -464,9 +529,6 @@ class dashboard_absensi extends _page
         $user = sobad_api::user_get_all(array('ID', 'work_time', 'dayOff', '_nickname', 'id_join', 'history'), $_whr . " AND `abs-user-log`._inserted='$date'");
         $_id = $user[0]['ID'];
         $idx = $user[0]['id_join'];
-        $_userid = 0;
-        // Insert Permit
-        // Check
         $_permit = sobad_api::permit_get_all(array('ID'), "AND user='$_id' AND start_date='$date'");
         $check = array_filter($_permit);
         if (empty($check)) {
@@ -480,18 +542,11 @@ class dashboard_absensi extends _page
             ));
         }
 
+        $user = unserialize($user[0]['history']);
+        $user['logs'][] = array('type' => $type, 'time' => $times);
+
         $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
-
-        //Check Permit
-        $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
-
-        $check = array_filter($permit);
-        if (!empty($check)) {
-            $pDate = strtotime($date);
-            $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
-            sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
-        }
 
         $data = [
             'data'  => [
@@ -520,7 +575,6 @@ class dashboard_absensi extends _page
         $_id = $user[0]['ID'];
         $idx = $user[0]['id_join'];
 
-        $_args['type'] = 8;
         $type = 8;
         sobad_api::_insert_table('abs-permit', array(
             'user'          => $_id,
@@ -529,7 +583,11 @@ class dashboard_absensi extends _page
             'type'          => $type,
         ));
 
+        $user = unserialize($user[0]['history']);
+        $user['logs'][] = array('type' => $type, 'time' => $times);
+        $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
+
 
         $data = [
             'data'  => [
@@ -568,6 +626,9 @@ class dashboard_absensi extends _page
             'type'          => $type,
         ));
 
+        $user = unserialize($user[0]['history']);
+        $user['logs'][] = array('type' => $type, 'time' => $times);
+        $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
@@ -599,7 +660,7 @@ class dashboard_absensi extends _page
         $_worktime = $user[0]['work_time'];
         $work = sobad_api::work_get_id($_worktime, array('time_out'), "AND days='$day'");
         $work = $work[0]['time_out'];
-        $_args['type'] = 2;
+
         $idx = $user[0]['id_join'];
 
         $type = 2;
@@ -609,10 +670,14 @@ class dashboard_absensi extends _page
                 'log_id'        => $idx,
                 'date_schedule' => date('Y-m-d'),
                 'times'         => $ganti['time'],
-                'type_log'      => 2
+                'type_log'      => $type
             ));
         }
 
+        $user = unserialize($user[0]['history']);
+        $user['logs'][] = array('type' => $type, 'time' => $times);
+
+        $_args = array('type' => $type, 'time_out' => $times, 'history' => serialize($user));
         sobad_api::_update_single($idx, 'abs-user-log', $_args);
 
         $data = [
@@ -949,9 +1014,8 @@ class dashboard_absensi extends _page
 
             // DOM CONTENT LUAR KOTA
             function _dom_out_city(args) {
-                var data = args.data;
                 var nik = args.nik;
-
+                var data = work_data[nik];
                 check_nik = nik in work_data;
                 if (check_nik) {
                     workout_data[nik] = data
@@ -988,8 +1052,8 @@ class dashboard_absensi extends _page
             }
 
             function _dom_workout(args) {
-                var data = args.data;
                 var nik = args.nik;
+                var data = work_data[nik]
 
                 check_nik = nik in work_data;
                 if (check_nik) {
@@ -1026,8 +1090,8 @@ class dashboard_absensi extends _page
 
             // DOM CONTENT IZIN
             function _dom_permit(args) {
-                var data = args.data;
                 var nik = args.nik;
+                var data = work_data[nik]
                 var rfid = args.rfid;
                 check_nik = nik in work_data;
                 if (check_nik) {
@@ -1071,8 +1135,8 @@ class dashboard_absensi extends _page
             }
 
             function _dom_sick_permit(args) {
-                var data = args.data;
                 var nik = args.nik;
+                var data = work_data[nik]
                 check_nik = nik in work_data;
                 if (check_nik) {
                     sick_data[nik] = data
@@ -1106,8 +1170,8 @@ class dashboard_absensi extends _page
             }
 
             function _dom_cuti(args) {
-                var data = args.data;
                 var nik = args.nik;
+                var data = work_data[nik]
                 check_nik = nik in work_data;
                 if (check_nik) {
                     cuti_data[nik] = data
@@ -1141,8 +1205,8 @@ class dashboard_absensi extends _page
             }
 
             function _dom_permit_changetime(args) {
-                var data = args.data;
                 var nik = args.nik;
+                var data = work_data[nik]
                 check_nik = nik in work_data;
                 notwork_data[nik] = data;
                 var notworkhtml = notwork_html(nik, data);
