@@ -1,8 +1,8 @@
 <?php
 class api_sobad extends _class
 {
-    // private static $url = "soloabadi-server.ddns.net/system-sobad-group/include/curl.php";
-    private static $url = "localhost/system-sobad-group/include/curl.php";
+    private static $url = "soloabadi-server.ddns.net/system-sobad-group/include/curl.php";
+    // private static $url = "localhost/system-sobad-group/include/curl.php";
 
     // API READ DATA ===============================================================
     private static function send_curl($args = array())
