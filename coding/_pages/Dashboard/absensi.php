@@ -279,7 +279,6 @@ class dashboard_absensi extends _page
                 $punish = 0;
             }
 
-
             $check = array_filter($user_log);
             if (empty($check)) {
                 if ($time_now >= $work['time_out']) {
@@ -290,6 +289,7 @@ class dashboard_absensi extends _page
 
                     $check = array_filter($permit);
                     if (!empty($check)) {
+                        $pDate = date('Y-m-d');
                         $pDate = sobad_api::_get_end_permit($pDate);
                         sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
                     }
@@ -309,7 +309,6 @@ class dashboard_absensi extends _page
                     );
                 }
             } else {
-
                 $idx = $user_log['id_join'];
                 $history = unserialize($user_log['history']);
                 $history['logs'][] = array('type' => 1, 'time' => $time_now);
@@ -352,6 +351,9 @@ class dashboard_absensi extends _page
                                         ));
                                     }
                                 }
+                                $_args['punish'] = 0;
+                                $punish = 0;
+                                sobad_db::_update_single($user_log['id_join'], 'abs-user-log', $_args);
                                 break;
                             case 5:
                             case 6:
@@ -371,9 +373,14 @@ class dashboard_absensi extends _page
                                 $history = serialize($history);
 
                                 $_args = array('type' => $type, 'history' => $history);
-                                if($user_log['time_in']=='00:00:00'){
+                                if ($user_log['time_in'] == '00:00:00') {
                                     if ($time_now >= $work['time_in']) {
                                         $_args['punish'] = 1;
+                                        $punish = 1;
+                                    }
+                                    if ($user_log['type'] !== 5) {
+                                        $_args['punish'] = 0;
+                                        $punish = 0;
                                     }
                                 }
 
@@ -383,6 +390,7 @@ class dashboard_absensi extends _page
                     }
                 } else { // SCAN PULANG
                     if ($user_log['type'] !== '2') {
+
                         if ($user_log['time_in'] == "00:00:00") {
                             $_args = [
                                 'type'      => 2,
