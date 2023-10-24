@@ -351,9 +351,6 @@ class dashboard_absensi extends _page
                                         ));
                                     }
                                 }
-                                $_args['punish'] = 0;
-                                $punish = 0;
-                                sobad_db::_update_single($user_log['id_join'], 'abs-user-log', $_args);
                                 break;
                             case 5:
                             case 6:
@@ -361,36 +358,31 @@ class dashboard_absensi extends _page
                             case 8:
                             case 10:
                                 $type = 1;
-                                if ($work['status']) {
-                                    if ($time_in >= $work['time_out']) {
-                                        $type = 2;
-                                        $_label = 'time_out';
-                                    }
-                                }
+                                $time_in = $user_log['time_in'];
 
                                 $history = unserialize($user_log['history']);
                                 $history['logs'][] = array('type' => $type, 'time' => $time_now);
                                 $history = serialize($history);
 
-                                $_args = array('type' => $type, 'history' => $history);
                                 if ($user_log['time_in'] == '00:00:00') {
-                                    if ($time_now >= $work['time_in']) {
-                                        $_args['punish'] = 1;
-                                        $punish = 1;
-                                    }
-                                    if ($user_log['type'] !== 5) {
-                                        $_args['punish'] = 0;
-                                        $punish = 0;
-                                    }
+                                    sobad_db::_update_single($user_log['id_join'], 'abs-user-log', [
+                                        'type'      => $type,
+                                        'hystory'   => $history,
+                                        'time_out'  => $time_now
+                                    ]);
+                                    $time_in = $time_now;
                                 }
 
-                                sobad_db::_update_single($user_log['id_join'], 'abs-user-log', $_args);
+                                sobad_db::_update_single($user_log['id_join'], 'abs-user-log', [
+                                    'type'      => $type,
+                                    'hystory'   => $history
+                                ]);
+
                                 break;
                         }
                     }
                 } else { // SCAN PULANG
                     if ($user_log['type'] !== '2') {
-
                         if ($user_log['time_in'] == "00:00:00") {
                             $_args = [
                                 'type'      => 2,
