@@ -280,6 +280,7 @@ class dashboard_absensi extends _page
             }
 
             $check = array_filter($user_log);
+
             if (empty($check)) {
                 if ($time_now >= $work['time_out']) {
                 } else {
@@ -314,7 +315,8 @@ class dashboard_absensi extends _page
                 $history['logs'][] = array('type' => 1, 'time' => $time_now);
                 $history = serialize($history['logs']);
                 if ($time_now <= $work['time_out']) {
-                    if ($user_log['type'] != 1) {
+                    if ($user_log['type'] !== '1') {
+
                         $permit = sobad_api::permit_get_all(array('ID', 'user', 'type'), "AND user='$_userid' AND type!='9' AND start_date<='$date' AND range_date>='$date' OR user='$_userid' AND start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'");
                         $check = array_filter($permit);
                         if (!empty($check)) {
@@ -322,17 +324,15 @@ class dashboard_absensi extends _page
                             $pDate = date('Y-m-d', strtotime('-1 days', $pDate));
                             sobad_api::_update_single($permit[0]['ID'], 'abs-permit', array('range_date' => $pDate));
                         }
-
                         $_args = [
                             'type'      => 1,
-                            'punish'    => $punish,
                             'time_in'   => $time_now,
                             'history'   => $history
                         ];
-                        sobad_api::_update_single($idx, 'abs-user-log', $_args);
+
                         switch ($user_log['type']) {
-                            case 3:
-                            case 4:
+                            case '3':
+                            case '4':
                                 if ($user_log['time_out'] != '00:00:00') {
                                     $timeB = $time_now;
                                     if ($work['status']) {
@@ -351,32 +351,38 @@ class dashboard_absensi extends _page
                                         ));
                                     }
                                 }
+                                sobad_api::_update_single($idx, 'abs-user-log', $_args);
                                 break;
-                            case 5:
-                            case 6:
-                            case 7:
-                            case 8:
-                            case 10:
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                            case '10':
                                 $type = 1;
-                                $time_in = $user_log['time_in'];
+                                $time_in = date('H:i', strtotime($user_log['time_in']));
+                                $punish = 0;
+                                if ($work['status']) {
+                                    if ($time_in >= $work['time_out']) {
+                                        $type = 2;
+                                        $_label = 'time_out';
+                                    }
+                                }
 
                                 $history = unserialize($user_log['history']);
                                 $history['logs'][] = array('type' => $type, 'time' => $time_now);
                                 $history = serialize($history);
 
-                                if ($user_log['time_in'] == '00:00:00') {
-                                    sobad_db::_update_single($user_log['id_join'], 'abs-user-log', [
-                                        'type'      => $type,
-                                        'hystory'   => $history,
-                                        'time_out'  => $time_now
-                                    ]);
-                                    $time_in = $time_now;
-                                }
+                                $_args = array('type' => $type, 'history' => $history);
+                                if (empty($user_log['history'])) {
+                                    $_args['time_in'] = $time_now;
 
-                                sobad_db::_update_single($user_log['id_join'], 'abs-user-log', [
-                                    'type'      => $type,
-                                    'hystory'   => $history
-                                ]);
+                                    if ($time_now >= $work['time_in']) {
+                                        $_args['punish'] = 1;
+                                    }
+                                    $punish = 1;
+                                }
+                                sobad_db::_update_single($user_log['id_join'], 'abs-user-log', $_args);
+
 
                                 break;
                         }
