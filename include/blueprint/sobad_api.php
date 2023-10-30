@@ -325,4 +325,24 @@ class sobad_api extends _class
         );
         return self::send_curl($data);
     }
+
+    public static function _checkAlpha()
+    {
+        $data = array(
+            'object'    => 'request_curl',
+            'func'      => '_checkAlpha',
+            'data'      => array()
+        );
+        return self::send_curl($data);
+    }
+
+    public static function _checkGantiJam()
+    {
+        $data = array(
+            'object'    => 'request_curl',
+            'func'      => '_checkGantiJam',
+            'data'      => array()
+        );
+        return self::send_curl($data);
+    }
 }
