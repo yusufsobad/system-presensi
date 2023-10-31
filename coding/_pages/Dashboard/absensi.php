@@ -333,10 +333,23 @@ class dashboard_absensi extends _page
                         switch ($user_log['type']) {
                             case '3':
                             case '4':
+                                $type = 1;
+                                $time_in = date('H:i', strtotime($user_log['time_in']));
+                                $punish = 0;
+                                if ($time_in >= $work['time_in']) {
+                                    $punish = 1;
+                                }
+
+                                $history = unserialize($user_log['history']);
+                                $history['logs'][] = array('type' => $type, 'time' => $time_now);
+                                $history = serialize($history);
+
+                                $_args = array('type' => $type, 'history' => $history);
                                 if ($user_log['time_out'] != '00:00:00') {
                                     $timeB = $time_now;
                                     if ($work['status']) {
-                                        if ($time_in >= $work['time_out']) {
+                                        $times = date("H:i");
+                                        if ($times >= $work['time_out']) {
                                             $timeB = $work['time_out'];
                                         }
                                     }
@@ -351,6 +364,7 @@ class dashboard_absensi extends _page
                                         ));
                                     }
                                 }
+
                                 sobad_api::_update_single($idx, 'abs-user-log', $_args);
                                 break;
                             case '5':
@@ -361,7 +375,12 @@ class dashboard_absensi extends _page
                                 $type = 1;
                                 $time_in = date('H:i', strtotime($user_log['time_in']));
                                 $punish = 0;
+                                if ($time_in >= $work['time_in']) {
+                                    $punish = 1;
+                                }
+
                                 if ($work['status']) {
+                                    $time_in = date("H:i");
                                     if ($time_in >= $work['time_out']) {
                                         $type = 2;
                                         $_label = 'time_out';
@@ -382,7 +401,6 @@ class dashboard_absensi extends _page
                                     $punish = 1;
                                 }
                                 sobad_db::_update_single($user_log['id_join'], 'abs-user-log', $_args);
-
 
                                 break;
                         }
