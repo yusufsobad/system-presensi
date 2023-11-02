@@ -400,7 +400,7 @@ class dashboard_absensi extends _page
                                     }
                                     $punish = 1;
                                 }
-                                sobad_db::_update_single($user_log['id_join'], 'abs-user-log', $_args);
+                                sobad_api::_update_single($user_log['id_join'], 'abs-user-log', $_args);
 
                                 break;
                         }
