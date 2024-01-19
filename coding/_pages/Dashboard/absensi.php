@@ -1020,6 +1020,10 @@ class dashboard_absensi extends _page
                 }
             }
 
+            $('#out').on('click', function() {
+                out(this);
+            });
+
             // ACTION KETIKA USER MEMILIH LUAR KOTA
             function go_out_city(data) {
                 nik = $('#alert_data').val();
@@ -1033,6 +1037,10 @@ class dashboard_absensi extends _page
                 data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_out_city, false);
             }
+
+            $('#out_city').on('click', function() {
+                go_out_city(this);
+            });
 
             // DOM CONTENT LUAR KOTA
             function _dom_out_city(args) {
@@ -1073,6 +1081,10 @@ class dashboard_absensi extends _page
                 sobad_ajax(id, data, _dom_workout, false);
             }
 
+            $('#workout').on('click', function() {
+                workout(this);
+            });
+
             function _dom_workout(args) {
                 var nik = args.nik;
                 var data = work_data[nik]
@@ -1110,6 +1122,10 @@ class dashboard_absensi extends _page
                 sobad_ajax(id, data, _dom_permit, false);
             }
 
+            $('#permit').on('click', function() {
+                permit(this);
+            });
+
             // DOM CONTENT IZIN
             function _dom_permit(args) {
                 var nik = args.nik;
@@ -1144,6 +1160,10 @@ class dashboard_absensi extends _page
                 }
             }
 
+            $('#home_permit').on('click', function() {
+                home_permit(this);
+            });
+
             function sick_permit() {
                 nik = $('#alert_data').val();
                 args = work_data[nik]
@@ -1155,6 +1175,10 @@ class dashboard_absensi extends _page
                 data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + no_rfid;
                 sobad_ajax(id, data, _dom_sick_permit, false);
             }
+
+            $('#sick_permit').on('click', function() {
+                sick_permit(this);
+            });
 
             function _dom_sick_permit(args) {
                 var nik = args.nik;
@@ -1191,6 +1215,10 @@ class dashboard_absensi extends _page
                 sobad_ajax(id, data, _dom_cuti, false);
             }
 
+            $('#cuti').on('click', function() {
+                cuti(this);
+            });
+
             function _dom_cuti(args) {
                 var nik = args.nik;
                 var data = work_data[nik]
@@ -1225,6 +1253,10 @@ class dashboard_absensi extends _page
                 data = "ajax=" + ajx + "&object=" + object + "&no_rfid=" + nik;
                 sobad_ajax(id, data, _dom_permit_changetime, false);
             }
+
+            $('#permit_change_time').on('click', function() {
+                permit_change_time(this);
+            });
 
             function _dom_permit_changetime(args) {
                 var nik = args.nik;
