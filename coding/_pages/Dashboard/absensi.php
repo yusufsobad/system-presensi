@@ -229,7 +229,7 @@ class dashboard_absensi extends _page
         }
 
         if (isset($check_user['ID']) && $check_user['ID'] != 17) {
-            $whr = "AND no_induk='$nik'";
+            $whr = "AND ID='$_userid'";
             $users = sobad_api::user_get_all(array('ID', 'divisi', 'status', 'work_time'), $whr . " AND status!='0'");
             $user_log = sobad_api::get_absen(array('_nickname', 'id_join', 'type', 'time_in', 'time_out', 'history'), $date, $whr);
             $user_log = isset($user_log[0]) ? $user_log[0] : [];
