@@ -59,6 +59,16 @@ class sobad_api extends _class
         return self::send_curl($data);
     }
 
+    public static function user_get_id($id, $args = array(), $limit = '', $type = '')
+    {
+        $data = array(
+            'object'    => 'abs_user',
+            'func'      => 'get_id',
+            'data'      => array($id,$args, $limit, $type)
+        );
+        return self::send_curl($data);
+    }
+
     public static function user_get_all($args = array(), $limit = '', $type = '')
     {
         $data = array(
