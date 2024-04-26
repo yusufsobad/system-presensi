@@ -300,7 +300,7 @@ class dashboard_absensi extends _page
                         array(
                             'user'      => $_userid,
                             'type'      => 1,
-                            'shift'     => $users[0]['work_time'],
+                            'shift'     => $worktime,
                             '_inserted' => $date,
                             'time_in'   => $time_now,
                             'time_out'  => '00:00:00',
