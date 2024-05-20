@@ -230,7 +230,7 @@ class dashboard_absensi extends _page
 
         if (isset($check_user['ID']) && $check_user['ID'] != 17) {
             $whr = "AND `abs-user-log`.user='$_userid'";
-            $users = sobad_api::user_get_id($_userid,array('ID', 'divisi', 'status', 'work_time')," AND status!='0'");
+            $users = sobad_api::user_get_id($_userid, array('ID', 'divisi', 'status', 'work_time'), " AND status!='0'");
             $user_log = sobad_api::get_absen(array('_nickname', 'id_join', 'type', 'time_in', 'time_out', 'history'), $date, $whr);
             $user_log = isset($user_log[0]) ? $user_log[0] : [];
             $_group = sobad_api::_get_group($check_user['divisi']);
@@ -263,6 +263,7 @@ class dashboard_absensi extends _page
             } else {
                 $work = $work[0];
             }
+            $punish = 0;
             if ($time_now >= $work['time_in']) {
                 $punish = 1;
             }
@@ -299,7 +300,7 @@ class dashboard_absensi extends _page
                         array(
                             'user'      => $_userid,
                             'type'      => 1,
-                            'shift'     => $users[0]['work_time'],
+                            'shift'     => $worktime,
                             '_inserted' => $date,
                             'time_in'   => $time_now,
                             'time_out'  => '00:00:00',
@@ -394,11 +395,11 @@ class dashboard_absensi extends _page
                                 $_args = array('type' => $type, 'history' => $history);
                                 if (empty($user_log['history'])) {
                                     $_args['time_in'] = $time_now;
-
+                                    $punish = 0;
                                     if ($time_now >= $work['time_in']) {
                                         $_args['punish'] = 1;
+                                        $punish = 1;
                                     }
-                                    $punish = 1;
                                 }
                                 sobad_api::_update_single($user_log['id_join'], 'abs-user-log', $_args);
 
