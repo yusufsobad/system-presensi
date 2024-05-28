@@ -21,7 +21,7 @@ class model_absensi
     public static function employe_data()
     {
         $date = date('Y-m-d');
-        $whr = "AND `abs-user`.status!=0";
+        $whr = "AND `abs-user`.status > 0";
         $user = sobad_api::user_get_all(['ID', 'company', 'divisi', '_nickname', 'no_induk', 'picture', 'work_time', 'inserted', 'status', '_resign_date', '_entry_date', 'punish', 'no_rfid', 'id_join'], $whr);
         // $permit = sobad_api::_get_users();
         $whr = "AND type!='9' AND start_date<='$date' AND range_date>='$date' OR start_date<='$date' AND range_date='0000-00-00' AND num_day='0.0'";
