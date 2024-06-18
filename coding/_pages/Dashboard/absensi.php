@@ -1293,6 +1293,16 @@ class dashboard_absensi extends _page
                     settimer = 1;
                 }
             }, 10000);
+
+            setInterval(function(){
+                var lc = $(location).attr('href')
+                var ex = lc.split("/");
+
+                var unit = ex[ex.length - 1];
+
+                data = "ajax=_checkConnect&object=api_monitoring&data=" + unit;
+                sobad_ajax('#', data, 'html', false);
+            }, 20000);
         </script>
 <?php
         $contents = ob_get_clean();
